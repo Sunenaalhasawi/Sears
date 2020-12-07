@@ -1,0 +1,296 @@
+<resources>
+    <string name="app_name">Sears</string>
+    <string name="welcome_to_sears">Welcome To Sears</string>
+    <string name="happy_shopping">Happy Shopping!</string>
+    <string name="login">Login</string>
+    <string name="email">Email*</string>
+    <string name="password">Password*</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_with_social_media">Or Login with Social Media</string>
+    <string name="select">Select</string>
+    <string name="your_category">Your Categories</string>
+    <string name="select_category">Select Your Categories</string>
+    <string name="language_caps">LANGUAGE</string>
+    <string name="gender_caps">GENDER</string>
+    <string name="category_of_products">CATEGORY OF PRODUCTS</string>
+    <string name="size_caps">SIZE</string>
+    <string name="fashion">Fashion</string>
+    <string name="footwear">Footwear</string>
+    <string name="sports">Sports</string>
+    <string name="accessories">Accessories</string>
+    <string name="fitness">Fitness</string>
+    <string name="home">Home</string>
+    <string name="continue_caps">CONTINUE</string>
+    <string name="click_here_to_continue_category">Click Here To Continue Category of Products</string>
+    <string name="click_here_to_continue_gender">Click Here To Continue Gender</string>
+    <string name="click_here_to_continue_lang">Click Here To Continue Language</string>
+    <string name="click_here_to_continue_size">Click Here To Continue With Your Size</string>
+    <string name="place_order">PLACE ORDER</string>
+    <string name="price_details">Price Details</string>
+    <string name="price_details_caps">PRICE DETAILS</string>
+    <string name="item_price">Price (Item)</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="total_amount">TOTAL AMOUNT</string>
+    <string name="deliver_address">DELIVER ADDRESS</string>
+    <string name="street_address">Street Address :</string>
+    <string name="rural_address">Rural Address :</string>
+    <string name="partial_address">Partial Address :</string>
+    <string name="postcode">Postcode :</string>
+    <string name="po_box">PO Box :</string>
+    <string name="payment_mode_colon">Payment Mode :</string>
+    <string name="landmark_colon">Landmark :</string>
+    <string name="counter_delivery">Counter Delivery :</string>
+    <string name="add_new_address">ADD NEW ADDRESS</string>
+    <string name="confirm_address">CONFIRM ADDRESS</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Menu Items -->
+    <string name="menu_my_profile">My Profile</string>
+    <string name="menu_my_orders">My Orders</string>
+    <string name="menu_my_wishlist">My Wishlist</string>
+    <string name="menu_my_address_book">My Address Book</string>
+    <string name="menu_bank_details">Bank Details</string>
+    <string name="menu_track_your_order">Track Your Order</string>
+    <string name="menu_reset_password">Reset Password</string>
+    <string name="menu_customer_service">Customer Service</string>
+    <string name="menu_signout">Signout</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>My Profile</item>
+        <item>My Orders</item>
+        <item>My Wishlist</item>
+        <item>My Address Book</item>
+        <item>Bank Details</item>
+        <item>Track Your Order</item>
+        <item>Reset Password</item>
+        <item>Customer Service</item>
+
+    </string-array>
+
+    <string name="hello">Hello,</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_dashboard2">DashboardActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
+    <string name="size">Size:</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="first_name">First Name*</string>
+    <string name="second_name">Second Name</string>
+    <string name="address">Address</string>
+    <string name="town">Town/City</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="landmark">Landmark</string>
+    <string name="save_as_def_ship_addr">Save as Default Shipping Address</string>
+    <string name="shipping_options">Shipping Options</string>
+    <string name="deliver_in_working_days">Deliver in Working Days Monday To Friday</string>
+    <string name="deliver_in_24_hrs">Deliver in 24*7</string>
+
+    <string name="payment_caps">PAYMENT</string>
+    <string name="choose_payment_method">Choose Your Payment Method</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="paypal">PAYPAL</string>
+    <string name="knet">Knet</string>
+    <string name="cod">COD</string>
+    <string name="card_no">Card Number*</string>
+    <string name="card_expiry">Expires*</string>
+    <string name="card_year">Year*</string>
+    <string name="month">Month</string>
+    <string name="year_2020">2020</string>
+    <string name="name_on_card">Name on Card*</string>
+    <string name="enter_card_name">Enter Card Name</string>
+
+    <string name="review_caps">REVIEW</string>
+    <string name="order_placed_sucess_caps">ORDER PLACED SUCCESSFULLY!</string>
+    <string name="order_id">Order ID</string>
+    <string name="ordered">Ordered</string>
+    <string name="packed">Packed</string>
+    <string name="shipped">Shipped</string>
+    <string name="delivery">Delivery</string>
+    <string name="expected_by">Expected by</string>
+    <string name="shipment_yet_to_deliver">Shipment yet to be Delivered</string>
+    <string name="track_order">Track Order</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="shipping_details">Shipping Details</string>
+    <string name="payment_mode">Payment Mode</string>
+    <string name="cash_on_delivery">Cash on Delivery</string>
+
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="title_activity_splash">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="your_language">Your Language</string>
+    <string name="your_gender">Your Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="your_product_size">Your Product Size</string>
+    <string name="size_no_colon">Size</string>
+    <string name="add_to_cart">ADD TO CART</string>
+    <string name="buy_now">BUY NOW</string>
+    <string name="product_details">Product Details :</string>
+    <string name="services">Services :</string>
+    <string name="offers">Offers :</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="french">French</string>
+    <string name="select_your_size">Select Your Size:</string>
+    <string name="color_variants">Color Variants</string>
+    <string name="reviews">Reviews</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by">SORT BY</string>
+    <string name="newest_first">Newest First</string>
+    <string name="popularity">Popularity</string>
+    <string name="relevance">Relevance</string>
+    <string name="low_to_high_price">Price - Low to High</string>
+    <string name="hight_to_low_price">Price - High to Low</string>
+    <string name="view_more">View More</string>
+    <string name="kwd_colon">"KWD : "</string>
+    <string name="shipping_caps">SHIPPING</string>
+    <string name="signup">Sign up</string>
+
+    <string name="enter_associated_email">Enter the mail address associated with your account</string>
+    <string name="send">Send</string>
+    <string name="verification">Verification</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_verification_code">Enter the verification code we just sent you on your email address.</string>
+    <string name="confirm">Confirm</string>
+    <string name="create_account">Create Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="mobile_number">Mobile Number*</string>
+    <string name="confirm_password">Confirm Password*</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="apply">Apply</string>
+    <string name="reset">Reset</string>
+    <string name="save">Save</string>
+    <string name="search_hint_sears">What are you looking for ?</string>
+    <string name="awesome_choice">Awesome Choice !</string>
+    <string name="product_added_to_cart">Product has been added to cart successfully</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="view_cart">View Cart</string>
+    <string name="original_price">Original Price:</string>
+    <string name="actual_price">Actual Price:</string>
+    <string name="hurry_only_left">Hurry, Only 3 Left</string>
+    <string name="our_price">Our Price:</string>
+    <string name="sku">SKU:</string>
+
+    <string name="total_amt_to_pay">TOTAL AMOUNT TO PAY</string>
+    <string name="complete_order_now">COMPLETE YOUR ORDER NOW</string>
+    <string name="have_a_good_day">Have a good day</string>
+    <string name="back">BACK</string>
+    <string name="actual_price_caps">ACTUAL PRICE - </string>
+    <string name="amount_to_pay">AMOUNT TO PAY</string>
+    <string name="brand">"BRAND - "</string>
+    <string name="order_qty">ORDER QTY -</string>
+    <string name="totoal_items_in">Total items in</string>
+    <string name="total_amount_to_pay">Total amount to pay</string>
+    <string name="recommended_products">Recommended Products</string>
+    <string name="out_of_stock">Out of stock</string>
+
+    <string name="make_your_payment">MAKE YOUR PAYMENT NOW</string>
+    <string name="sub_total">SUB TOTAL</string>
+    <string name="apply_counpon_code">APPLY FOR COUPON CODE</string>
+    <string name="apply_caps">APPLY</string>
+    <string name="conditions_apply">CONDITIONS APPLY</string>
+    <string name="order_information">ORDER INFORMATION</string>
+    <string name="purchase_more">PURCHASE MORE</string>
+    <string name="shipping_address_caps">SHIPPING ADDRESS</string>
+    <string name="edit_caps">EDIT</string>
+    <string name="add_address_caps">ADD ADDRESS</string>
+    <string name="total_amount_small_case">Total amount</string>
+    <string name="discount_amount">Discount amount</string>
+    <string name="cash_on_delivery_caps">CASH ON DELIVERY</string>
+    <string name="knet_caps">KNET</string>
+    <string name="credit_card_caps">CREDIT CARD</string>
+    <string name="paypal_caps">PAYPAL</string>
+    <string name="select_state">Select State</string>
+    <string name="add_a_new_address">Add a new address</string>
+    <string name="street">Street</string>
+    <string name="area">Area</string>
+    <string name="flat">Flat</string>
+    <string name="block">Block</string>
+    <string name="country">Country</string>
+    <string name="no_internet_error">"No internet "</string>
+    <string name="retry">RETRY</string>
+    <string name="wake_up_your_connection">Wake up your connection</string>
+    <string name="added_to">Added to</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="missing_wishlist_items">Missing Wishlist items?</string>
+    <string name="login_to_see_wishlist">Login to see the items you added previously</string>
+    <string name="last_name">Last Name*</string>
+    <string name="birthday">Birthday</string>
+    <string name="nationality">Nationality</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="save_details">SAVE DETAILS</string>
+    <string name="enjoy_shopping_with_us">Enjoy shopping with us</string>
+    <string name="dob">DOB</string>
+
+    <string name="firstname_required">First name is required</string>
+    <string name="lasttname_required">Last name is required</string>
+    <string name="email_required">Email is required</string>
+    <string name="mobile_required">Mobile is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="confirm_required">Confirm password is required</string>
+
+    <string name="fill_dob">Fill in your DOB to get exciting offers on your special day</string>
+    <string name="fill_nationality">Fill in your nationality to get special discount on your national day</string>
+    <string name="menu_notifications">Notification</string>
+    <string name="faq">FAQ</string>
+    <string name="about_us">About us</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="contact_us">Contact us</string>
+
+    <string name="it_empty_wishlist">It\'s empty here !</string>
+    <string name="follow_collections">Follow collections you love to find them here</string>
+    <string name="your_cart_empty">Your cart is empty!</string>
+    <string name="add_items_to_it">Add items to it now</string>
+    <string name="shop_now">Shop Now</string>
+    <string name="default_notification_channel_id">DEFAULT NOTIFICATION CHANNEL</string>
+    <string name="payment_failed">Payment Failed</string>
+    <string name="transaction_cancelled">Transaction has been cancelled. Please try again later</string>
+    <string name="enter_coupon_code">Enter coupon code</string>
+    <string name="login_signup">Login/Signup</string>
+    <string name="orders">Orders</string>
+    <string name="check_order_status">Check your order status</string>
+    <string name="help_center">Help Center</string>
+    <string name="help_recent_purchase">Help regarding your recent purchase</string>
+    <string name="refer_earn">Refer &amp; Earn</string>
+    <string name="refer_friends">Refer friends and get benefits</string>
+    <string name="your_loved_styles">Your most loved styles</string>
+    <string name="missing_cart_items">Missing Cart Items?</string>
+    <string name="quantity">Quantity :</string>
+    <string name="amount_paid">Amount paid :</string>
+    <string name="brand_small">Brand :</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="total_order_address">Total Order Price</string>
+    <string name="you_saved">You saved</string>
+    <string name="on_this_order">on this order</string>
+    <string name="updates_send_to">Updates Sent to</string>
+    <string name="mobile">Mobile :</string>
+    <string name="mail">Mail :</string>
+    <string name="date_of_purchase">Date of Purchase</string>
+</resources>

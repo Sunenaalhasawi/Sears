@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lv_sort" />
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/lv_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/lv_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_filter_list" />
+
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:gravity="center_vertical"
+                android:text="@string/sort"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="654dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/light_grey"
+            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view7" />
+
+
+        <LinearLayout
+            android:id="@+id/lv_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lv_sort"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_filter_list" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:gravity="center_vertical"
+                android:text="@string/filter"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="654dp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view6">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/txt_clr_blue"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_left_arrow_white_small"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/sort_by"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/white" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewSort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--                <RadioGroup-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="vertical">-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/radio_btn_newest"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:checked="true"-->
+                <!--                        android:drawableRight="@drawable/custom_radio_button"-->
+                <!--                        android:fontFamily="@font/avantgarde_regular"-->
+                <!--                        android:paddingLeft="16dp"-->
+                <!--                        android:paddingTop="8dp"-->
+                <!--                        android:paddingRight="16dp"-->
+                <!--                        android:paddingBottom="8dp"-->
+                <!--                        android:text="@string/newest_first"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="10sp" />-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/radio_btn_popularity"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:drawableRight="@drawable/custom_radio_button"-->
+                <!--                        android:fontFamily="@font/avantgarde_regular"-->
+                <!--                        android:paddingLeft="16dp"-->
+                <!--                        android:paddingTop="8dp"-->
+                <!--                        android:paddingRight="16dp"-->
+                <!--                        android:paddingBottom="8dp"-->
+                <!--                        android:text="@string/popularity"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="10sp" />-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/radio_btn_relevance"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:drawableRight="@drawable/custom_radio_button"-->
+                <!--                        android:fontFamily="@font/avantgarde_regular"-->
+                <!--                        android:paddingLeft="16dp"-->
+                <!--                        android:paddingTop="8dp"-->
+                <!--                        android:paddingRight="16dp"-->
+                <!--                        android:paddingBottom="8dp"-->
+                <!--                        android:text="@string/relevance"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="10sp" />-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/radio_btn_price_low_to_high"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:drawableRight="@drawable/custom_radio_button"-->
+                <!--                        android:fontFamily="@font/avantgarde_regular"-->
+                <!--                        android:paddingLeft="16dp"-->
+                <!--                        android:paddingTop="8dp"-->
+                <!--                        android:paddingRight="16dp"-->
+                <!--                        android:paddingBottom="8dp"-->
+                <!--                        android:text="@string/low_to_high_price"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="10sp" />-->
+
+                <!--                    <RadioButton-->
+                <!--                        android:id="@+id/radio_btn_price_high_to_low"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:button="@null"-->
+                <!--                        android:drawableRight="@drawable/custom_radio_button"-->
+                <!--                        android:fontFamily="@font/avantgarde_regular"-->
+                <!--                        android:paddingLeft="16dp"-->
+                <!--                        android:paddingTop="8dp"-->
+                <!--                        android:paddingRight="16dp"-->
+                <!--                        android:paddingBottom="16dp"-->
+                <!--                        android:text="@string/hight_to_low_price"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="10sp" />-->
+
+                <!--                </RadioGroup>-->
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

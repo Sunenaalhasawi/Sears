@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_background"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/white_rounded_rectangle"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/imageViewProductImage"
+            android:layout_width="130dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/product_3"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_product_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/green_rounded_rectangle"
+            android:drawableRight="@drawable/ic_star_rate"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:text="4.5"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_product_name" />
+
+        <TextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="Mens Casual T-Shirt"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView52"
+            app:layout_constraintEnd_toStartOf="@+id/tv_product_rating"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvOffer"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:fontFamily="@font/avantgarde_regular"-->
+        <!--            android:textColor="@color/green"-->
+        <!--            android:textSize="10sp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/tv_product_discounted_price"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/tv_product_discounted_price" />-->
+
+        <TextView
+            android:id="@+id/tv_our_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="KWD 5.25"
+            android:textColor="@color/price_color"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView52"
+            app:layout_constraintStart_toStartOf="@+id/tv_original_price" />
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="KWD 20"
+            android:textColor="@color/txt_clr_grey"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView55"
+            app:layout_constraintStart_toEndOf="@+id/textView55" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/size"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_original_price"
+            app:layout_constraintEnd_toStartOf="@+id/tvSize" />
+
+        <TextView
+            android:id="@+id/tvSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="S, M, L, XL, XXL"
+            android:textColor="@color/grey_txt_product"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textView17"
+            app:layout_constraintEnd_toEndOf="@+id/tv_product_rating" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/radioButtonWishlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:button="@drawable/custom_radio_button_wishlist"
+            android:clickable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/wishlist_grey" />
+
+        <TextView
+            android:id="@+id/tvOfferPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/green_rounded_rectangle_12dp_corner"
+            android:drawableLeft="@drawable/ic_offer_perc"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
+            android:text="30% OFF"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewProductImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView52"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/our_price"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView55"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView55"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/original_price"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView52" />
+
+        <TextView
+            android:id="@+id/textView56"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_error_outline"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:gravity="center_vertical"
+            android:text="@string/hurry_only_left"
+            android:textColor="@color/green"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_our_price"
+            app:layout_constraintEnd_toEndOf="@+id/tvSize" />
+
+        <ImageView
+            android:id="@+id/imageViewBrangLogo"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewProductImage"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProductImage"
+            app:srcCompat="@drawable/ic_sears" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

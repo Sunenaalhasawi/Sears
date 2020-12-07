@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#161f40</color>
+    <color name="colorPrimaryDark">#161f40</color>
+    <color name="colorAccent">#161f40</color>
+    <color name="app_blue">#20344F</color>
+    <color name="grey">#ACACAC</color>
+    <color name="txt_clr_blue">#161f40</color>
+    <color name="txt_clr_grey">#B2B1B6</color>
+    <color name="green">#3AB54A</color>
+    <color name="grey_txt_product">#AFAEB3</color>
+    <color name="light_grey">#E1E1E1</color>
+    <color name="dim_white">#FEFEFE</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="line_color">#556C7A</color>
+    <color name="text_grey">#D0D4D9</color>
+    <color name="light_blue">#377AD3</color>
+    <color name="txt_clr_green">#1f9f47</color>
+    <color name="black">#000000</color>
+    <color name="cart_grey">#9C9C9C</color>
+    <color name="price_color">#696969</color>
+    <color name="red">#FD0000</color>
+    <color name="transparent_dialog">#10211c47</color>
+    <color name="dark_grey_txt">#5C5C5C</color>
+</resources>

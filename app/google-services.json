@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "27697563484",
+    "firebase_url": "https://sears-1604309515315.firebaseio.com",
+    "project_id": "sears-1604309515315",
+    "storage_bucket": "sears-1604309515315.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27697563484:android:ba7a28f9597225a224e399",
+        "android_client_info": {
+          "package_name": "com.hasawi.sears"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27697563484-i6o995cpc75kdp697so806nne8tjhpg6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hasawi.sears",
+            "certificate_hash": "16463126d88fe37b07aca47c212173931b736c00"
+          }
+        },
+        {
+          "client_id": "27697563484-45vhh7bcfvt22ucho046q268u1rsgfdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC64sVySJHiYOm-tz5x349HtAttpBc23Fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27697563484-45vhh7bcfvt22ucho046q268u1rsgfdg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

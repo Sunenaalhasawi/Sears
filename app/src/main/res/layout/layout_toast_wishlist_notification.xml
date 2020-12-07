@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_rounded_rectangle_16dp"
+        android:elevation="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp">
+
+        <CheckBox
+            android:id="@+id/checkBoxWishlistStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:button="@drawable/custom_radio_button_wishlist" />
+
+        <TextView
+            android:id="@+id/tv_wishlist_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/added_to"
+            android:textColor="@color/txt_clr_grey"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView69"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/wishlist"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="14sp" />
+    </LinearLayout>
+</layout>

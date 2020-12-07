@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clipToPadding="false">
+
+
+        <Button
+            android:id="@+id/btn_continue_shipping_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_2_corner_rounded_rectangle_blue"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/add_address_caps"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/txt_clr_blue"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/add_a_new_address"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/btn_continue_shipping_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_street"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/address"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_first_name"
+                    app:layout_constraintStart_toStartOf="@+id/edt_first_name"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_first_name" />
+
+                <EditText
+                    android:id="@+id/edt_area"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/mobile_number"
+                    android:inputType="number"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_street"
+                    app:layout_constraintStart_toStartOf="@+id/edt_street"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_street" />
+
+                <!--        <EditText-->
+                <!--            android:id="@+id/edt_last_name"-->
+                <!--            android:layout_width="0dp"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:background="@drawable/white_rounded_rectangle_16dp"-->
+                <!--            android:elevation="4dp"-->
+                <!--            android:ems="10"-->
+                <!--            android:fontFamily="@font/avantgarde_regular"-->
+                <!--            android:hint="@string/second_name"-->
+                <!--            android:inputType="textPersonName"-->
+                <!--            android:padding="16dp"-->
+                <!--            android:textColor="@color/txt_clr_grey"-->
+                <!--            android:textSize="14sp"-->
+                <!--            tools:layout_editor_absoluteX="216dp"-->
+                <!--            tools:layout_editor_absoluteY="106dp" />-->
+
+                <EditText
+                    android:id="@+id/edt_block"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="4dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/zip_code"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/edt_flat"
+                    app:layout_constraintTop_toTopOf="@+id/edt_flat" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:text="@string/shipping_address"
+                    android:textColor="@color/txt_clr_blue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edt_first_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                <EditText
+                    android:id="@+id/edt_flat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/town"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/edt_block"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="@+id/edt_first_name"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_area" />
+
+                <EditText
+                    android:id="@+id/edt_country"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/landmark"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_first_name"
+                    app:layout_constraintStart_toStartOf="@+id/edt_first_name"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_block" />
+
+                <LinearLayout
+                    android:id="@+id/lv_dropdown_state"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_country"
+                    app:layout_constraintStart_toStartOf="@+id/edt_country"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_country">
+
+                    <Spinner
+                        android:id="@+id/spinnerState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_spinner_icon"
+                        android:prompt="@string/select_state"
+                        tools:layout_editor_absoluteX="34dp"
+                        tools:layout_editor_absoluteY="408dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/light_grey"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lv_dropdown_state"></View>
+
+                <CheckBox
+                    android:id="@+id/checkbox_set_as_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:text="@string/save_as_def_ship_addr"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:text="@string/shipping_options"
+                    android:textColor="@color/txt_clr_blue"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_set_as_default" />
+
+                <RadioGroup
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView28">
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_working_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/deliver_in_working_days"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_24_by_7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/deliver_in_24_hrs"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="14sp" />
+                </RadioGroup>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
