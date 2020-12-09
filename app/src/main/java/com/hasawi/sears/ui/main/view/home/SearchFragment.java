@@ -47,7 +47,7 @@ public class SearchFragment extends BaseFragment {
                         if (searchProductListResponse != null) {
                             SearchProductListResponse productListResponse = searchProductListResponse.data;
                             productSearchList = productListResponse.getData().getProductSearchs();
-                            searchProductAdapter = new SearchProductAdapter(productSearchList);
+                            searchProductAdapter = new SearchProductAdapter(getContext(), productSearchList);
                             fragmentSearchBinding.recyclerSearchProducts.setAdapter(searchProductAdapter);
                         }
                         break;

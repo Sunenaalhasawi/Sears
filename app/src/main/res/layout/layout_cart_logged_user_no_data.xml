@@ -15,6 +15,7 @@
             android:id="@+id/constraintLayout12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/grey_outlined_rounded_rectangle_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/shopping_cart"
+                android:src="@drawable/online_shopping"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +35,9 @@
                 android:id="@+id/textView64"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/your_cart_empty"
                 android:textColor="@color/txt_clr_blue"
@@ -50,29 +53,32 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
+                android:layout_marginBottom="48dp"
                 android:fontFamily="@font/avantgarde_regular"
                 android:text="@string/add_items_to_it"
                 android:textColor="@color/dark_grey_txt"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView64" />
 
-            <Button
-                android:id="@+id/btnShopNow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/blue_rounded_rectangle_12dp_corner"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:text="@string/shop_now"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView74" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnShopNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_rounded_rectangle_12dp_corner"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="@string/shop_now"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout12"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout12"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout12"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout12" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

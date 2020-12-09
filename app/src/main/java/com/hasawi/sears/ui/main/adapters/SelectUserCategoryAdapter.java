@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.databinding.LayoutSelectUserCategoryItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,10 @@ public class SelectUserCategoryAdapter extends RecyclerView.Adapter<SelectUserCa
         Category category = categories.get(position);
         holder.categoryItemBinding.tvItemName.setText(category.getDescriptions().get(0).getCategoryName());
         try {
-            Picasso.get().load(category.getDescriptions().get(0).getImageUrl()).into(holder.categoryItemBinding.imageViewItem);
+            Glide.with(context)
+                    .load(category.getDescriptions().get(0).getImageUrl())
+                    .centerCrop()
+                    .into(holder.categoryItemBinding.imageViewItem);
         } catch (Exception e) {
             e.printStackTrace();
         }

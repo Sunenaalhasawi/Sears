@@ -28,6 +28,10 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
         this.addressArrayList = addresses;
     }
 
+    public static void setsSelected(int sSelected) {
+        ShippingAddressAdapter.sSelected = sSelected;
+    }
+
     public abstract void onEditClicked(Address address);
 
     @NonNull
@@ -46,15 +50,26 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
         holder.addressAdapterItemBinding.tvContact.setText("Flat: " + addressItem.getFlat() + " " + addressItem.getBlock());
         holder.addressAdapterItemBinding.tvEmail.setText("Country: " + addressItem.getCountry());
         if (sSelected == position) {
-            holder.addressAdapterItemBinding.cvBackground.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
+            holder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
+            holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
         } else {
-            holder.addressAdapterItemBinding.cvBackground.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_12dp));
+            holder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_12dp));
+            holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
         }
 
         holder.addressAdapterItemBinding.imageButtonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onEditClicked(addressItem);
+            }
+        });
+        holder.addressAdapterItemBinding.radioButtonSelectAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sSelected == position)
+                    holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
+                else
+                    holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
             }
         });
     }
@@ -78,7 +93,7 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
         public ViewHolder(@NonNull LayoutAddressAdapterItemBinding addressAdapterItemBinding) {
             super(addressAdapterItemBinding.getRoot());
             this.addressAdapterItemBinding = addressAdapterItemBinding;
-            addressAdapterItemBinding.cvBackground.setOnClickListener(this);
+            addressAdapterItemBinding.cvBackgroundAddress.setOnClickListener(this);
         }
 
         @Override

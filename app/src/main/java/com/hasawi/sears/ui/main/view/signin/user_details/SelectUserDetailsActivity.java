@@ -29,7 +29,7 @@ public class SelectUserDetailsActivity extends BaseActivity {
         if (getIntent() != null && getIntent().getBooleanExtra("redirect_from_home", false))
             replaceFragment(R.id.fragment_replacer_user_details, new SelectCategoryFragment(), null, true, false);
         else
-            replaceFragment(R.id.fragment_replacer_user_details, new SelectLanguageFragment(), null, true, false);
+            replaceFragment(R.id.fragment_replacer_user_details, new SelectLanguageFragment(), null, false, false);
 
         if (isNetworkAvailable())
             callDynamicDataApi();

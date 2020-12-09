@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView8"
+                app:srcCompat="@drawable/ic_ticked_circle_green" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/order_placed_sucess_caps"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/date_of_purchase"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/textView92" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/payment_mode"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView92"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/order_id"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/tv_order_id_top"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="#12334343353"
+                android:textColor="@color/dark_grey_txt"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView92"
+                app:layout_constraintStart_toEndOf="@+id/textView92" />
+
+            <TextView
+                android:id="@+id/tvPurchaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="02/02/2020"
+                android:textColor="@color/dark_grey_txt"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                app:layout_constraintStart_toEndOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/tvPaymentMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Cash on Delivery"
+                android:textColor="@color/txt_clr_green"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                app:layout_constraintStart_toEndOf="@+id/textView10" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cv_order_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/white"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/txt_clr_blue"
+                app:layout_constraintBottom_toTopOf="@+id/radioButtonShipped"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonPacked"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonPacked"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonPacked" />
+
+            <TextView
+                android:id="@+id/tv_shipped_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Expected by Sun, 9th Aug 2020"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView57"
+                app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+            <TextView
+                android:id="@+id/tv_delivery_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Expected by Sun, 9th Aug 2020"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_delivery"
+                app:layout_constraintTop_toBottomOf="@+id/tv_delivery" />
+
+            <TextView
+                android:id="@+id/textView48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/order_id"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView49"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="-"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                app:layout_constraintStart_toEndOf="@+id/textView48"
+                app:layout_constraintTop_toTopOf="@+id/textView48" />
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="DM0022345344355"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                app:layout_constraintStart_toEndOf="@+id/textView49" />
+
+            <TextView
+                android:id="@+id/textView51"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/ordered"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/radioButtonOrdered"
+                app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+            <TextView
+                android:id="@+id/tv_ordered_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Sat, 8th Aug 2020"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView51"
+                app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+            <TextView
+                android:id="@+id/textView53"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/packed"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_ordered_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ordered_date" />
+
+            <TextView
+                android:id="@+id/tv_packed_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Expected by Sun, 9th Aug 2020"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView53"
+                app:layout_constraintTop_toBottomOf="@+id/textView53" />
+
+            <TextView
+                android:id="@+id/textView57"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/shipped"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_packed_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_packed_date" />
+
+            <TextView
+                android:id="@+id/tv_delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/delivery"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_shipped_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_shipped_date" />
+
+            <TextView
+                android:id="@+id/textView59"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/shipment_yet_to_deliver"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_delivery"
+                app:layout_constraintTop_toBottomOf="@+id/tv_delivery_date" />
+
+            <RadioButton
+                android:id="@+id/radioButtonPacked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_radio_button_review_page"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_packed_date"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonOrdered"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonOrdered"
+                app:layout_constraintTop_toTopOf="@+id/textView53" />
+
+            <RadioButton
+                android:id="@+id/radioButtonDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_radio_button_review_page"
+                app:layout_constraintBottom_toBottomOf="@+id/textView59"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonShipped"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonShipped"
+                app:layout_constraintTop_toTopOf="@+id/tv_delivery" />
+
+            <RadioButton
+                android:id="@+id/radioButtonShipped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_radio_button_review_page"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_shipped_date"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonPacked"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonPacked"
+                app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+            <RadioButton
+                android:id="@+id/radioButtonOrdered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_radio_button_review_page"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_ordered_date"
+                app:layout_constraintEnd_toEndOf="@+id/textView48"
+                app:layout_constraintStart_toStartOf="@+id/textView48"
+                app:layout_constraintTop_toTopOf="@+id/textView51" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/txt_clr_blue"
+                app:layout_constraintBottom_toTopOf="@+id/radioButtonPacked"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonOrdered"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonOrdered"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonOrdered" />
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/txt_clr_blue"
+                app:layout_constraintBottom_toTopOf="@+id/radioButtonDelivery"
+                app:layout_constraintEnd_toEndOf="@+id/radioButtonShipped"
+                app:layout_constraintStart_toStartOf="@+id/radioButtonShipped"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonShipped" />
+
+            <TextView
+                android:id="@+id/btn_track_order"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/green_color_gradient"
+                android:fontFamily="@font/avantgarde_bold"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:text="@string/track_order"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_cancel_order"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+
+            <TextView
+                android:id="@+id/btn_cancel_order"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grey_color_gradient"
+                android:fontFamily="@font/avantgarde_bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:text="@string/cancel_order"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_track_order"
+                app:layout_constraintTop_toTopOf="@+id/btn_track_order" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_order_status">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/txt_clr_blue"
+                android:fontFamily="@font/avantgarde_bold"
+                android:padding="8dp"
+                android:text="@string/shipping_details"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="John Smith"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/street_address"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tvName"
+                app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/rural_address"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView19"
+                app:layout_constraintTop_toBottomOf="@+id/tv_street_address" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/partial_address"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView20"
+                app:layout_constraintTop_toBottomOf="@+id/tv_rural_address" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/postcode"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/tv_partial_address" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/po_box"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/tv_postcode" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/landmark_colon"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView23"
+                app:layout_constraintTop_toBottomOf="@+id/tv_pobox" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/counter_delivery"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
+
+            <TextView
+                android:id="@+id/tv_street_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="445 Mount eden Road, Auckland"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView19"
+                app:layout_constraintTop_toTopOf="@+id/textView19" />
+
+            <TextView
+                android:id="@+id/tv_rural_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="445 Mount eden Road, Auckland"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView20"
+                app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+            <TextView
+                android:id="@+id/tv_partial_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="445 Mount eden Road, Auckland"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView21"
+                app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/tv_postcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="5022"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView22"
+                app:layout_constraintTop_toTopOf="@+id/textView22" />
+
+            <TextView
+                android:id="@+id/tv_pobox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="PO Eden"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView23"
+                app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+            <TextView
+                android:id="@+id/tv_landmark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Palace"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView24"
+                app:layout_constraintTop_toTopOf="@+id/textView24" />
+
+            <TextView
+                android:id="@+id/tv_counter_delivery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Cartes beach pose center"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView25"
+                app:layout_constraintTop_toTopOf="@+id/textView25" />
+
+            <TextView
+                android:id="@+id/textView83"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/payment_mode_colon"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView25"
+                app:layout_constraintTop_toBottomOf="@+id/tv_counter_delivery" />
+
+            <TextView
+                android:id="@+id/tvPaymentModeAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="Cash on Delivery"
+                android:textColor="@color/txt_clr_green"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView83"
+                app:layout_constraintTop_toTopOf="@+id/textView83" />
+
+            <!--                <LinearLayout-->
+            <!--                    android:id="@+id/btn_add_new_address"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="16dp"-->
+            <!--                    android:background="@drawable/grey_color_gradient"-->
+            <!--                    android:gravity="center_vertical|center_horizontal"-->
+            <!--                    android:orientation="horizontal"-->
+            <!--                    android:padding="8dp"-->
+
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toStartOf="@+id/btn_confirm_address"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/textView25">-->
+
+            <!--                    <ImageView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:src="@drawable/ic_add" />-->
+
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginLeft="16dp"-->
+            <!--                        android:fontFamily="@font/avantgarde_regular"-->
+            <!--                        android:text="@string/add_new_address"-->
+            <!--                        android:textColor="@android:color/white"-->
+            <!--                        android:textSize="14sp" />-->
+
+            <!--                </LinearLayout>-->
+
+            <!--                <LinearLayout-->
+            <!--                    android:id="@+id/btn_confirm_address"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:background="@color/txt_clr_blue"-->
+            <!--                    android:gravity="center_horizontal|center_vertical"-->
+            <!--                    android:orientation="horizontal"-->
+            <!--                    android:padding="8dp"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toEndOf="@+id/btn_add_new_address">-->
+
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+
+            <!--                        android:fontFamily="@font/avantgarde_regular"-->
+            <!--                        android:text="@string/confirm_address"-->
+            <!--                        android:textColor="@android:color/white" />-->
+            <!--                </LinearLayout>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,10 +1,12 @@
 package com.hasawi.sears.ui.main.view.checkout;
 
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,9 +19,11 @@ import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.PaymentViewModel;
 import com.hasawi.sears.utils.FailedPaymentDialog;
+import com.hasawi.sears.utils.PreferenceHandler;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 public class PaymentFragment extends BaseFragment {
     FragmentPaymentNewBinding fragmentPaymentNewBinding;
@@ -98,6 +102,35 @@ public class PaymentFragment extends BaseFragment {
     }
 
 
+    private void callReviewOrderApi(Map<String, Object> jsonParams) {
+        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+        String customerId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
+        String addressId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
+
+        String cartId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_CART_ID, "");
+        String sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
+
+        paymentViewModel.orderConfirmation(customerId, addressId, cartId, sessionToken, jsonParams).observe(getActivity(), orderResponseResource -> {
+            fragmentPaymentNewBinding.progressBar.setVisibility(View.GONE);
+            switch (orderResponseResource.status) {
+                case SUCCESS:
+                    Bundle bundle = new Bundle();
+                    Gson gson = new Gson();
+                    String orderConfirmationResponse = gson.toJson(orderResponseResource.data);
+                    bundle.putString("order_confirmed_response", orderConfirmationResponse);
+                    dashboardActivity.showBackButton(true, true);
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), bundle, true, false);
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    Toast.makeText(getActivity(), orderResponseResource.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        });
+
+    }
+
     public class MyJavaScriptInterface {
 
         PaymentResponse paymentResponse;
@@ -110,28 +143,24 @@ public class PaymentFragment extends BaseFragment {
         @JavascriptInterface
         public void showHTML(String html) {
             try {
-//                System.out.println(html);
+//                fragmentPaymentNewBinding.progressBar.setVisibility(View.VISIBLE);
                 int startingIndex = html.indexOf("{");
                 int closingIndex = html.indexOf("statusCode");
                 String responseString = html.substring(startingIndex, closingIndex + 16);
                 JSONObject jsonObject = new JSONObject(responseString);
                 Gson gson = new Gson();
-                String paymentObject = gson.toJson(selectedPaymentMode, PaymentMode.class);
-//                JSONObject paymentJson = new JSONObject(paymentObject);
-//                Map<String, Object> jsonParams = new ArrayMap<>();
-//                jsonParams.put("payment", paymentObject);
-//                jsonParams.put("getPaymentStatusResponse", jsonObject.get("data"));
+                String paymentObject = gson
+                        .toJson(selectedPaymentMode, PaymentMode.class);
+                Map<String, Object> jsonParams = new ArrayMap<>();
+                jsonParams.put("payment", paymentObject);
+                jsonParams.put("getPaymentStatusResponse", jsonObject.get("data").toString());
+                callReviewOrderApi(jsonParams);
+            } catch (Exception e) {
 
-                Bundle bundle = new Bundle();
-                bundle.putString("payment", paymentObject);
-                bundle.putString("getPaymentStatusResponse", jsonObject.get("data").toString());
-                dashboardActivity.showBackButton(true);
-                dashboardActivity.setTitle("Order Details");
-                dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), bundle, true, false);
-            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
     }
+
 }

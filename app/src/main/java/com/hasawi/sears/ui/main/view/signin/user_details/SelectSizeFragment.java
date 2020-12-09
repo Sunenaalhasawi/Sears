@@ -46,6 +46,7 @@ public class SelectSizeFragment extends BaseFragment implements RecyclerviewSing
         selectUserDetailsViewModel = selectUserDetailsActivity.getSelectUserDetailsViewModel();
         fragmentSelectSizeBinding.tvLanguage.setOnClickListener(this);
         fragmentSelectSizeBinding.tvGender.setOnClickListener(this);
+        fragmentSelectSizeBinding.imageButtonBackSize.setOnClickListener(this);
         fragmentSelectSizeBinding.tvProductCategory.setOnClickListener(this);
         fragmentSelectSizeBinding.tvSize.setOnClickListener(this);
         fragmentSelectSizeBinding.scrollView.post(new Runnable() {

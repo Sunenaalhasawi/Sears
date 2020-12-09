@@ -1,5 +1,6 @@
 package com.hasawi.sears.ui.main.adapters;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.databinding.LayoutRelatedProductItemBinding;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Adapter<RelatedProductsRecyclerviewAdapter.ViewHolder> {
     ArrayList<Content> productArrayList;
+    Context context;
 
-    public RelatedProductsRecyclerviewAdapter(ArrayList<Content> products) {
+    public RelatedProductsRecyclerviewAdapter(Context context, ArrayList<Content> products) {
+        this.context = context;
         this.productArrayList = products;
     }
 
@@ -42,7 +45,10 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
             Content productContent = productArrayList.get(position);
             holder.productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
             holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
-            Picasso.get().load(productContent.getProductImages().get(0).getImageName()).into(holder.productItemBinding.imageViewProductImage);
+            Glide.with(context)
+                    .load(productContent.getProductImages().get(0).getImageName())
+                    .centerCrop()
+                    .into(holder.productItemBinding.imageViewProductImage);
             try {
                 holder.productItemBinding.tvOriginalPrice.setText("KWD " + productContent.getDiscountPrice());
                 holder.productItemBinding.tvOurPrice.setText("KWD " + productContent.getOriginalPrice());

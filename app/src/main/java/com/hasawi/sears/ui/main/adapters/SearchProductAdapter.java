@@ -1,5 +1,6 @@
 package com.hasawi.sears.ui.main.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -7,17 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.ProductSearch;
 import com.hasawi.sears.databinding.LayoutSearchProductItemBinding;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdapter.ViewHolder> {
     List<ProductSearch> productSearchList;
+    Context context;
 
-    public SearchProductAdapter(List<ProductSearch> productSearchList) {
+    public SearchProductAdapter(Context context, List<ProductSearch> productSearchList) {
+        this.context = context;
         this.productSearchList = productSearchList;
     }
 
@@ -32,7 +35,10 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.searchProductItemBinding.tvProductName.setText(productSearchList.get(position).getNameEn());
-        Picasso.get().load(productSearchList.get(position).getImageUrl()).into(holder.searchProductItemBinding.imageViewProduct);
+        Glide.with(context)
+                .load(productSearchList.get(position).getImageUrl())
+                .centerCrop()
+                .into(holder.searchProductItemBinding.imageViewProduct);
     }
 
     @Override

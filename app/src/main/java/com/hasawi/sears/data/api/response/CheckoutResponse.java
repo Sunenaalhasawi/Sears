@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.hasawi.sears.data.api.model.User;
 import com.hasawi.sears.data.api.model.pojo.Cart;
 import com.hasawi.sears.data.api.model.pojo.PaymentMode;
+import com.hasawi.sears.data.api.model.pojo.ShippingMode;
 
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class CheckoutResponse {
         @SerializedName("payments")
         @Expose
         private List<PaymentMode> paymentModes;
+        @SerializedName("shippings")
+        @Expose
+        private List<ShippingMode> shippingModes;
         @SerializedName("customer")
         @Expose
         private User user;
@@ -100,6 +104,14 @@ public class CheckoutResponse {
 
         public void setShoppingCart(Cart shoppingCart) {
             this.shoppingCart = shoppingCart;
+        }
+
+        public List<ShippingMode> getShippingModes() {
+            return shippingModes;
+        }
+
+        public void setShippingModes(List<ShippingMode> shippingModes) {
+            this.shippingModes = shippingModes;
         }
     }
 

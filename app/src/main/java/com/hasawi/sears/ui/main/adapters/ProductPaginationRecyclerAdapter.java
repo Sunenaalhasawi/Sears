@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.databinding.ItemLoadingBinding;
 import com.hasawi.sears.databinding.LayoutProductItemBinding;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,10 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
 
                 Content productContent = productList.get(position);
                 productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
-                Picasso.get().load(productContent.getProductImages().get(0).getImageName()).into(productItemBinding.imageViewProductImage);
+                Glide.with(context)
+                        .load(productContent.getProductImages().get(0).getImageName())
+                        .centerCrop()
+                        .into(productItemBinding.imageViewProductImage);
                 productItemBinding.radioButtonWishlist.setChecked(false);
 
                 productItemBinding.radioButtonWishlist.setOnClickListener(new View.OnClickListener() {

@@ -293,4 +293,10 @@
     <string name="mobile">Mobile :</string>
     <string name="mail">Mail :</string>
     <string name="date_of_purchase">Date of Purchase</string>
+    <string name="alert">Alert</string>
+    <string name="ok">OK</string>
+    <string name="please_select_size_first">Please select size first to select your favourite color</string>
+    <string name="product_out_of_stock">Oops you just missed this product!</string>
+    <string name="product_currently_out_of_stock">The product is currently out of stock and cannot be added to cart.</string>
+    <string name="preferred_delivery">PREFERRED DELIVERY</string>
 </resources>

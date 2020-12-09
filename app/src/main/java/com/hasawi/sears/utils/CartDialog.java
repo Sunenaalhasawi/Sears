@@ -43,7 +43,7 @@ public class CartDialog extends DialogFragment {
 //                Intent intent = new Intent(dashboardActivity, MyCartActivity.class);
 //                startActivity(intent);
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                dashboardActivity.showBackButton(true);
+                dashboardActivity.showBackButton(true, false);
                 dashboardActivity.setTitle("My Cart");
                 dismiss();
             }

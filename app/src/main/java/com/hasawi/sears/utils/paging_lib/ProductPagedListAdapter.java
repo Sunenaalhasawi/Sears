@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.databinding.LayoutProductItemBinding;
 import com.hasawi.sears.databinding.NetworkItemBinding;
 import com.hasawi.sears.utils.NetworkState;
-import com.squareup.picasso.Picasso;
 
 public abstract class ProductPagedListAdapter extends PagedListAdapter<Content, RecyclerView.ViewHolder> {
 
@@ -58,7 +58,7 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Content, 
         } else {
             ((NetworkStateItemViewHolder) holder).bindView(networkState);
         }
-        if (position == 4)
+        if (position == 2)
             onLoadedProducts();
     }
 
@@ -114,8 +114,15 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Content, 
                 productItemBinding.radioButtonWishlist.setChecked(false);
             productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
             productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "%");
-            Picasso.get().load(productContent.getProductImages().get(0).getImageName()).into(productItemBinding.imageViewProductImage);
-            Picasso.get().load(productContent.getBrandLogoUrl()).into(productItemBinding.imageViewBrangLogo);
+            Glide.with(context)
+                    .load(productContent.getProductImages().get(0).getImageName())
+                    .centerCrop()
+                    .into(productItemBinding.imageViewProductImage);
+            Glide.with(context)
+                    .load(productContent.getBrandLogoUrl())
+                    .centerCrop()
+                    .into(productItemBinding.imageViewBrangLogo);
+
             try {
                 productItemBinding.tvOriginalPrice.setText("KWD " + productContent.getDiscountPrice());
                 productItemBinding.tvOurPrice.setText("KWD " + productContent.getOriginalPrice());

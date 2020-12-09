@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.PaymentMode;
 import com.hasawi.sears.databinding.LayoutPaymentModeRecyclerItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,10 @@ public class PaymentModeAdapter extends RecyclerView.Adapter<PaymentModeAdapter.
         this.paymentModeArrayList = paymentModeArrayList;
     }
 
+    public static void setsSelected(int sSelected) {
+        PaymentModeAdapter.sSelected = sSelected;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,7 +42,10 @@ public class PaymentModeAdapter extends RecyclerView.Adapter<PaymentModeAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Picasso.get().load(paymentModeArrayList.get(position).getIcon()).placeholder(context.getResources().getDrawable(R.drawable.cod)).into(holder.layoutPaymentModeRecyclerItemBinding.imagePaymentIcon);
+        Glide.with(context)
+                .load(context.getResources().getDrawable(R.drawable.cod))
+                .centerCrop()
+                .into(holder.layoutPaymentModeRecyclerItemBinding.imagePaymentIcon);
         holder.layoutPaymentModeRecyclerItemBinding.tvPaymentName.setText(paymentModeArrayList.get(position).getName());
         if (sSelected == position) {
             holder.layoutPaymentModeRecyclerItemBinding.lvPaymentModeCod.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));

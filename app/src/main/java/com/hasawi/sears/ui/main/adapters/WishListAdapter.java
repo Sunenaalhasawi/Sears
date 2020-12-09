@@ -1,5 +1,6 @@
 package com.hasawi.sears.ui.main.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.data.api.model.pojo.Wishlist;
 import com.hasawi.sears.databinding.LayoutWishlistAdapterItemBinding;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,10 @@ import java.util.List;
 public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHolder> {
 
     List<Wishlist> wishlists;
+    Context context;
 
-    public WishListAdapter() {
+    public WishListAdapter(Context context) {
+        this.context = context;
         this.wishlists = new ArrayList<>();
     }
 
@@ -45,7 +48,10 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
             holder.wishlistAdapterItemBinding.tvProductName.setText(wishlistedProduct.getDescriptions().get(0).getProductName());
             holder.wishlistAdapterItemBinding.tvOffer.setText(wishlistedProduct.getDiscountPercentage() + "%");
             holder.wishlistAdapterItemBinding.tvProductPrice.setText("KWD " + wishlistedProduct.getOriginalPrice());
-            Picasso.get().load(wishlistedProduct.getProductImages().get(0).getImageName()).into(holder.wishlistAdapterItemBinding.imageViewProductImage);
+            Glide.with(context)
+                    .load(wishlistedProduct.getProductImages().get(0).getImageName())
+                    .centerCrop()
+                    .into(holder.wishlistAdapterItemBinding.imageViewProductImage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +68,9 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
                 onItemClicked(wishlistedProduct);
             }
         });
+        if (!wishlistItem.getProduct().isAvailable()) {
+            holder.wishlistAdapterItemBinding.tvOutOfStock.setVisibility(View.VISIBLE);
+        }
     }
 
     public void addAll(List<Wishlist> wishlistList) {

@@ -119,6 +119,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void redirectToHomePage() {
+        signinActivity.hideFragment();
         Intent intent = new Intent(signinActivity, DashboardActivity.class);
         startActivity(intent);
         signinActivity.finish();

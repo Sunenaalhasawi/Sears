@@ -16,7 +16,7 @@ public class User {
     private String customerLastName;
     @SerializedName("mobileNo")
     @Expose
-    private Integer mobileNo;
+    private String mobileNo;
     @SerializedName("password")
     @Expose
     private String password;
@@ -54,11 +54,11 @@ public class User {
         this.customerLastName = customerLastName;
     }
 
-    public Integer getMobileNo() {
+    public String getMobileNo() {
         return mobileNo;
     }
 
-    public void setMobileNo(Integer mobileNo) {
+    public void setMobileNo(String mobileNo) {
         this.mobileNo = mobileNo;
     }
 

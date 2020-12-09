@@ -214,7 +214,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
                     callWishlistApi(product.getProductId(), product, checked);
                 } else {
                     preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, product.getProductId());
-                    dashboardActivity.showBackButton(true);
+                    dashboardActivity.showBackButton(true, true);
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new WishListFragment(), null, true, false);
                 }
             }
@@ -230,7 +230,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
                     Bundle bundle = new Bundle();
                     bundle.putString("selected_product_object", objectString);
 
-                    dashboardActivity.showBackButton(true);
+                    dashboardActivity.showBackButton(true, false);
                     dashboardActivity.setTitle(selectedProduct.getDescriptions().get(0).getProductName());
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 

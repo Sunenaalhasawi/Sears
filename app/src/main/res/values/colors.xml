@@ -24,4 +24,5 @@
     <color name="red">#FD0000</color>
     <color name="transparent_dialog">#10211c47</color>
     <color name="dark_grey_txt">#5C5C5C</color>
+    <color name="payment_card_select">#EEEEEE</color>
 </resources>

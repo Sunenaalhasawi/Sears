@@ -120,6 +120,15 @@ public class SelectCategoryFragment extends BaseFragment implements Recyclerview
 
     @Override
     public void onClick(View v) {
+        try {
+            dataBundle.putString("category_id", selectedCategoryId);
+            dataBundle.putString("category_name", currentSelectedCategory.getDescriptions().get(0).getCategoryName());
+            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, selectedCategoryId);
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentSelectedCategory.getDescriptions().get(0).getCategoryName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         switch (v.getId()) {
             case R.id.tvLanguage:
                 selectUserDetailsActivity.replaceFragment(new SelectLanguageFragment(), dataBundle);
@@ -134,15 +143,6 @@ public class SelectCategoryFragment extends BaseFragment implements Recyclerview
                 selectUserDetailsActivity.replaceFragment(new SelectSizeFragment(), dataBundle);
                 break;
             case R.id.btnContinue:
-                try {
-                    dataBundle.putString("category_id", selectedCategoryId);
-                    dataBundle.putString("category_name", currentSelectedCategory.getDescriptions().get(0).getCategoryName());
-                    PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, selectedCategoryId);
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentSelectedCategory.getDescriptions().get(0).getCategoryName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 if (!selectedCategoryId.equalsIgnoreCase(""))
                     selectUserDetailsActivity.replaceFragment(new SelectSizeFragment(), dataBundle);
                 break;

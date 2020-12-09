@@ -52,6 +52,7 @@ public class SelectLanguageFragment extends BaseFragment implements Recyclerview
         fragmentSelectLanguageBinding.recyclerViewLanguage.setAdapter(selectUserLanguageAdapter);
         selectUserLanguageAdapter.setOnItemClickListener(this);
 
+
         callLanguageApi();
 //        TripHistory tripHistory = tripHistoryArrayList.get(position);
 //                Gson gson = new Gson();
@@ -73,9 +74,9 @@ public class SelectLanguageFragment extends BaseFragment implements Recyclerview
 
     @Override
     public void onClick(View v) {
+        dataBundle.putString("languageId", selectedLanguage);
         switch (v.getId()) {
             case R.id.btnContinue:
-                dataBundle.putString("languageId", selectedLanguage);
                 selectUserDetailsActivity.replaceFragment(new SelectCategoryFragment(), dataBundle);
                 break;
             case R.id.imageButtonNext:

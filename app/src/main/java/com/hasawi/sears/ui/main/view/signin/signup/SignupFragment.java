@@ -44,6 +44,8 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         signupViewModel = new ViewModelProvider(getActivity()).get(SignupViewModel.class);
         fragmentSignupBinding.btnSignup.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.edtBirthday.setOnClickListener(this);
+        fragmentSignupBinding.layoutSignup.constraintLayoutMale.setOnClickListener(this);
+        fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setOnClickListener(this);
 
         fragmentSignupBinding.layoutSignup.pickerCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
@@ -61,7 +63,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void userRegistration() {
-        signinActivity.showProgressBar(true);
+
         String firstName = fragmentSignupBinding.layoutSignup.edtFirstname.getText().toString();
         String lastName = fragmentSignupBinding.layoutSignup.edtLastname.getText().toString();
         String email = fragmentSignupBinding.layoutSignup.edtEmail.getText().toString();
@@ -95,6 +97,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 jsonParams.put("gender", selectedGender);
                 jsonParams.put("nationality", selectedNationality);
                 jsonParams.put("dob", selectedDate);
+                signinActivity.showProgressBar(true);
                 signupViewModel.userRegistration(jsonParams).observe(getActivity(), signupResponse -> {
                     signinActivity.showProgressBar(false);
                     switch (signupResponse.status) {
@@ -193,6 +196,12 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.btn_signup:
                 userRegistration();
+                break;
+            case R.id.constraintLayoutMale:
+                selectMale();
+                break;
+            case R.id.constraintLayoutFemale:
+                selectFemale();
                 break;
             default:
                 break;

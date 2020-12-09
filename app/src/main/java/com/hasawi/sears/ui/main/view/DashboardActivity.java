@@ -142,7 +142,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     Bundle bundle = new Bundle();
                     bundle.putString("product_object_id", selectedProduct.getObjectID());
                     bundle.putBoolean("is_search", true);
-                    showBackButton(true);
+                    showBackButton(true, false);
                     replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
                     if (searchView != null)
                         searchView.clearFocus();
@@ -186,13 +186,14 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         NavigationMenuItem menuItem = menuItemArrayList.get(position);
         switch (menuItem.get_ID()) {
             case AppConstants.ID_MENU_HOME:
+                closeDrawer();
                 break;
             case AppConstants.ID_MENU_PROFILE:
                 if (menuItem.isEnabled()) {
                     UserProfileFragment profileFragment = new UserProfileFragment();
                     replaceFragment(R.id.fragment_replacer, profileFragment, null, true, false);
-                    setTitle(activityTitles[position]);
-                    showBackButton(true);
+                    setTitle("My Profile");
+                    showBackButton(true, false);
                 }
 
                 closeDrawer();
@@ -211,7 +212,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     WishListFragment wishListFragment = new WishListFragment();
                     replaceFragment(R.id.fragment_replacer, wishListFragment, null, true, false);
                     setTitle("Wishlist");
-                    showBackButton(true);
+                    showBackButton(true, true);
                 }
                 closeDrawer();
                 break;
@@ -387,7 +388,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     switch (searchProductListResponse.status) {
                         case SUCCESS:
                             productSearchList = searchProductListResponse.data.getData().getProductSearchs();
-                            searchProductAdapter = new SearchProductAdapter(productSearchList);
+                            searchProductAdapter = new SearchProductAdapter(getApplicationContext(), productSearchList);
                             activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.VISIBLE);
                             activityDashboardBinding.appBarMain.searchView.recyclerSearchProducts.setAdapter(searchProductAdapter);
                             break;
@@ -423,13 +424,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             case R.id.navigation_wishlist:
                 WishListFragment wishlistFragment = new WishListFragment();
                 replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
-                showBackButton(true);
+                showBackButton(true, true);
                 setTitle("Wishlist");
                 return true;
             case R.id.navigation_cart:
                 MyCartFragment myCartFragment = new MyCartFragment();
                 replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
-                showBackButton(true);
+                showBackButton(true, false);
                 setTitle("My Cart");
 //                Intent cartIntent = new Intent(DashboardActivity.this, MyCartActivity.class);
 //                startActivity(cartIntent);
@@ -437,7 +438,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             case R.id.navigation_profile:
                 UserAccountFragment userAccountFragment = new UserAccountFragment();
                 replaceFragment(R.id.fragment_replacer, userAccountFragment, null, true, false);
-                showBackButton(true);
+                showBackButton(true, true);
                 setTitle("My Account");
                 return true;
             default:
@@ -480,8 +481,12 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     @Override
     public void setTitle(CharSequence title) {
-        mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        try {
+            mTitle = title;
+            getSupportActionBar().setTitle(mTitle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void setupToolbar() {
@@ -491,17 +496,23 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    public void showBackButton(boolean isBack) {
-        if (isBack) {
-            hideSearsLogo();
-            hideBottomNavigationBar();
-        } else
-            showBottomNavigationBar();
+    public void showBackButton(boolean isBack, boolean showBottomBar) {
+        try {
+            if (isBack) {
+                hideSearsLogo();
+            }
+            if (showBottomBar)
+                showBottomNavigationBar();
+            else
+                hideBottomNavigationBar();
 
-        actionBarDrawerToggle.setDrawerIndicatorEnabled(!isBack);
+            actionBarDrawerToggle.setDrawerIndicatorEnabled(!isBack);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(isBack);
-        actionBarDrawerToggle.syncState();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(isBack);
+            actionBarDrawerToggle.syncState();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -521,19 +532,19 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             setTitle(getTitle());
             BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
             if (currentFragment instanceof WishListFragment) {
-                showBackButton(false);
+                showBackButton(false, true);
             } else if (currentFragment instanceof MyCartFragment) {
-                showBackButton(false);
+                showBackButton(false, true);
             } else if (currentFragment instanceof UserAccountFragment) {
-                showBackButton(false);
+                showBackButton(false, true);
             } else if (currentFragment instanceof SelectedProductDetailsFragment) {
-                showBackButton(false);
+                showBackButton(false, true);
             } else if (currentFragment instanceof PaymentFragment) {
-                showBackButton(true);
+                showBackButton(true, false);
             } else if (currentFragment instanceof CheckoutFragment) {
-                showBackButton(true);
+                showBackButton(true, false);
             } else if (currentFragment instanceof UserProfileFragment) {
-                showBackButton(false);
+                showBackButton(false, true);
             }
 
 

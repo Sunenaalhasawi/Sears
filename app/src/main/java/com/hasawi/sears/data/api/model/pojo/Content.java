@@ -70,6 +70,9 @@ public class Content {
     @SerializedName("wishlist")
     @Expose
     private boolean wishlist;
+    @SerializedName("available")
+    @Expose
+    private boolean available;
     @SerializedName("discount")
     @Expose
     private boolean discount;
@@ -213,4 +216,23 @@ public class Content {
         this.wishlist = wishlist;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public boolean isWishlist() {
+        return wishlist;
+    }
+
+    public boolean isDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(boolean discount) {
+        this.discount = discount;
+    }
 }

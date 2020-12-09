@@ -57,4 +57,8 @@ public class SigninActivity extends BaseActivity {
         else
             activitySigninBinding.progressBar.setVisibility(View.GONE);
     }
+
+    public void hideFragment() {
+        activitySigninBinding.fragmentReplacerSignin.setVisibility(View.GONE);
+    }
 }

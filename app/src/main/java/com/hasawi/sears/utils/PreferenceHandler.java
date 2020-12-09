@@ -41,6 +41,7 @@ public class PreferenceHandler {
     public static final String LOGIN_ITEM_TO_BE_WISHLISTED = "item_to_be_wishlisted";
     public static final String LOGIN_ITEM_TO_BE_CARTED = "item_to_be_carted";
     public static final String LOGIN_USER_CART_ID = "cart_id";
+    public static final String LOGIN_USER_SELECTED_ADDRESS_ID = "selected_address_id";
 
     private final Context context;
     String selected = "";

@@ -6,6 +6,7 @@ import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.response.AddressResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
+import com.hasawi.sears.data.api.response.UserProfileResponse;
 
 import org.json.JSONObject;
 
@@ -84,5 +85,27 @@ public class UserAccountRepository {
             }
         });
         return editAddressMutableLiveData;
+    }
+
+    public MutableLiveData<Resource<UserProfileResponse>> userProfile(String emailId, String sessionToken) {
+        MutableLiveData<Resource<UserProfileResponse>> userProfileMutableLiveData = new MutableLiveData<>();
+        Call<UserProfileResponse> userProfileResponseCall = RetrofitApiClient.getInstance().getApiInterface().userProfile(emailId, "Bearer " + sessionToken);
+        userProfileResponseCall.enqueue(new Callback<UserProfileResponse>() {
+            @Override
+            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+                if (response.code() != 200) {
+                    userProfileMutableLiveData.setValue(Resource.error("Network Error !", null));
+                } else if (response.body() != null) {
+                    userProfileMutableLiveData.setValue(Resource.success(response.body()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                userProfileMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return userProfileMutableLiveData;
     }
 }

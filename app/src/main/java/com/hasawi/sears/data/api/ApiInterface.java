@@ -15,6 +15,7 @@ import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
 import com.hasawi.sears.data.api.response.SignupResponse;
+import com.hasawi.sears.data.api.response.UserProfileResponse;
 import com.hasawi.sears.data.api.response.VerifyOtpResponse;
 import com.hasawi.sears.data.api.response.WishlistResponse;
 
@@ -106,9 +107,11 @@ public interface ApiInterface {
     @GET("customers/{customerId}/address")
     Call<GetAllAddressResponse> getAddresses(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
 
-    @POST("/customers/{customerId}/address/{addressId}")
+    @POST("customers/{customerId}/address/{addressId}")
     Call<AddressResponse> editAddress(@Path("customerId") String customerId, @Path("addressId") String addressId, @Header("Authorization") String sessionToken, @Body RequestBody requestBody);
 
+    @GET("customers/findByEmail?")
+    Call<UserProfileResponse> userProfile(@Query("emailId") String emailId, @Header("Authorization") String sessionToken);
 
 //    @GET("api/v{api_version}/events")
 //    Call<RetrofitModelEvents> getEventsSearchPagination(

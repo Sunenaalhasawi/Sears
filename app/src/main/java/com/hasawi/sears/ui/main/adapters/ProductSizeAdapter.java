@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.ViewHolder> {
 
     private static RecyclerviewSingleChoiceClickListener sClickListener;
-    private static int sSelected = -1;
+    public static int sSelected = 0;
     ArrayList<String> sizeList;
     Context context;
 
@@ -27,6 +27,10 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.
     public ProductSizeAdapter(Context context, ArrayList<String> sizeList) {
         this.context = context;
         this.sizeList = sizeList;
+    }
+
+    public static void setsSelected(int sSelected) {
+        ProductSizeAdapter.sSelected = sSelected;
     }
 
     @NonNull
@@ -69,7 +73,7 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.
         public ViewHolder(@NonNull LayoutProductSizeAdapterItemBinding layoutProductSizeAdapterItemBinding) {
             super(layoutProductSizeAdapterItemBinding.getRoot());
             this.productSizeAdapterItemBinding = layoutProductSizeAdapterItemBinding;
-            productSizeAdapterItemBinding.tvSize.setOnClickListener(this);
+            productSizeAdapterItemBinding.cvBackgroundSize.setOnClickListener(this);
         }
 
         @Override

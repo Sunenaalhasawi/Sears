@@ -19,8 +19,10 @@
 
         <ImageView
             android:id="@+id/imagePaymentIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/cod" />
 
@@ -29,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/cash_on_delivery_caps"
             android:textColor="@color/txt_clr_blue"

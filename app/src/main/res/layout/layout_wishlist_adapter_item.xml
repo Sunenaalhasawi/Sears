@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cv_background"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_margin="8dp"
         android:background="@drawable/white_rounded_rectangle"
         android:elevation="2dp">
@@ -64,12 +64,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/avantgarde_bold"
             android:text="KWD 5"
             android:textColor="@color/txt_clr_blue"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lvStockLayout"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -127,11 +127,11 @@
             android:id="@+id/lvStockLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/tvStockNumber"
@@ -157,7 +157,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/out_of_stock"
                 android:textColor="@color/txt_clr_blue"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
 
 

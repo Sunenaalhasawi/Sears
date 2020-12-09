@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.databinding.LayoutCategoryBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,10 @@ public class CategoryRecyclerviewAdapter extends RecyclerView.Adapter<CategoryRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category categoryItem = categoryArrayList.get(position);
 //        holder.categoryBinding.imageCategory.setImageDrawable(context.getResources().getDrawable());
-        Picasso.get().load(categoryItem.getDescriptions().get(0).getImageUrl()).placeholder(context.getResources().getDrawable(R.drawable.fashion)).into(holder.categoryBinding.imageCategory);
+        Glide.with(context)
+                .load(categoryItem.getDescriptions().get(0).getImageUrl())
+                .centerCrop()
+                .into(holder.categoryBinding.imageCategory);
         holder.categoryBinding.tvCategory.setText(categoryItem.getDescriptions().get(0).getCategoryName());
         if (sSelected == position) {
             selectItem(holder, categoryItem);

@@ -34,6 +34,8 @@ public class ShoppingCartItem {
     @Expose
     private Content product;
 
+    private boolean isOutOfStock;
+
     public String getShoppingCartItemId() {
         return shoppingCartItemId;
     }
@@ -106,4 +108,11 @@ public class ShoppingCartItem {
         this.product = product;
     }
 
+    public boolean isOutOfStock() {
+        return isOutOfStock;
+    }
+
+    public void setOutOfStock(boolean outOfStock) {
+        isOutOfStock = outOfStock;
+    }
 }

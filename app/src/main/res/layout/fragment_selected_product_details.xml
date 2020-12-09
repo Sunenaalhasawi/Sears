@@ -60,9 +60,11 @@
                         android:text="30% OFF"
                         android:textColor="@color/white"
                         android:textSize="8sp"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toStartOf="@+id/imageViewSelected"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <ImageView
                         android:id="@+id/imageViewSelected"
@@ -92,6 +94,22 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/imageViewSelected"
                         app:srcCompat="@drawable/ic_sears_logo" />
+
+                    <TextView
+                        android:id="@+id/tvOutOfStock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:drawableLeft="@drawable/ic_error_outline_red"
+                        android:drawablePadding="4dp"
+                        android:fontFamily="@font/avantgarde_bold"
+                        android:text="@string/out_of_stock"
+                        android:textColor="@color/red"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -134,14 +152,16 @@
 
                     <TextView
                         android:id="@+id/tv_product_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="Pepe Jeans"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toStartOf="@+id/tvOutOfStock"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -316,6 +336,7 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_product_name"
                         app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
@@ -354,9 +375,9 @@
             android:orientation="horizontal"
             android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/lv_price_details"
+            app:layout_constraintEnd_toStartOf="@+id/lv_buy_now"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/lv_price_details">
+            app:layout_constraintTop_toTopOf="@+id/lv_buy_now">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -374,10 +395,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lv_price_details"
+            android:id="@+id/lv_buy_now"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/one_corner_rounded_rectangle_grey"
+            android:clickable="true"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
             android:padding="16dp"

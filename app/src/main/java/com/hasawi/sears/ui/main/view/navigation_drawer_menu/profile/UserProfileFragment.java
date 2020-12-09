@@ -15,12 +15,14 @@ import com.hasawi.sears.utils.PreferenceHandler;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class UserProfileFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
+public class
+UserProfileFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
 
     UserProfileViewModel userProfileViewModel;
     FragmentUserProfileBinding fragmentUserProfileBinding;
     DatePickerDialog datePickerDialog;
     private String selectedGender;
+    private String sessionToken;
 
     @Override
     protected int getLayoutResId() {
@@ -38,12 +40,15 @@ public class UserProfileFragment extends BaseFragment implements DatePickerDialo
             String email = preferenceHandler.getData(PreferenceHandler.LOGIN_EMAIL, "");
             String phone = preferenceHandler.getData(PreferenceHandler.LOGIN_PHONENUMBER, "");
             String password = preferenceHandler.getData(PreferenceHandler.LOGIN_PASSWORD, "");
+            sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
 
             fragmentUserProfileBinding.layoutProfile.edtFirstname.setText(name);
             fragmentUserProfileBinding.layoutProfile.edtEmail.setText(email);
             fragmentUserProfileBinding.layoutProfile.edtMobile.setText(phone);
-//            fragmentUserProfileBinding.layoutCommonSignupProfile.setText(password);
-//            fragmentUserProfileBinding.edtConfirmPassword.setText(password);
+            fragmentUserProfileBinding.tvUsernameTop.setText(name);
+
+            callUserProfileApi(email, sessionToken);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,13 +74,12 @@ public class UserProfileFragment extends BaseFragment implements DatePickerDialo
             }
         });
 
-//        final Observer<User> userObserver = new Observer<User>() {
-//            @Override
-//            public void onChanged(User user) {
-//              // Set ui values here
-//            }
-//        };
-//        userProfileViewModel.getUser().observe(getActivity(), userObserver);
+    }
+
+    private void callUserProfileApi(String emailId, String sessionToken) {
+        userProfileViewModel.userProfile(emailId, sessionToken).observe(getActivity(), userProfileResponseResource -> {
+            fragmentUserProfileBinding.progressBar.setVisibility(View.GONE);
+        });
     }
 
     private void showDatePickerDialog() {

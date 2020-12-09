@@ -6,10 +6,10 @@ import android.view.ScaleGestureDetector;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.ActivityImageShowingBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
-import com.squareup.picasso.Picasso;
 
 public class ProductImageActivity extends BaseActivity {
 
@@ -24,7 +24,10 @@ public class ProductImageActivity extends BaseActivity {
         imageShowingBinding = DataBindingUtil.setContentView(this, R.layout.activity_image_showing);
         try {
             String imageUrl = getIntent().getStringExtra("image_url");
-            Picasso.get().load(imageUrl).into(imageShowingBinding.imageViewSelected);
+            Glide.with(this)
+                    .load(imageUrl)
+                    .centerCrop()
+                    .into(imageShowingBinding.imageViewSelected);
         } catch (Exception e) {
             e.printStackTrace();
         }

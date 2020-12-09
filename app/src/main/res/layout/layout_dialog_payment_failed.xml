@@ -52,7 +52,7 @@
 
                 <TextView
                     android:id="@+id/textView50"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
@@ -62,6 +62,7 @@
                     android:text="@string/transaction_cancelled"
                     android:textColor="@color/txt_clr_blue"
                     android:textSize="14sp"
+                    android:gravity="center_horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

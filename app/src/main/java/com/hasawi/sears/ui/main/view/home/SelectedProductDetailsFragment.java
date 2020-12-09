@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Content;
@@ -28,8 +29,9 @@ import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
 import com.hasawi.sears.utils.CartDialog;
+import com.hasawi.sears.utils.ChooseSizeDialog;
+import com.hasawi.sears.utils.DisabledCartDialog;
 import com.hasawi.sears.utils.PreferenceHandler;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -51,11 +53,14 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     private ProductSizeAdapter sizeAdapter;
     private ArrayList<String> offersList = new ArrayList<>();
     private ArrayList<String> services = new ArrayList<>();
-    private ArrayList<String> colorsList = new ArrayList<>();
     private boolean isSearch = false;
     private String selectedObjectID = "";
     private String sessionToken, userID;
     private HashMap<String, List<ProductConfigurable>> sizeColorHashMap;
+    ProductConfigurable selectedColor;
+    private ArrayList<ProductConfigurable> currentColorsList = new ArrayList<>();
+    private boolean isbuyNow = false;
+    private boolean disableAddToCart = false;
 
     @Override
     protected int getLayoutResId() {
@@ -71,9 +76,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
         setUpProductDescriptionRecyclerview();
-//        setProductSizeRecyclerview();
         setOffersAdapter();
-//        setColorAdapter();
         Bundle bundle = getArguments();
         try {
 
@@ -154,24 +157,49 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         fragmentSelectedProductDetailsBinding.lvAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
-                boolean isAlreadyLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
-                Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("productId", currentSelectedProduct.getProductId());
-                jsonParams.put("refSku", currentSelectedProduct.getSku());
-                jsonParams.put("quantity", 1 + "");
-                String jsonParamString = (new JSONObject(jsonParams)).toString();
-                if (isAlreadyLoggedIn)
-                    callAddToCartApi(jsonParamString);
-                else {
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, jsonParamString);
-                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                    dashboardActivity.setTitle("My Cart");
+                if (disableAddToCart) {
+                    DisabledCartDialog disabledCartDialog = new DisabledCartDialog(dashboardActivity);
+                    disabledCartDialog.show(getParentFragmentManager(), "DISABLED_CART_DIALOG");
+                } else {
+                    addingProductToCart();
+                    isbuyNow = false;
+                }
+
+            }
+        });
+        fragmentSelectedProductDetailsBinding.lvBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (disableAddToCart) {
+                    DisabledCartDialog disabledCartDialog = new DisabledCartDialog(dashboardActivity);
+                    disabledCartDialog.show(getParentFragmentManager(), "DISABLED_CART_DIALOG");
+                } else {
+                    addingProductToCart();
+                    isbuyNow = true;
                 }
             }
         });
-
         setRelatedProducts();
+    }
+
+    private void addingProductToCart() {
+        PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
+        boolean isAlreadyLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("productId", currentSelectedProduct.getProductId());
+        if (selectedColor != null)
+            jsonParams.put("refSku", selectedColor.getRefSku());
+        else
+            jsonParams.put("refSku", currentSelectedProduct.getSku());
+        jsonParams.put("quantity", 1 + "");
+        String jsonParamString = (new JSONObject(jsonParams)).toString();
+        if (isAlreadyLoggedIn)
+            callAddToCartApi(jsonParamString);
+        else {
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, jsonParamString);
+            dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
+            dashboardActivity.setTitle("My Cart");
+        }
     }
 
     private void setColorAdapter(List<ProductConfigurable> colors) {
@@ -182,11 +210,15 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 //        colorsList.add("#7178BF");
         fragmentSelectedProductDetailsBinding.listviewColorVariants.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         productColorAdapter = new ProductColorAdapter(getContext(), (ArrayList<ProductConfigurable>) colors);
+        productColorAdapter.setOnItemClickListener(this);
         fragmentSelectedProductDetailsBinding.listviewColorVariants.setAdapter(productColorAdapter);
     }
 
     private void setUIValues(Content currentSelectedProduct) {
-        Picasso.get().load(currentSelectedProduct.getProductImages().get(0).getImageName()).into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+        Glide.with(this)
+                .load(currentSelectedProduct.getProductImages().get(0).getImageName())
+                .centerCrop()
+                .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
         fragmentSelectedProductDetailsBinding.tvProductName.setText(currentSelectedProduct.getDescriptions().get(0).getProductName());
         String description = currentSelectedProduct.getDescriptions().get(0).getProductDescription();
         if (description == null || description.equals("")) {
@@ -203,13 +235,21 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         fragmentSelectedProductDetailsBinding.tvOriginalPrice.setText("KWD " + currentSelectedProduct.getDiscountPrice());
         fragmentSelectedProductDetailsBinding.tvOurPrice.setText("KWD " + currentSelectedProduct.getOriginalPrice());
         fragmentSelectedProductDetailsBinding.tvSku.setText(currentSelectedProduct.getSku());
-        Picasso.get().load(currentSelectedProduct.getBrandLogoUrl()).into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
+        Glide.with(this)
+                .load(currentSelectedProduct.getBrandLogoUrl())
+                .centerCrop()
+                .into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
         fragmentSelectedProductDetailsBinding.tvOfferPercent.setText(currentSelectedProduct.getDiscountPercentage() + "% OFF");
         fragmentSelectedProductDetailsBinding.tvOriginalPrice.setPaintFlags(fragmentSelectedProductDetailsBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         productAttributeArrayList = (ArrayList<ProductAttribute>) currentSelectedProduct.getProductAttributes();
         productAttributesAdapter = new ProductAttributesAdapter(getActivity(), productAttributeArrayList);
         fragmentSelectedProductDetailsBinding.productDetails.recyclerviewProductDetails.setAdapter(productAttributesAdapter);
+        if (!currentSelectedProduct.isAvailable()) {
+            fragmentSelectedProductDetailsBinding.tvOutOfStock.setVisibility(View.VISIBLE);
+            fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
+            disableAddToCart = true;
+        }
 
     }
 
@@ -268,8 +308,13 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         try {
             ArrayList<String> sizeList = new ArrayList<>(sizeColorHashMap.keySet());
             setProductSizeRecyclerview(sizeList);
-            if (sizeColorHashMap.size() > 0)
-                setColorAdapter(sizeColorHashMap.get(sizeList.get(0)));
+            if (sizeColorHashMap.size() > 0) {
+                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(sizeList.get(0));
+                if (currentColorsList.size() > 0)
+                    selectedColor = currentColorsList.get(0);
+                setColorAdapter(currentColorsList);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -310,9 +355,29 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     @Override
     public void onItemClickListener(int position, View view) {
-        sizeAdapter.selectedItem();
+
         try {
-            setColorAdapter(sizeColorHashMap.get(productAvailableSizes.get(position)));
+            if (view.getId() == R.id.cv_background_size) {
+                sizeAdapter.selectedItem();
+                ProductColorAdapter.setsSelected(-1);
+                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
+                setColorAdapter(currentColorsList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (view.getId() == R.id.imageViewColorVariant) {
+                productColorAdapter.selectedItem();
+                if (ProductSizeAdapter.sSelected == -1) {
+                    ChooseSizeDialog chooseSizeDialog = new ChooseSizeDialog(dashboardActivity);
+                    chooseSizeDialog.show(getParentFragmentManager(), "CHOOSE_SIZE_DIALOG");
+                } else
+                    selectedColor = currentColorsList.get(position);
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -325,6 +390,11 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         dashboardActivity.hideSearchPage();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     public void callAddToCartApi(String jsonParamString) {
 
         fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.VISIBLE);
@@ -334,8 +404,15 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             switch (addToCartResponse.status) {
                 case SUCCESS:
                     dashboardActivity.setCartCount(1);
-                    CartDialog cartDialog = new CartDialog(dashboardActivity);
-                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
+                    if (isbuyNow) {
+                        dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
+                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.setTitle("My Cart");
+                    } else {
+                        CartDialog cartDialog = new CartDialog(dashboardActivity);
+                        cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
+                    }
+
                     break;
                 case LOADING:
                     break;
@@ -381,7 +458,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         productList.add(new Content());
         productList.add(new Content());
 
-        RelatedProductsRecyclerviewAdapter relatedProductsRecyclerviewAdapter = new RelatedProductsRecyclerviewAdapter((ArrayList<Content>) productList) {
+        RelatedProductsRecyclerviewAdapter relatedProductsRecyclerviewAdapter = new RelatedProductsRecyclerviewAdapter(getContext(), (ArrayList<Content>) productList) {
             @Override
             public void onLikeClicked(Content product) {
 

@@ -49,7 +49,7 @@ public class WishListFragment extends BaseFragment {
         isUserLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         fragmentWishlistBinding.recyclerviewWishlist.setLayoutManager(gridLayoutManager);
-        wishListAdapter = new WishListAdapter() {
+        wishListAdapter = new WishListAdapter(getContext()) {
             @Override
             public void onWishListClicked(Content selectedProduct, boolean isChecked, int position) {
                 callAddRemoveWishlistApi(selectedProduct, isChecked, position);
@@ -63,7 +63,7 @@ public class WishListFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("selected_product_object", objectString);
 
-                dashboardActivity.showBackButton(true);
+                dashboardActivity.showBackButton(true, false);
                 dashboardActivity.setTitle(selectedProduct.getDescriptions().get(0).getProductName());
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 
