@@ -88,6 +88,9 @@ public class OrderResponse {
         @SerializedName("getPaymentStatusResponse")
         @Expose
         private Invoice invoiceData;
+        @SerializedName("paymentId")
+        @Expose
+        private Object paymentId;
 
         public String getOrderId() {
             return orderId;
@@ -169,6 +172,14 @@ public class OrderResponse {
             this.invoiceData = invoiceData;
         }
 
+        public Object getPaymentId() {
+
+            return paymentId;
+        }
+
+        public void setPaymentId(Object paymentId) {
+            this.paymentId = paymentId;
+        }
     }
 
 

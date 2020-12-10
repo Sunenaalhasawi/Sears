@@ -17,8 +17,8 @@ import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
 import com.hasawi.sears.data.api.response.WishlistResponse;
 import com.hasawi.sears.data.repository.ProductRepository;
+import com.hasawi.sears.ui.main.view.paging_lib.ProductDataFactory;
 import com.hasawi.sears.utils.NetworkState;
-import com.hasawi.sears.utils.paging_lib.ProductDataFactory;
 
 import org.json.JSONArray;
 

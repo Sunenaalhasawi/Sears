@@ -62,7 +62,7 @@
             <!--            <fragment-->
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="match_parent"-->
-            <!--                android:name="com.hasawi.sears.utils.paging_lib.MainFragment"/>-->
+            <!--                android:name="com.hasawi.sears.ui.main.view.paging_lib.MainFragment"/>-->
         </FrameLayout>
 
         <FrameLayout

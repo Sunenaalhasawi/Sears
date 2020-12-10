@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils.paging_lib;
+package com.hasawi.sears.ui.main.view.paging_lib;
 
 import android.os.Bundle;
 import android.view.View;
@@ -331,6 +331,8 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
     public void onResume() {
         super.onResume();
         CategoryRecyclerviewAdapter.setsSelected(-1);
+        dashboardActivity.showBackButton(false, true);
+        dashboardActivity.setTitle("");
     }
 
     @Override

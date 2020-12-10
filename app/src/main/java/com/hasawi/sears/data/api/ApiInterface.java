@@ -107,6 +107,7 @@ public interface ApiInterface {
     @GET("customers/{customerId}/address")
     Call<GetAllAddressResponse> getAddresses(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
 
+    @Headers("Content-Type: application/json")
     @POST("customers/{customerId}/address/{addressId}")
     Call<AddressResponse> editAddress(@Path("customerId") String customerId, @Path("addressId") String addressId, @Header("Authorization") String sessionToken, @Body RequestBody requestBody);
 

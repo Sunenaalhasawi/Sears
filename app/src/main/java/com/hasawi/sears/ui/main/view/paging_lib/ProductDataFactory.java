@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils.paging_lib;
+package com.hasawi.sears.ui.main.view.paging_lib;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;

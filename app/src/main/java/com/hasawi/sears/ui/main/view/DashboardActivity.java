@@ -41,13 +41,13 @@ import com.hasawi.sears.ui.main.view.home.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.home.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.home.WishListFragment;
 import com.hasawi.sears.ui.main.view.navigation_drawer_menu.profile.UserProfileFragment;
+import com.hasawi.sears.ui.main.view.paging_lib.MainFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.view.signin.user_details.SelectUserDetailsActivity;
 import com.hasawi.sears.ui.main.viewmodel.DashboardViewModel;
 import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.BadgeDrawable;
 import com.hasawi.sears.utils.PreferenceHandler;
-import com.hasawi.sears.utils.paging_lib.MainFragment;
 
 import java.util.ArrayList;
 import java.util.List;
