@@ -13,6 +13,7 @@ public class AppConstants {
     public static final int ID_MENU_PRIVACY_POLICY = 7;
     public static final int ID_MENU_CONTACT_US = 8;
     public static final int ID_MENU_SIGNOUT = 9;
+    public static final String APP_NAME = "SEARS";
 //    public static final int ID_MENU_BANK_DETAILS=5;
 //    public static final int ID_MENU_RESET_PASSWORD=6;
 //    public static final int ID_MENU_TRACK_ORDER=7;

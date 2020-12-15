@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
@@ -262,6 +263,12 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
                     if (shouldRefreshTheList)
                         refreshProductList(currentSelectedCategory, filterArray, selectedSortString);
                     dashboardActivity.showCustomWislistToast(isWishlisted);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, productId);
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, product.getManufature());
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+
                     break;
                 case LOADING:
                     break;

@@ -10,6 +10,7 @@ import com.hasawi.sears.data.api.response.ForgotPasswordResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
 import com.hasawi.sears.data.api.response.LoginResponse;
+import com.hasawi.sears.data.api.response.MainCategoryResponse;
 import com.hasawi.sears.data.api.response.OrderResponse;
 import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
@@ -56,6 +57,9 @@ public interface ApiInterface {
 
     @GET("shop/landing")
     Call<DynamicDataResponse> getDynamicData();
+
+    @GET("categories/tree")
+    Call<MainCategoryResponse> getMainCategories();
 
     @FormUrlEncoded
     @POST("")

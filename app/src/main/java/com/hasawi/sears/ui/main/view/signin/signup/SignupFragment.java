@@ -29,7 +29,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     String selectedCountryCode = "", selectedNationality = "";
     SignupViewModel signupViewModel;
     String selectedDate = "";
-    private String selectedGender;
+    private String selectedGender = "M";
     private DatePickerDialog datePickerDialog;
 
     @Override
@@ -111,6 +111,12 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, signupResponse.data.getData().getuser().getConfirmPassword());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, signupResponse.data.getData().getuser().getMobileNo());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, true);
+
+                            signinActivity.getmFirebaseAnalytics().setUserProperty("email", signupResponse.data.getData().getuser().getEmailId());
+                            signinActivity.getmFirebaseAnalytics().setUserProperty("country", signupResponse.data.getData().getuser().getNationality());
+                            signinActivity.getmFirebaseAnalytics().setUserProperty("gender", signupResponse.data.getData().getuser().getGender());
+                            signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob().toString());
+                            signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
 
                             Intent intent = new Intent(signinActivity, DashboardActivity.class);
                             startActivity(intent);

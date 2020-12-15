@@ -30,6 +30,23 @@ public class User {
     @Expose
     private String emailId;
 
+    @SerializedName("dob")
+    @Expose
+    private Object dob;
+
+    @SerializedName("nationality")
+    @Expose
+    private String nationality;
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+
+    @SerializedName("imageUrl")
+    @Expose
+    private Object imageUrl;
+
+
     public String getCustomerId() {
         return customerId;
     }
@@ -94,4 +111,35 @@ public class User {
         this.emailId = emailId;
     }
 
+    public Object getDob() {
+        return dob;
+    }
+
+    public void setDob(Object dob) {
+        this.dob = dob;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Object getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(Object imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
