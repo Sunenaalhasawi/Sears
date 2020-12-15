@@ -7,6 +7,7 @@ import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
+import com.hasawi.sears.data.api.response.MainCategoryResponse;
 
 import java.util.List;
 
@@ -70,5 +71,30 @@ public class DynamicDataRepository {
             }
         });
         return dynamicLiveData;
+    }
+
+    public MutableLiveData<Resource<MainCategoryResponse>> getMainCategories() {
+        MutableLiveData<Resource<MainCategoryResponse>> mutableLiveDataMainCategoryResponse = new MutableLiveData<>();
+        Call<MainCategoryResponse> mainCategoryResponseCall = RetrofitApiClient.getInstance().getApiInterface().getMainCategories();
+        mainCategoryResponseCall.enqueue(new Callback<MainCategoryResponse>() {
+            @Override
+            public void onResponse(Call<MainCategoryResponse> call, Response<MainCategoryResponse> response) {
+                if (response.code() != 200) {
+                    mutableLiveDataMainCategoryResponse.setValue(Resource.error("Something Went Wrong !", null));
+                } else if (response.body() != null) {
+                    MainCategoryResponse mainCategoryResponse = response.body();
+                    if (mainCategoryResponse != null) {
+                        mutableLiveDataMainCategoryResponse.postValue(Resource.success(mainCategoryResponse));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MainCategoryResponse> call, Throwable t) {
+                mutableLiveDataMainCategoryResponse.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+
+        return mutableLiveDataMainCategoryResponse;
     }
 }

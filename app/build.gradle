@@ -13,7 +13,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,7 +26,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding true
     }
 
@@ -48,7 +48,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
     // dependency for Retrofit
-    implementation ('com.squareup.retrofit2:retrofit:2.1.0'){
+    implementation('com.squareup.retrofit2:retrofit:2.1.0') {
         // exclude Retrofit’s OkHttp dependency module and define your own module import
         exclude module: 'okhttp'
     }
@@ -85,5 +85,8 @@ dependencies {
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
+    // Install referrer for google play
+//    implementation 'com.android.installreferrer:installreferrer:2.1'
+    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
 
 }

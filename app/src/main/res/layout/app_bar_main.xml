@@ -50,20 +50,48 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/fragmentHome"
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/fragmentHome"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:visibility="visible"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">-->
+        <!--            &lt;!&ndash;            <fragment&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:layout_height="match_parent"&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:name="com.hasawi.sears.ui.main.view.paging_lib.MainFragment"/>&ndash;&gt;-->
+        <!--        </FrameLayout>-->
+
+        <LinearLayout
+            android:id="@+id/lvHome"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-            <!--            <fragment-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:name="com.hasawi.sears.ui.main.view.paging_lib.MainFragment"/>-->
-        </FrameLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutCategories"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="fill"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorHeight="3dp"
+                app:tabMaxWidth="0dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/black" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerHomeTabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/fragment_replacer"

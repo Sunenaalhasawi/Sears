@@ -1,11 +1,18 @@
 package com.hasawi.sears.ui.main.view;
 
-import android.content.Context;
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.LayerDrawable;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
@@ -24,13 +32,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.NavigationMenuItem;
+import com.hasawi.sears.data.api.model.pojo.Category;
+import com.hasawi.sears.data.api.model.pojo.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.ProductSearch;
 import com.hasawi.sears.databinding.ActivityDashboardBinding;
 import com.hasawi.sears.databinding.LayoutToastWishlistNotificationBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
 import com.hasawi.sears.ui.base.BaseFragment;
+import com.hasawi.sears.ui.main.adapters.HomeTabsPagerAdapter;
 import com.hasawi.sears.ui.main.adapters.NavigationDrawerAdapter;
 import com.hasawi.sears.ui.main.adapters.SearchProductAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerItemClickListener;
@@ -41,18 +54,17 @@ import com.hasawi.sears.ui.main.view.home.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.home.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.home.WishListFragment;
 import com.hasawi.sears.ui.main.view.navigation_drawer_menu.profile.UserProfileFragment;
-import com.hasawi.sears.ui.main.view.paging_lib.MainFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
-import com.hasawi.sears.ui.main.view.signin.user_details.SelectUserDetailsActivity;
 import com.hasawi.sears.ui.main.viewmodel.DashboardViewModel;
 import com.hasawi.sears.utils.AppConstants;
-import com.hasawi.sears.utils.BadgeDrawable;
 import com.hasawi.sears.utils.PreferenceHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class DashboardActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class DashboardActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     // tags used to attach the fragments
     private static final String TAG_DASHBOARD = "dashboard";
@@ -77,40 +89,28 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private CharSequence mTitle;
     private List<ProductSearch> productSearchList;
     private SearchProductAdapter searchProductAdapter;
-
-    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
-
-        BadgeDrawable badge;
-
-        // Reuse drawable if possible
-        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
-        if (reuse != null && reuse instanceof BadgeDrawable) {
-            badge = (BadgeDrawable) reuse;
-        } else {
-            badge = new BadgeDrawable(context);
-        }
-
-        badge.setCount(count);
-        icon.mutate();
-        icon.setDrawableByLayerId(R.id.ic_badge, badge);
-    }
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private LocationManager locationManager;
+    private Location currentLocation;
+    private ArrayList<Category> mainCategoryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         setSupportActionBar(activityDashboardBinding.appBarMain.toolbar);
         hideToolBarTitleShowLogo();
-
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        getCurrentLocation();
         try {
             dataBundle = getIntent().getExtras();
 
         } catch (Exception e) {
 
         }
-        replaceFragment(R.id.fragmentHome, new MainFragment(), dataBundle, false, true);
-
+        getMainCategories();
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -180,6 +180,31 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         });
 
 
+    }
+
+    private boolean getCurrentLocation() {
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return true;
+        }
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        // Initialize the location fields
+        if (location != null) {
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+        }
+        return false;
     }
 
     private void loadMenuFragments(int position) {
@@ -254,6 +279,12 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         preferenceHandler.saveData(PreferenceHandler.LOGIN_PASSWORD, "");
         preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_ID, "");
         preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_CART_ID, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_NATIONALITY, "");
+        preferenceHandler.saveData(PreferenceHandler.LOGIN_GENDER, "");
     }
 
     public void closeDrawer() {
@@ -288,7 +319,19 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         activityDashboardBinding.listviewMenu.setAdapter(new NavigationDrawerAdapter(
                 this,
                 R.layout.layout_navigation_drawer_item,
-                menuItemArrayList));
+                menuItemArrayList) {
+            @Override
+            public void onNotificationStatusChanged(boolean isNotificationEnabled) {
+                if (isNotificationEnabled) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
+                    mFirebaseAnalytics.setUserProperty("notification_status", "enabled");
+
+                } else {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConstants.APP_NAME);
+                    mFirebaseAnalytics.setUserProperty("notification_status", "disabled");
+                }
+            }
+        });
         activityDashboardBinding.listviewMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -409,17 +452,17 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         cartCount += count;
         MenuItem itemCart = activityDashboardBinding.appBarMain.bottomNavigationView.getMenu().findItem(R.id.navigation_cart);
         LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
-        setBadgeCount(this, icon, cartCount + "");
+//        setBadgeCount(this, icon, cartCount + "");
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                Intent intent = new Intent(DashboardActivity.this, SelectUserDetailsActivity.class);
-                intent.putExtra("redirect_from_home", true);
-                startActivity(intent);
-                this.finish();
+//                Intent intent = new Intent(DashboardActivity.this, SelectUserDetailsActivity.class);
+//                intent.putExtra("redirect_from_home", true);
+//                startActivity(intent);
+//                this.finish();
                 return true;
             case R.id.navigation_wishlist:
                 WishListFragment wishlistFragment = new WishListFragment();
@@ -588,4 +631,116 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         toast.setView(toastWishlistNotificationBinding.getRoot());
         toast.show();
     }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        currentLocation = location;
+        int latitude = (int) (location.getLatitude());
+        int longitude = (int) (location.getLongitude());
+        mFirebaseAnalytics.setUserProperty("latitude", latitude + "");
+        mFirebaseAnalytics.setUserProperty("longitude", longitude + "");
+        try {
+
+            Geocoder geo = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = geo.getFromLocation(latitude, longitude, 1);
+            if (addresses.isEmpty()) {
+                Log.e("Location", "Getting location name");
+            } else {
+                String locationName = addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getCountryName();
+                mFirebaseAnalytics.setUserProperty("location", locationName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    private void getMainCategories() {
+        dashboardViewModel.getMainCategories().observe(this, mainCategoryResponseResource -> {
+            switch (mainCategoryResponseResource.status) {
+                case SUCCESS:
+                    mainCategoryList = (ArrayList<Category>) mainCategoryResponseResource.data.getMainCategories();
+                    createDynamicHomeTabs(mainCategoryList);
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    Toast.makeText(this, mainCategoryResponseResource.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+//            userPreferenceActivity.showProgressBar(false);
+        });
+    }
+
+    private void createDynamicHomeTabs(ArrayList<Category> mainCategoryList) {
+        for (int k = 0; k < 10; k++) {
+            try {
+                activityDashboardBinding.appBarMain.tabLayoutCategories.addTab(activityDashboardBinding.appBarMain.tabLayoutCategories.newTab().setText(mainCategoryList.get(k).getDescriptions().get(0).getCategoryName()));
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+
+        HomeTabsPagerAdapter adapter = new HomeTabsPagerAdapter
+                (this, getSupportFragmentManager(), activityDashboardBinding.appBarMain.tabLayoutCategories.getTabCount(), mainCategoryList);
+        activityDashboardBinding.appBarMain.viewPagerHomeTabs.setAdapter(adapter);
+        activityDashboardBinding.appBarMain.viewPagerHomeTabs.setOffscreenPageLimit(1);
+        activityDashboardBinding.appBarMain.viewPagerHomeTabs.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(activityDashboardBinding.appBarMain.tabLayoutCategories));
+//Bonus Code : If your tab layout has more than 2 tabs then tab will scroll other wise they will take whole width of the screen
+        if (activityDashboardBinding.appBarMain.tabLayoutCategories.getTabCount() <= 5) {
+            activityDashboardBinding.appBarMain.tabLayoutCategories.setTabMode(TabLayout.MODE_FIXED);
+        } else {
+            activityDashboardBinding.appBarMain.tabLayoutCategories.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+    }
+
+
+//    private void createDynamicHomeTabs(ArrayList<Category> mainCategoryList) {
+//        for (int k = 0; k < mainCategoryList.size(); k++) {
+//            activityDashboardBinding.appBarMain.tabLayoutCategories.addTab(activityDashboardBinding.appBarMain.tabLayoutCategories.newTab().setText(mainCategoryList.get(k).getDescriptions().get(0).getCategoryName()));
+//        }
+////        activityDashboardBinding.appBarMain.tabLayoutCategories.setTabTextColors(R.color.txt_clr_blue,R.color.txt_clr_blue);
+//        HomeTabsPagerAdapter adapter = new HomeTabsPagerAdapter
+//                (this,getSupportFragmentManager(), activityDashboardBinding.appBarMain.tabLayoutCategories.getTabCount(),mainCategoryList);
+//        activityDashboardBinding.appBarMain.viewPagerHomeTabs.setAdapter(adapter);
+//        activityDashboardBinding.appBarMain.viewPagerHomeTabs.setOffscreenPageLimit(1);
+//        activityDashboardBinding.appBarMain.tabLayoutCategories.setupWithViewPager(activityDashboardBinding.appBarMain.viewPagerHomeTabs);
+////        activityDashboardBinding.appBarMain.viewPagerHomeTabs.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+////            @Override
+////            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+////
+////            }
+////
+////            @Override
+////            public void onPageSelected(int position) {
+//////                 Category selectedCategory=mainCategoryList.get(position);
+//////                 PreferenceHandler preferenceHandler=new PreferenceHandler(getBaseContext(),PreferenceHandler.TOKEN_LOGIN);
+//////                 preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID,selectedCategory.getCategoryId());
+//////                 preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME,selectedCategory.getDescriptions().get(0).getCategoryName());
+////
+////            }
+////
+////            @Override
+////            public void onPageScrollStateChanged(int state) {
+////
+////            }
+////        });
+//        activityDashboardBinding.appBarMain.viewPagerHomeTabs.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(activityDashboardBinding.appBarMain.tabLayoutCategories));
+////Bonus Code : If your tab layout has more than 2 tabs then tab will scroll other wise they will take whole width of the screen
+//        if (activityDashboardBinding.appBarMain.tabLayoutCategories.getTabCount() == 2) {
+//            activityDashboardBinding.appBarMain.tabLayoutCategories.setTabMode(TabLayout.MODE_FIXED);
+//        } else {
+//            activityDashboardBinding.appBarMain.tabLayoutCategories.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        }
+//    }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.hasawi.sears.data.api.Resource;
-import com.hasawi.sears.data.api.model.User;
+import com.hasawi.sears.data.api.model.pojo.User;
 import com.hasawi.sears.data.api.response.UserProfileResponse;
 import com.hasawi.sears.data.repository.UserAccountRepository;
 

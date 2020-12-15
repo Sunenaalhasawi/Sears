@@ -63,14 +63,19 @@
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
+        <item>Home</item>
         <item>My Profile</item>
         <item>My Orders</item>
+        <item>Notification</item>
         <item>My Wishlist</item>
         <item>My Address Book</item>
-        <item>Bank Details</item>
-        <item>Track Your Order</item>
-        <item>Reset Password</item>
-        <item>Customer Service</item>
+        <item>FAQ</item>
+        <item>About us</item>
+        <item>Privacy policy</item>
+        <item>Contact us</item>
+        <!--        <item>Track Your Order</item>-->
+        <!--        <item>Reset Password</item>-->
+        <!--        <item>Customer Service</item>-->
 
     </string-array>
 

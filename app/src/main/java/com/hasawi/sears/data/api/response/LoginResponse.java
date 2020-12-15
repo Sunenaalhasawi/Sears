@@ -2,7 +2,7 @@ package com.hasawi.sears.data.api.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hasawi.sears.data.api.model.User;
+import com.hasawi.sears.data.api.model.pojo.User;
 
 
 public class LoginResponse {

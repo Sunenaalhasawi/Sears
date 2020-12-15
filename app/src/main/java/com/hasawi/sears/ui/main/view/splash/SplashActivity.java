@@ -15,7 +15,8 @@ import com.bumptech.glide.request.target.Target;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.ActivitySplashBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
-import com.hasawi.sears.ui.main.view.signin.user_details.SelectUserDetailsActivity;
+import com.hasawi.sears.ui.main.view.DashboardActivity;
+import com.hasawi.sears.ui.main.view.home.user_details.UserPreferenceActivity;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.concurrent.Executors;
@@ -34,6 +35,9 @@ public class SplashActivity extends BaseActivity {
 
         PreferenceHandler preferenceHandler = new PreferenceHandler(getApplicationContext(), PreferenceHandler.TOKEN_LOGIN);
         isLoggedin = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        boolean isfirstrun = preferenceHandler.getData(PreferenceHandler.APP_FIRST_RUN, false);
+        if (!isfirstrun)
+            preferenceHandler.saveData(PreferenceHandler.APP_FIRST_RUN, true);
         Glide.with(this)
                 .asGif()
                 .load(R.raw.splash_gif)
@@ -73,18 +77,17 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 try {
-//                    if (isLoggedin) {
-//                        Intent intent = new Intent(SplashActivity.this, SelectUserDetailsActivity.class);
-//                        startActivity(intent);
-//                    } else {
-//                        Intent intent = new Intent(SplashActivity.this, SigninActivity.class);
-//                        startActivity(intent);
-//                    }
+                    boolean isfirstRun = preferenceHandler.getData(PreferenceHandler.APP_FIRST_RUN, false);
+                    if (isfirstRun) {
+                        Intent intent = new Intent(SplashActivity.this, UserPreferenceActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
-                    //Let's Finish Splash Activity since we don't want to show this when user press back button.
-                    Intent intent = new Intent(SplashActivity.this, SelectUserDetailsActivity.class);
-                    startActivity(intent);
-                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

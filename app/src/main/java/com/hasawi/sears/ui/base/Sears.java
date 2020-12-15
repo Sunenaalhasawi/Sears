@@ -1,6 +1,9 @@
 package com.hasawi.sears.ui.base;
 
 import android.app.Application;
+import android.content.res.Resources;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,12 +14,13 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hasawi.sears.data.api.RetrofitApiClient;
+import com.hasawi.sears.utils.AppConstants;
 
 public class Sears extends Application {
 
     private RetrofitApiClient retrofitApiClient;
     public static final String TAG = "Sears";
-    private FirebaseAnalytics mFirebaseAnalytics;
+    public FirebaseAnalytics mFirebaseAnalytics;
 
     public RetrofitApiClient getRetrofitApiClient() {
         retrofitApiClient = RetrofitApiClient.getInstance();
@@ -47,5 +51,14 @@ public class Sears extends Application {
 //                        Toast.makeText(this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
+        FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
+        String deviceName = Settings.Global.getString(getContentResolver(), "device_name");
+        String os = Build.VERSION.RELEASE;
+        String AppLang = Resources.getSystem().getConfiguration().locale.getLanguage();
+        mFirebaseAnalytics.setUserProperty("device", deviceName);
+        mFirebaseAnalytics.setUserProperty("os", os);
+        mFirebaseAnalytics.setUserProperty("language", AppLang);
+
+
     }
 }

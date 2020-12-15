@@ -40,6 +40,18 @@
 
     </style>
 
+    <style name="HomeTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/txt_clr_blue</item>
+        <item name="tabMode">fixed</item>
+        <item name="android:textSize">14sp</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabTextColor">@color/txt_clr_blue</item>
+        <item name="tabSelectedTextColor">@color/txt_clr_blue</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/avantgarde_bold</item>
+
+    </style>
+
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/txt_clr_blue</item>

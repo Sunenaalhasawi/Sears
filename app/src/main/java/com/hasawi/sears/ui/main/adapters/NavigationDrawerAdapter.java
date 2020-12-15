@@ -5,22 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.NavigationMenuItem;
+import com.hasawi.sears.data.api.model.pojo.NavigationMenuItem;
 import com.hasawi.sears.databinding.LayoutNavigationDrawerItemBinding;
 import com.hasawi.sears.utils.AppConstants;
 
 import java.util.List;
 
-public class NavigationDrawerAdapter extends ArrayAdapter<NavigationMenuItem> {
+public abstract class NavigationDrawerAdapter extends ArrayAdapter<NavigationMenuItem> {
 
     Context context;
     List<NavigationMenuItem> menuItemList;
+
+    public abstract void onNotificationStatusChanged(boolean isNotificationEnabled);
 
     public NavigationDrawerAdapter(@NonNull Context context, int resource, @NonNull List<NavigationMenuItem> objects) {
         super(context, resource, objects);
@@ -43,6 +46,12 @@ public class NavigationDrawerAdapter extends ArrayAdapter<NavigationMenuItem> {
             navigationDrawerItemBinding.imageView3.setVisibility(View.GONE);
             navigationDrawerItemBinding.swOnOff.setVisibility(View.VISIBLE);
         }
+        navigationDrawerItemBinding.swOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onNotificationStatusChanged(isChecked);
+            }
+        });
         return navigationDrawerItemBinding.getRoot();
 
     }

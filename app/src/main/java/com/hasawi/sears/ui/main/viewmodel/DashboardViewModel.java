@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.Resource;
-import com.hasawi.sears.data.api.model.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
+import com.hasawi.sears.data.api.response.MainCategoryResponse;
+import com.hasawi.sears.data.repository.DynamicDataRepository;
 import com.hasawi.sears.data.repository.ProductRepository;
 import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.PreferenceHandler;
@@ -24,9 +26,11 @@ public class DashboardViewModel extends ViewModel {
     ArrayList<Content> wishlistItems = new ArrayList<>();
     ArrayList<Content> cartedItems = new ArrayList<>();
     ProductRepository productRepository;
+    DynamicDataRepository dynamicDataRepository;
     MutableLiveData<SearchProductListResponse> searchProductListResponseMutableLiveData = new MutableLiveData<>();
 
     public DashboardViewModel() {
+        dynamicDataRepository = new DynamicDataRepository();
         this.productRepository = new ProductRepository();
     }
 
@@ -72,21 +76,12 @@ public class DashboardViewModel extends ViewModel {
         return menuItemArrayList;
     }
 
-    public MutableLiveData<List<Content>> getWishListedProducts() {
-        return wishListedProducts;
-    }
-
-    public void setWishListedProducts(Content product) {
-        wishlistItems.add(product);
-        wishListedProducts.setValue(wishlistItems);
-    }
-
     public MutableLiveData<List<Content>> getCartedProducts() {
         return cartedProducts;
     }
 
-    public void setCartedItems(Content product) {
-        cartedItems.add(product);
-        cartedProducts.setValue(cartedItems);
+    public MutableLiveData<Resource<MainCategoryResponse>> getMainCategories() {
+        return dynamicDataRepository.getMainCategories();
     }
+
 }

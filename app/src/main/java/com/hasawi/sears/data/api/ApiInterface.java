@@ -3,20 +3,19 @@ package com.hasawi.sears.data.api;
 import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
 import com.hasawi.sears.data.api.response.AddressResponse;
 import com.hasawi.sears.data.api.response.CartResponse;
-import com.hasawi.sears.data.api.response.CategoryResponse;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
 import com.hasawi.sears.data.api.response.ForgotPasswordResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
 import com.hasawi.sears.data.api.response.LoginResponse;
+import com.hasawi.sears.data.api.response.MainCategoryResponse;
 import com.hasawi.sears.data.api.response.OrderResponse;
 import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
 import com.hasawi.sears.data.api.response.SignupResponse;
 import com.hasawi.sears.data.api.response.UserProfileResponse;
-import com.hasawi.sears.data.api.response.VerifyOtpResponse;
 import com.hasawi.sears.data.api.response.WishlistResponse;
 
 import java.util.HashMap;
@@ -47,19 +46,14 @@ public interface ApiInterface {
     @POST("")
     Call<ForgotPasswordResponse> forgotPassword(@FieldMap HashMap<String, String> data);
 
-    @FormUrlEncoded
-    @POST("")
-    Call<VerifyOtpResponse> verifyOtp();
-
     @GET("languages")
     Call<LanguageResponse> getLanguages();
 
     @GET("shop/landing")
     Call<DynamicDataResponse> getDynamicData();
 
-    @FormUrlEncoded
-    @POST("")
-    Call<CategoryResponse> getProductCategories(@FieldMap HashMap<String, String> data);
+    @GET("categories/tree")
+    Call<MainCategoryResponse> getMainCategories();
 
     @Headers("Content-Type: application/json")
     @POST("products/{page_no}/30?languageId=en")

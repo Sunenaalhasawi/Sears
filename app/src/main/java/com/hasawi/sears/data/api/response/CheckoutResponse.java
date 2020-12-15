@@ -2,10 +2,10 @@ package com.hasawi.sears.data.api.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hasawi.sears.data.api.model.User;
 import com.hasawi.sears.data.api.model.pojo.Cart;
 import com.hasawi.sears.data.api.model.pojo.PaymentMode;
 import com.hasawi.sears.data.api.model.pojo.ShippingMode;
+import com.hasawi.sears.data.api.model.pojo.User;
 
 import java.util.List;
 

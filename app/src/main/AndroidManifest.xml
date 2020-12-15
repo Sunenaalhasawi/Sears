@@ -3,14 +3,16 @@
     package="com.hasawi.sears">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_sears_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
         android:theme="@style/SearsAppTheme">
         <activity
             android:name=".ui.main.view.splash.SplashActivity"
@@ -25,6 +27,9 @@
             android:name=".ui.main.view.signin.SigninActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".ui.main.view.home.user_details.UserPreferenceActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ui.main.view.DashboardActivity"
             android:theme="@style/FullscreenTheme">
             <meta-data
@@ -36,14 +41,9 @@
             android:theme="@style/FullscreenTheme">
 
         </activity>
-        <activity
-            android:name=".ui.main.view.signin.user_details.SelectUserDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
 
         <service
-            android:name=".data.service.MyFirebaseMessagingService"
+            android:name=".ui.main.service.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -65,6 +65,16 @@
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
+        <!-- Used for install referrer tracking-->
+        <!--        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService"/>-->
+        <!--        <receiver-->
+        <!--            android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver"-->
+        <!--            android:permission="android.permission.INSTALL_PACKAGES"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.android.vending.INSTALL_REFERRER" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
     </application>
 
 </manifest>
