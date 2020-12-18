@@ -45,6 +45,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     private Address selectedAddress;
     List<ShippingMode> shippingModeList = new ArrayList<>();
     ShippingMode selectedShippingMode;
+    private boolean hasCouponApplied = false;
 
     @Override
     protected int getLayoutResId() {
@@ -59,6 +60,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         fragmentCheckoutNewBinding.layoutCheckout.tvPurchaseMore.setOnClickListener(this);
         fragmentCheckoutNewBinding.tvMakeYourpayment.setOnClickListener(this);
         fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setOnClickListener(this);
+        fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setOnClickListener(this);
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.setTitle("Checkout");
         try {
@@ -69,7 +71,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         } catch (Exception e) {
             e.printStackTrace();
         }
-        callCheckoutApi(userId, cartId, sessionToken);
+        callCheckoutApi(userId, cartId, "", sessionToken);
         horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setLayoutManager(horizontalLayoutManager);
         horizontalLayoutManagerAddress = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -95,6 +97,11 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                                 bundle.putString("address", gson.toJson(address));
                                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new AddShippingAddressFragment(), bundle, true, false);
                             }
+
+                            @Override
+                            public void onDeleteClicked(Address address) {
+                                callDeleteAddressApi(address);
+                            }
                         };
                         shippingAddressAdapter.setOnItemClickListener(this);
                         fragmentCheckoutNewBinding.layoutCheckout.recyclerViewAddress.setAdapter(shippingAddressAdapter);
@@ -112,11 +119,42 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
+    private void callDeleteAddressApi(Address address) {
+        fragmentCheckoutNewBinding.progressBar.setVisibility(View.VISIBLE);
+        checkoutViewModel.deleteAddress(address.getAddressId(), sessionToken).observe(this, deleteAddressResponseResource -> {
+            switch (deleteAddressResponseResource.status) {
+                case SUCCESS:
+                    Toast.makeText(dashboardActivity, "Deleted Address Successfully", Toast.LENGTH_SHORT).show();
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    Toast.makeText(getActivity(), deleteAddressResponseResource.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            fragmentCheckoutNewBinding.progressBar.setVisibility(View.GONE);
+        });
 
-    public void callCheckoutApi(String userId, String cartId, String sessionToken) {
-        checkoutViewModel.checkout(userId, cartId, sessionToken).observe(this, checkoutResponseResource -> {
+    }
+
+
+    public void callCheckoutApi(String userId, String cartId, String couponCode, String sessionToken) {
+        fragmentCheckoutNewBinding.progressBar.setVisibility(View.VISIBLE);
+        checkoutViewModel.checkout(userId, cartId, couponCode, sessionToken).observe(this, checkoutResponseResource -> {
             switch (checkoutResponseResource.status) {
                 case SUCCESS:
+                    if (checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode() == null) {
+                        hasCouponApplied = false;
+                        fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.GONE);
+                        fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.setText("");
+                        fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.VISIBLE);
+                    } else {
+                        hasCouponApplied = true;
+                        fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.VISIBLE);
+                        fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Coupon Applied", Toast.LENGTH_SHORT).show();
+                    }
+
                     paymentModeList = new ArrayList<>();
                     paymentModeList = checkoutResponseResource.data.getCheckoutData().getPaymentModes();
                     paymentModeAdapter = new PaymentModeAdapter(getContext(), (ArrayList<PaymentMode>) paymentModeList);
@@ -128,6 +166,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     fragmentCheckoutNewBinding.layoutCheckout.tvSubtotal.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal());
                     checkoutProductListAdapter = new CheckoutProductListAdapter((ArrayList<ShoppingCartItem>) checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems(), getContext());
                     fragmentCheckoutNewBinding.layoutCheckout.recyclerViewProducts.setAdapter(checkoutProductListAdapter);
+
                     break;
                 case LOADING:
                     break;
@@ -164,17 +203,29 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case R.id.tvApplyCoupon:
+                String couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
+                callCheckoutApi(userId, cartId, couponCode, sessionToken);
+
+                break;
+            case R.id.tvRemoveCoupon:
+                callCheckoutApi(userId, cartId, "", sessionToken);
                 break;
             case R.id.tvMakeYourpayment:
-                if (selectedPaymentMode == null || selectedAddress == null) {
+//                || selectedAddress == null
+                if (selectedPaymentMode == null || selectedShippingMode == null) {
                     if (selectedPaymentMode == null)
-                        Toast.makeText(dashboardActivity, "Please select any payment mode to continue.", Toast.LENGTH_SHORT).show();
-                    if (selectedAddress == null) {
-                        Toast.makeText(dashboardActivity, "Please select any address or add new address to continue.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(dashboardActivity, "Please select any payment mode to proceed.", Toast.LENGTH_SHORT).show();
+//                    if (selectedAddress == null) {
+//                        Toast.makeText(dashboardActivity, "Please select any address or add new address to proceed.", Toast.LENGTH_SHORT).show();
+//                    }
+                    if (selectedShippingMode == null) {
+                        Toast.makeText(dashboardActivity, "Please select any shipping mode to proceed", Toast.LENGTH_SHORT).show();
                     }
+
                 } else {
                     PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, selectedAddress.getAddressId());
+//                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, selectedAddress.getAddressId());
+                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_SHIPPING_MODE_ID, selectedShippingMode.getShippingId());
                     Gson gson = new Gson();
                     String paymentModeString = gson.toJson(selectedPaymentMode);
                     Bundle bundle = new Bundle();

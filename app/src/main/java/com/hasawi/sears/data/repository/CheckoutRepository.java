@@ -11,9 +11,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CheckoutRepository {
-    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userID, String cartId, String sessionToken) {
+    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userID, String cartId, String couponCode, String sessionToken) {
         MutableLiveData<Resource<CheckoutResponse>> cheResourceMutableLiveData = new MutableLiveData<>();
-        Call<CheckoutResponse> addressResponseCall = RetrofitApiClient.getInstance().getApiInterface().checkout(userID, cartId, "Bearer " + sessionToken);
+        Call<CheckoutResponse> addressResponseCall = RetrofitApiClient.getInstance().getApiInterface().checkout(userID, cartId, couponCode, "Bearer " + sessionToken);
         addressResponseCall.enqueue(new Callback<CheckoutResponse>() {
             @Override
             public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {

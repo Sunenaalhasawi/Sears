@@ -30,6 +30,7 @@ public class PaymentFragment extends BaseFragment {
     PaymentViewModel paymentViewModel;
     PaymentMode selectedPaymentMode;
     DashboardActivity dashboardActivity;
+    String shippingModeId = "";
 
     @Override
     protected int getLayoutResId() {
@@ -105,8 +106,10 @@ public class PaymentFragment extends BaseFragment {
     private void callReviewOrderApi(Map<String, Object> jsonParams) {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String customerId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-        String addressId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
-
+//        String addressId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
+        String addressId = "ADRE_00038";
+        shippingModeId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_SHIPPING_MODE_ID, "");
+        jsonParams.put("shippingId", shippingModeId);
         String cartId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_CART_ID, "");
         String sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
 
@@ -153,7 +156,7 @@ public class PaymentFragment extends BaseFragment {
                         .toJson(selectedPaymentMode, PaymentMode.class);
                 Map<String, Object> jsonParams = new ArrayMap<>();
                 jsonParams.put("payment", paymentObject);
-                jsonParams.put("getPaymentStatusResponse", jsonObject.get("data").toString());
+                jsonParams.put("paymentId", selectedPaymentMode.getPaymentId());
                 callReviewOrderApi(jsonParams);
             } catch (Exception e) {
 

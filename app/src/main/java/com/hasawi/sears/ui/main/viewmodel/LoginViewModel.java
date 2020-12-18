@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.response.LoginResponse;
+import com.hasawi.sears.data.api.response.SignupResponse;
 import com.hasawi.sears.data.repository.UserAuthenticationRepository;
 
 import java.util.Map;
@@ -18,5 +19,9 @@ public class LoginViewModel extends ViewModel {
 
     public MutableLiveData<Resource<LoginResponse>> userLogin(Map<String, Object> inputParamsMap) {
         return userAuthenticationRepository.userLogin(inputParamsMap);
+    }
+
+    public MutableLiveData<Resource<SignupResponse>> userRegistration(Map<String, Object> inputParamsMap) {
+        return userAuthenticationRepository.userSignup(inputParamsMap);
     }
 }

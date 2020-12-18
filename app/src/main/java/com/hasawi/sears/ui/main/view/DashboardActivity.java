@@ -23,7 +23,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.ProductSearch;
@@ -40,6 +44,7 @@ import com.hasawi.sears.ui.main.view.checkout.PaymentFragment;
 import com.hasawi.sears.ui.main.view.home.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.home.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.home.WishListFragment;
+import com.hasawi.sears.ui.main.view.navigation_drawer_menu.order_history.OrderHistoryFragment;
 import com.hasawi.sears.ui.main.view.navigation_drawer_menu.profile.UserProfileFragment;
 import com.hasawi.sears.ui.main.view.paging_lib.MainFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
@@ -77,6 +82,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private CharSequence mTitle;
     private List<ProductSearch> productSearchList;
     private SearchProductAdapter searchProductAdapter;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
 
@@ -100,6 +106,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setSupportActionBar(activityDashboardBinding.appBarMain.toolbar);
         hideToolBarTitleShowLogo();
 
@@ -199,6 +206,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_ORDERS:
+                replaceFragment(R.id.fragment_replacer, new OrderHistoryFragment(), null, true, false);
+                setTitle("My Orders");
+                showBackButton(true, false);
                 closeDrawer();
                 break;
 //            case AppConstants.ID_MENU_ADDRESS_BOOK:
@@ -227,6 +237,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 //                break;
             case AppConstants.ID_MENU_SIGNOUT:
                 if (menuItem.isEnabled()) {
+                    if (isAlreadyLoggedinWithFacebbok())
+                        LoginManager.getInstance().logOut();
                     clearPreferences();
                     closeDrawer();
                     Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
@@ -240,6 +252,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
         }
     }
+
+    private boolean isAlreadyLoggedinWithFacebbok() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        return isLoggedIn;
+    }
+
 
     private void clearPreferences() {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getApplicationContext(), PreferenceHandler.TOKEN_LOGIN);
@@ -288,7 +307,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         activityDashboardBinding.listviewMenu.setAdapter(new NavigationDrawerAdapter(
                 this,
                 R.layout.layout_navigation_drawer_item,
-                menuItemArrayList));
+                menuItemArrayList) {
+            @Override
+            public void onNotificationStatusChanged(boolean isNotificationEnabled) {
+                if (isNotificationEnabled)
+                    FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
+                else
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConstants.APP_NAME);
+            }
+        });
         activityDashboardBinding.listviewMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -587,5 +614,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(toastWishlistNotificationBinding.getRoot());
         toast.show();
+    }
+
+    public FirebaseAnalytics getmFirebaseAnalytics() {
+        return mFirebaseAnalytics;
     }
 }

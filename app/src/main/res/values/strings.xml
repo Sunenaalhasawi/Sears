@@ -299,4 +299,20 @@
     <string name="product_out_of_stock">Oops you just missed this product!</string>
     <string name="product_currently_out_of_stock">The product is currently out of stock and cannot be added to cart.</string>
     <string name="preferred_delivery">PREFERRED DELIVERY</string>
+    <string name="enter_old_pswd">Enter Old Password</string>
+    <string name="enter_new_pswd">Enter New Password</string>
+    <string name="reenter_new_pswd">Re-Enter your New Password</string>
+    <string name="update_pswd">UPDATE PASSWORD</string>
+    <string name="order_id_colon">Order ID :</string>
+    <string name="date_colon">Date :</string>
+    <string name="order_status_colon">Order Status :</string>
+    <string name="amount_colon">Amount :</string>
+    <string name="items_colon">Items :</string>
+    <string name="product_delivered">PRODUCT DELIVERED</string>
+    <string name="track_order_caps">TRACK ORDER</string>
+
+    <string name="facebook_app_id">383736032918006</string>
+    <string name="fb_login_protocol_scheme">fb383736032918006</string>
+    <string name="remove_caps">REMOVE</string>
+
 </resources>

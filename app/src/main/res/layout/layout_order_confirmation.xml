@@ -455,6 +455,7 @@
                 android:text="@string/partial_address"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/textView20"
                 app:layout_constraintTop_toBottomOf="@+id/tv_rural_address" />
 
@@ -467,6 +468,7 @@
                 android:text="@string/postcode"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/textView21"
                 app:layout_constraintTop_toBottomOf="@+id/tv_partial_address" />
 
@@ -479,6 +481,7 @@
                 android:text="@string/po_box"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/textView22"
                 app:layout_constraintTop_toBottomOf="@+id/tv_postcode" />
 
@@ -487,10 +490,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/landmark_colon"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView23"
                 app:layout_constraintTop_toBottomOf="@+id/tv_pobox" />
 
@@ -503,6 +508,7 @@
                 android:text="@string/counter_delivery"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/textView24"
                 app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
 
@@ -544,6 +550,7 @@
                 android:text="445 Mount eden Road, Auckland"
                 android:textColor="@color/txt_clr_grey"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView21"
                 app:layout_constraintTop_toTopOf="@+id/textView21" />
@@ -558,6 +565,7 @@
                 android:text="5022"
                 android:textColor="@color/txt_clr_grey"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView22"
                 app:layout_constraintTop_toTopOf="@+id/textView22" />
@@ -572,6 +580,7 @@
                 android:text="PO Eden"
                 android:textColor="@color/txt_clr_grey"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView23"
                 app:layout_constraintTop_toTopOf="@+id/textView23" />
@@ -600,6 +609,7 @@
                 android:text="Cartes beach pose center"
                 android:textColor="@color/txt_clr_grey"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView25"
                 app:layout_constraintTop_toTopOf="@+id/textView25" />
@@ -614,6 +624,7 @@
                 android:text="@string/payment_mode_colon"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView25"
                 app:layout_constraintTop_toBottomOf="@+id/tv_counter_delivery" />
@@ -627,6 +638,7 @@
                 android:text="Cash on Delivery"
                 android:textColor="@color/txt_clr_green"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView83"
                 app:layout_constraintTop_toTopOf="@+id/textView83" />

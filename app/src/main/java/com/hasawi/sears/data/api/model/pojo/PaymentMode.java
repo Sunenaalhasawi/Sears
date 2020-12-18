@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class PaymentMode {
 
+    @SerializedName("orderId")
+    @Expose
+    private String OrderId;
     @SerializedName("paymentId")
     @Expose
     private Object paymentId;
@@ -111,5 +114,13 @@ public class PaymentMode {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(String orderId) {
+        OrderId = orderId;
     }
 }

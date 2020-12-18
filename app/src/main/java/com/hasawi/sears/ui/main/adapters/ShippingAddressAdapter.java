@@ -34,6 +34,8 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
 
     public abstract void onEditClicked(Address address);
 
+    public abstract void onDeleteClicked(Address address);
+
     @NonNull
     @Override
     public ShippingAddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

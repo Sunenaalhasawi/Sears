@@ -4,13 +4,16 @@ import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
 import com.hasawi.sears.data.api.response.AddressResponse;
 import com.hasawi.sears.data.api.response.CartResponse;
 import com.hasawi.sears.data.api.response.CategoryResponse;
+import com.hasawi.sears.data.api.response.ChangePasswordResponse;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
+import com.hasawi.sears.data.api.response.DeleteAddressResponse;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
 import com.hasawi.sears.data.api.response.ForgotPasswordResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
 import com.hasawi.sears.data.api.response.LoginResponse;
 import com.hasawi.sears.data.api.response.MainCategoryResponse;
+import com.hasawi.sears.data.api.response.OrderHistoryResponse;
 import com.hasawi.sears.data.api.response.OrderResponse;
 import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
@@ -31,6 +34,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -47,6 +51,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("")
     Call<ForgotPasswordResponse> forgotPassword(@FieldMap HashMap<String, String> data);
+
+    @PUT("customers/{customerId}/changePassword?")
+    Call<ChangePasswordResponse> changePassword(@Path("customerId") String customerId, @Query("oldPassword") String oldPassword, @Query("newPassword") String newPassword, @Header("Authorization") String sessionToken);
 
     @FormUrlEncoded
     @POST("")
@@ -101,8 +108,8 @@ public interface ApiInterface {
     @POST("customers/{customer_id}/address")
     Call<AddressResponse> addNewAddress(@Path("customer_id") String userId, @Body RequestBody requestBody, @Header("Authorization") String sessionToken);
 
-    @GET("order/customers/{customerId}/cart/{cartId}")
-    Call<CheckoutResponse> checkout(@Path("customerId") String customerID, @Path("cartId") String cartId, @Header("Authorization") String sessionToken);
+    @GET("order/customers/{customerId}/cart/{cartId}/?")
+    Call<CheckoutResponse> checkout(@Path("customerId") String customerID, @Path("cartId") String cartId, @Query("couponCode") String couponCode, @Header("Authorization") String sessionToken);
 
     @Headers("Content-Type: application/json")
     @POST("order/customers/{customerId}/address/{addressId}/cart/{cartId}")
@@ -112,11 +119,24 @@ public interface ApiInterface {
     Call<GetAllAddressResponse> getAddresses(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
 
     @Headers("Content-Type: application/json")
+    @POST("address/{addressId}")
+    Call<DeleteAddressResponse> deleteAddress(@Path("addressId") String addressId, @Header("Authorization") String sessionToken);
+
+    @Headers("Content-Type: application/json")
     @POST("customers/{customerId}/address/{addressId}")
     Call<AddressResponse> editAddress(@Path("customerId") String customerId, @Path("addressId") String addressId, @Header("Authorization") String sessionToken, @Body RequestBody requestBody);
 
     @GET("customers/findByEmail?")
     Call<UserProfileResponse> userProfile(@Query("emailId") String emailId, @Header("Authorization") String sessionToken);
+
+    @Headers("Content-Type: application/json")
+    @PUT("customers/{customerId}")
+    Call<UserProfileResponse> editUserProfile(@Path("customerId") String customerId, @Header("Authorization") String sessionToken, @Body RequestBody requestBody);
+
+    @Headers("Content-Type: application/json")
+    @POST("order/customers/{customerId}")
+    Call<OrderHistoryResponse> orderHistory(@Path("customerId") String customerId, @Header("") String sessionToken);
+
 
 //    @GET("api/v{api_version}/events")
 //    Call<RetrofitModelEvents> getEventsSearchPagination(

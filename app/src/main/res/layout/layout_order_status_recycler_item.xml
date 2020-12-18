@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RadioButton
+            android:id="@+id/radioButtonOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:button="@drawable/custom_radio_button_track_order"
+            android:checked="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="@drawable/vertical_dashed_line"
+            app:layout_constraintEnd_toEndOf="@+id/radioButtonOrderStatus"
+            app:layout_constraintStart_toStartOf="@+id/radioButtonOrderStatus"
+            app:layout_constraintTop_toBottomOf="@+id/radioButtonOrderStatus" />
+
+        <TextView
+            android:id="@+id/tvOrderStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="ORDER RECEIVED - 10-06-2020 - 4.10 PM "
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/radioButtonOrderStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/radioButtonOrderStatus"
+            app:layout_constraintTop_toTopOf="@+id/radioButtonOrderStatus" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

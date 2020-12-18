@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
+import com.hasawi.sears.data.api.response.ChangePasswordResponse;
 import com.hasawi.sears.data.api.response.LoginResponse;
 import com.hasawi.sears.data.api.response.SignupResponse;
 
@@ -63,5 +64,25 @@ public class UserAuthenticationRepository {
         });
 
         return loginResponseMutableLiveData;
+    }
+
+    public MutableLiveData<Resource<ChangePasswordResponse>> changePaaword(String customerId, String oldPassword, String newPassword, String sessiontoken) {
+        MutableLiveData<Resource<ChangePasswordResponse>> changePswdMutableLiveData = new MutableLiveData<>();
+        Call<ChangePasswordResponse> changePasswordResponseCall = RetrofitApiClient.getInstance().getApiInterface().changePassword(customerId, oldPassword, newPassword, "Bearer " + sessiontoken);
+        changePasswordResponseCall.enqueue(new Callback<ChangePasswordResponse>() {
+            @Override
+            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+                if (response.code() != 200) {
+                    changePswdMutableLiveData.setValue(Resource.error("Something went wrong. Please try again!", null));
+                } else if (response.body() != null)
+                    changePswdMutableLiveData.setValue(Resource.success(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+                changePswdMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return changePswdMutableLiveData;
     }
 }

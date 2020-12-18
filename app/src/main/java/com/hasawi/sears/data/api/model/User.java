@@ -25,14 +25,14 @@ public class User {
     private String confirmPassword;
     @SerializedName("active")
     @Expose
-    private Boolean active;
+    private boolean active;
     @SerializedName("emailId")
     @Expose
     private String emailId;
 
     @SerializedName("dob")
     @Expose
-    private Object dob;
+    private String dob;
 
     @SerializedName("nationality")
     @Expose
@@ -44,7 +44,7 @@ public class User {
 
     @SerializedName("imageUrl")
     @Expose
-    private Object imageUrl;
+    private String imageUrl;
 
 
     public String getCustomerId() {
@@ -95,11 +95,11 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -111,11 +111,11 @@ public class User {
         this.emailId = emailId;
     }
 
-    public Object getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Object dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -139,7 +139,7 @@ public class User {
         return imageUrl;
     }
 
-    public void setImageUrl(Object imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }

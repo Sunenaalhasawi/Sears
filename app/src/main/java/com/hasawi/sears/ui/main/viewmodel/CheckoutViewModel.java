@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.response.AddressResponse;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
+import com.hasawi.sears.data.api.response.DeleteAddressResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.repository.CheckoutRepository;
 import com.hasawi.sears.data.repository.UserAccountRepository;
@@ -22,8 +23,8 @@ public class CheckoutViewModel extends ViewModel {
         checkoutRepository = new CheckoutRepository();
     }
 
-    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String sessiontoken) {
-        return checkoutRepository.checkout(userId, cartId, sessiontoken);
+    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String couponCode, String sessiontoken) {
+        return checkoutRepository.checkout(userId, cartId, couponCode, sessiontoken);
     }
 
     public MutableLiveData<Resource<GetAllAddressResponse>> getAddresses(String userId, String sessiontoken) {
@@ -32,6 +33,10 @@ public class CheckoutViewModel extends ViewModel {
 
     public MutableLiveData<Resource<AddressResponse>> editAddress(String userId, String addressId, String sessionToken, Map<String, Object> jsonParams) {
         return userAccountRepository.editAddress(userId, addressId, sessionToken, jsonParams);
+    }
+
+    public MutableLiveData<Resource<DeleteAddressResponse>> deleteAddress(String addressId, String sessiontoken) {
+        return userAccountRepository.deleteAddress(addressId, sessiontoken);
     }
 
 }

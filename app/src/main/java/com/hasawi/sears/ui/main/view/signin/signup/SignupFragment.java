@@ -64,6 +64,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
 
     private void userRegistration() {
 
+
         String firstName = fragmentSignupBinding.layoutSignup.edtFirstname.getText().toString();
         String lastName = fragmentSignupBinding.layoutSignup.edtLastname.getText().toString();
         String email = fragmentSignupBinding.layoutSignup.edtEmail.getText().toString();
@@ -76,13 +77,13 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
             fragmentSignupBinding.layoutSignup.tvFirstNameError.setVisibility(View.VISIBLE);
         if (lastName.equals(""))
             fragmentSignupBinding.layoutSignup.tvLastNameError.setVisibility(View.VISIBLE);
-        else if (email.equals(""))
+        if (email.equals(""))
             fragmentSignupBinding.layoutSignup.tvEmailError.setVisibility(View.VISIBLE);
-        else if (phone.equals(""))
+        if (phone.equals(""))
             fragmentSignupBinding.layoutSignup.tvMobileError.setVisibility(View.VISIBLE);
-        else if (password.equals(""))
+        if (password.equals(""))
             fragmentSignupBinding.layoutSignup.tvPasswordError.setVisibility(View.VISIBLE);
-        else if (confirmPassword.equals(""))
+        if (confirmPassword.equals(""))
             fragmentSignupBinding.layoutSignup.tvConfirmPasswordError.setVisibility(View.VISIBLE);
         else {
             if (password.equals(confirmPassword)) {
@@ -164,6 +165,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
                         selectedDate = year + "-" + monthOfYear + "-" + dayOfMonth;
                         fragmentSignupBinding.layoutSignup.edtBirthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }

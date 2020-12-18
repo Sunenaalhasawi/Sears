@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.response.AddressResponse;
 import com.hasawi.sears.data.api.response.CartResponse;
-import com.hasawi.sears.data.api.response.CheckoutResponse;
 import com.hasawi.sears.data.repository.CheckoutRepository;
 import com.hasawi.sears.data.repository.ProductRepository;
 import com.hasawi.sears.data.repository.UserAccountRepository;
@@ -37,7 +36,7 @@ public class CartViewModel extends ViewModel {
         return userAccountRepository.addNewAddress(userId, jsonParams, sessiontoken);
     }
 
-    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String sessiontoken) {
-        return checkoutRepository.checkout(userId, cartId, sessiontoken);
-    }
+//    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String sessiontoken) {
+//        return checkoutRepository.checkout(userId, cartId, sessiontoken);
+//    }
 }

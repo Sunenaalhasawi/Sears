@@ -59,5 +59,6 @@ public class Sears extends Application {
         mFirebaseAnalytics.setUserProperty("device", deviceName);
         mFirebaseAnalytics.setUserProperty("os", os);
         mFirebaseAnalytics.setUserProperty("language", AppLang);
+
     }
 }

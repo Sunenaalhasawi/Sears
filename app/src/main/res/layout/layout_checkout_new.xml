@@ -343,6 +343,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView79">
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCouponCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -360,6 +361,19 @@
                     android:fontFamily="@font/avantgarde_bold"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="@string/apply_caps"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tvRemoveCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/txt_clr_blue"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/remove_caps"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="8sp" />
             </LinearLayout>

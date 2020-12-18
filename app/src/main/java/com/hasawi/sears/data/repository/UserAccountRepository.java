@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.response.AddressResponse;
+import com.hasawi.sears.data.api.response.DeleteAddressResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.api.response.UserProfileResponse;
 
@@ -87,9 +88,56 @@ public class UserAccountRepository {
         return editAddressMutableLiveData;
     }
 
+    public MutableLiveData<Resource<DeleteAddressResponse>> deleteAddress(String addressId, String sessionToken) {
+        MutableLiveData<Resource<DeleteAddressResponse>> editAddressMutableLiveData = new MutableLiveData<>();
+        Call<DeleteAddressResponse> deleteAddressResponseCall = RetrofitApiClient.getInstance().getApiInterface().deleteAddress(addressId, "Bearer " + sessionToken);
+        deleteAddressResponseCall.enqueue(new Callback<DeleteAddressResponse>() {
+            @Override
+            public void onResponse(Call<DeleteAddressResponse> call, Response<DeleteAddressResponse> response) {
+                if (response.code() != 200) {
+                    editAddressMutableLiveData.setValue(Resource.error("Network Error !", null));
+                } else if (response.code() == 200) {
+                    editAddressMutableLiveData.setValue(Resource.success(response.body()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteAddressResponse> call, Throwable t) {
+                editAddressMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return editAddressMutableLiveData;
+    }
+
+
     public MutableLiveData<Resource<UserProfileResponse>> userProfile(String emailId, String sessionToken) {
         MutableLiveData<Resource<UserProfileResponse>> userProfileMutableLiveData = new MutableLiveData<>();
         Call<UserProfileResponse> userProfileResponseCall = RetrofitApiClient.getInstance().getApiInterface().userProfile(emailId, "Bearer " + sessionToken);
+        userProfileResponseCall.enqueue(new Callback<UserProfileResponse>() {
+            @Override
+            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
+                if (response.code() != 200) {
+                    userProfileMutableLiveData.setValue(Resource.error("Network Error !", null));
+                } else if (response.body() != null) {
+                    userProfileMutableLiveData.setValue(Resource.success(response.body()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+                userProfileMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return userProfileMutableLiveData;
+    }
+
+
+    public MutableLiveData<Resource<UserProfileResponse>> editUserProfile(String customerId, String sessionToken, Map<String, Object> inputParams) {
+        MutableLiveData<Resource<UserProfileResponse>> userProfileMutableLiveData = new MutableLiveData<>();
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(inputParams)).toString());
+        Call<UserProfileResponse> userProfileResponseCall = RetrofitApiClient.getInstance().getApiInterface().editUserProfile(customerId, "Bearer " + sessionToken, requestBody);
         userProfileResponseCall.enqueue(new Callback<UserProfileResponse>() {
             @Override
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {

@@ -9,8 +9,8 @@
             <stroke
                 android:width="2dp"
                 android:color="@color/cart_grey"
-                android:dashWidth="4dp"
-                android:dashGap="6dp" />
+                android:dashWidth="3dp"
+                android:dashGap="4dp" />
         </shape>
     </item>
 </layer-list>
