@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
 import com.hasawi.sears.databinding.FragmentFilterBinding;
@@ -37,6 +38,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     ProgressBarDialog progressBarDialog;
     JSONArray filterArray = null;
     private String selectedCategoryId = "";
+    Bundle filterAnalyticsBundle = new Bundle();
 
     @Override
     protected int getLayoutResId() {
@@ -67,7 +69,12 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
                 filterArray = new JSONArray();
                 for (int i = 0; i < selectedFilters.size(); i++) {
                     filterArray.put(selectedFilters.get(i).getId());
+
                 }
+                Gson gson = new Gson();
+                String appliedFilterValues = gson.toJson(filterArray);
+                filterAnalyticsBundle.putString("filter_values", appliedFilterValues);
+                dashboardActivity.getmFirebaseAnalytics().logEvent("FILTER_BY", filterAnalyticsBundle);
                 returnFilterValues(filterArray);
             }
         });
@@ -158,6 +165,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     public void onItemClickListener(int position, View view) {
         filterOptionAdapter.selectedItem();
         String selectedOption = filterKeysList.get(position);
+        filterAnalyticsBundle.putString("filter_key", filterKeysList.get(position));
 //        filterAttributeValuesList = filterAttributeMap.get(selectedOption);
 //        filterValueAdapter.addAll(filterAttributeValuesList);
     }

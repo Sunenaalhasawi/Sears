@@ -123,6 +123,136 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_order_status">
+
+            <TextView
+                android:id="@+id/tvPaymentDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/txt_clr_blue"
+                android:fontFamily="@font/avantgarde_bold"
+                android:padding="8dp"
+                android:text="@string/payment_details"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/payment_date"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentDetails" />
+
+
+            <TextView
+                android:id="@+id/tvPaymentDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="19-12-2020"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtDate" />
+
+            <TextView
+                android:id="@+id/textView95"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/amount_colon"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/txtDate"
+                app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+            <TextView
+                android:id="@+id/textView96"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/reference_no"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/txtDate"
+                app:layout_constraintTop_toBottomOf="@+id/textView95" />
+
+            <TextView
+                android:id="@+id/textView99"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/transaction_id"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtDate"
+                app:layout_constraintTop_toBottomOf="@+id/textView96" />
+
+            <TextView
+                android:id="@+id/tvPaymentAmount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="KWD"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView95"
+                app:layout_constraintEnd_toEndOf="@+id/tvPaymentDate"
+                app:layout_constraintStart_toStartOf="@+id/tvPaymentDate" />
+
+            <TextView
+                android:id="@+id/tvReferenceNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="034343555"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView96"
+                app:layout_constraintEnd_toEndOf="@+id/tvPaymentDate"
+                app:layout_constraintStart_toStartOf="@+id/tvPaymentAmount" />
+
+            <TextView
+                android:id="@+id/tvTransactionId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="2332232323"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView99"
+                app:layout_constraintEnd_toEndOf="@+id/tvPaymentDate"
+                app:layout_constraintStart_toStartOf="@+id/tvReferenceNo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cv_order_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,7 +278,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="Expected by Sun, 9th Aug 2020"
+                android:text="-"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/textView57"
@@ -159,49 +289,61 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="Expected by Sun, 9th Aug 2020"
+                android:text="-"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_delivery"
                 app:layout_constraintTop_toBottomOf="@+id/tv_delivery" />
 
-            <TextView
-                android:id="@+id/textView48"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout14"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/order_id"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="12sp"
+                android:background="@color/txt_clr_blue"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView49"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="-"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView48"
-                app:layout_constraintStart_toEndOf="@+id/textView48"
-                app:layout_constraintTop_toTopOf="@+id/textView48" />
+                <TextView
+                    android:id="@+id/textView48"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:text="@string/order_id"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_order_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="DM0022345344355"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView48"
-                app:layout_constraintStart_toEndOf="@+id/textView49" />
+                <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:text="-"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                    app:layout_constraintStart_toEndOf="@+id/textView48"
+                    app:layout_constraintTop_toTopOf="@+id/textView48" />
+
+                <TextView
+                    android:id="@+id/tv_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:text="DM0022345344355"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                    app:layout_constraintStart_toEndOf="@+id/textView49" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView51"
@@ -214,14 +356,14 @@
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/radioButtonOrdered"
-                app:layout_constraintTop_toBottomOf="@+id/textView48" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout14" />
 
             <TextView
                 android:id="@+id/tv_ordered_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="Sat, 8th Aug 2020"
+                android:text="-"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/textView51"
@@ -244,7 +386,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="Expected by Sun, 9th Aug 2020"
+                android:text="-"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/textView53"
@@ -278,10 +420,12 @@
                 android:id="@+id/textView59"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/shipment_yet_to_deliver"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_delivery"
                 app:layout_constraintTop_toBottomOf="@+id/tv_delivery_date" />
 
@@ -319,11 +463,11 @@
                 android:id="@+id/radioButtonOrdered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:button="@drawable/custom_radio_button_review_page"
                 android:checked="true"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_ordered_date"
-                app:layout_constraintEnd_toEndOf="@+id/textView48"
-                app:layout_constraintStart_toStartOf="@+id/textView48"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView51" />
 
             <View
@@ -358,6 +502,7 @@
                 android:text="@string/track_order"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_cancel_order"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -377,6 +522,7 @@
                 android:text="@string/cancel_order"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btn_track_order"
                 app:layout_constraintTop_toTopOf="@+id/btn_track_order" />

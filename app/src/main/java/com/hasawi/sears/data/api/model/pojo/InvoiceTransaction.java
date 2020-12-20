@@ -8,7 +8,7 @@ public class InvoiceTransaction {
 
     @SerializedName("TransactionDate")
     @Expose
-    private Integer transactionDate;
+    private String transactionDate;
     @SerializedName("PaymentGateway")
     @Expose
     private String paymentGateway;
@@ -55,11 +55,11 @@ public class InvoiceTransaction {
     @Expose
     private String cardNumber;
 
-    public Integer getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Integer transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.OrderProduct;
 import com.hasawi.sears.databinding.LayoutOrderHistoryImageItemBinding;
@@ -33,10 +34,12 @@ public class OrderHistoryProductImagesAdapter extends RecyclerView.Adapter<Order
     @Override
     public void onBindViewHolder(@NonNull OrderHistoryProductImagesAdapter.ViewHolder holder, int position) {
         try {
-//            Glide.with(context)
-//                    .load(orderProductArrayList.get(position))
-//                    .centerCrop()
-//                    .into(holder.imageItemBinding.imageViewProduct);
+            Glide.with(context)
+                    .load(orderProductArrayList.get(position).getProductName())
+                    .placeholder(R.drawable.product_5)
+                    .centerCrop()
+                    .into(holder.imageItemBinding.imageViewProduct);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

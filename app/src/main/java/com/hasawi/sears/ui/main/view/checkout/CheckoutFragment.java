@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Address;
@@ -43,9 +44,11 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     private PaymentMode selectedPaymentMode;
     private LinearLayoutManager horizontalLayoutManagerAddress;
     private Address selectedAddress;
+    List<ShoppingCartItem> shoppingCartItemList = new ArrayList<>();
     List<ShippingMode> shippingModeList = new ArrayList<>();
     ShippingMode selectedShippingMode;
     private boolean hasCouponApplied = false;
+    Bundle analyticsBundle = new Bundle();
 
     @Override
     protected int getLayoutResId() {
@@ -148,13 +151,23 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                         fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.GONE);
                         fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.setText("");
                         fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.VISIBLE);
+                        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, "");
+                        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+                        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
                     } else {
                         hasCouponApplied = true;
                         fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.VISIBLE);
                         fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Coupon Applied", Toast.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(getContext(), "Coupon Applied", Toast.LENGTH_SHORT).show();
+                        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
+                        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+                        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
+                        Bundle couponBundle = new Bundle();
+                        couponBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
+                        dashboardActivity.getmFirebaseAnalytics().logEvent("COUPON_APPLIED", analyticsBundle);
 
+                    }
+                    shoppingCartItemList = checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems();
                     paymentModeList = new ArrayList<>();
                     paymentModeList = checkoutResponseResource.data.getCheckoutData().getPaymentModes();
                     paymentModeAdapter = new PaymentModeAdapter(getContext(), (ArrayList<PaymentMode>) paymentModeList);
@@ -162,6 +175,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     shippingModeList = checkoutResponseResource.data.getCheckoutData().getShippingModes();
                     setShippingModeAdapter(shippingModeList);
                     fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setAdapter(paymentModeAdapter);
+                    fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount());
+                    fragmentCheckoutNewBinding.layoutCheckout.tvItemCount.setText("Bag " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getAvailable().size());
                     fragmentCheckoutNewBinding.layoutCheckout.tvTotalAmount.setText(checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal() + "");
                     fragmentCheckoutNewBinding.layoutCheckout.tvSubtotal.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal());
                     checkoutProductListAdapter = new CheckoutProductListAdapter((ArrayList<ShoppingCartItem>) checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems(), getContext());
@@ -204,6 +219,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.tvApplyCoupon:
                 String couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
+                if (couponCode.equals(""))
+                    Toast.makeText(dashboardActivity, "Invalid Coupon code", Toast.LENGTH_SHORT).show();
                 callCheckoutApi(userId, cartId, couponCode, sessionToken);
 
                 break;
@@ -211,20 +228,20 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 callCheckoutApi(userId, cartId, "", sessionToken);
                 break;
             case R.id.tvMakeYourpayment:
-//                || selectedAddress == null
-                if (selectedPaymentMode == null || selectedShippingMode == null) {
+                logCheckoutEvent();
+                if (selectedPaymentMode == null || selectedAddress == null || selectedShippingMode == null) {
                     if (selectedPaymentMode == null)
                         Toast.makeText(dashboardActivity, "Please select any payment mode to proceed.", Toast.LENGTH_SHORT).show();
-//                    if (selectedAddress == null) {
-//                        Toast.makeText(dashboardActivity, "Please select any address or add new address to proceed.", Toast.LENGTH_SHORT).show();
-//                    }
+                    if (selectedAddress == null) {
+                        Toast.makeText(dashboardActivity, "Please select any address or add new address to proceed.", Toast.LENGTH_SHORT).show();
+                    }
                     if (selectedShippingMode == null) {
                         Toast.makeText(dashboardActivity, "Please select any shipping mode to proceed", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
                     PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-//                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, selectedAddress.getAddressId());
+                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, selectedAddress.getAddressId());
                     preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_SELECTED_SHIPPING_MODE_ID, selectedShippingMode.getShippingId());
                     Gson gson = new Gson();
                     String paymentModeString = gson.toJson(selectedPaymentMode);
@@ -240,6 +257,23 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 break;
         }
 
+    }
+
+    private void logCheckoutEvent() {
+        ArrayList<Bundle> itemBundles = new ArrayList<>();
+        for (int i = 0; i < shoppingCartItemList.size(); i++) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
+            try {
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            itemBundles.add(bundle);
+
+        }
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemBundles);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, analyticsBundle);
     }
 
     @Override

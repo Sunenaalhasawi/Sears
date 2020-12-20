@@ -82,6 +82,9 @@ public class SortFragment extends BaseFragment implements RecyclerviewSingleChoi
     public void onItemClickListener(int position, View view) {
         sortAdapter.selectedItem();
         selectedSort = sortList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putString("sort_value", selectedSort);
+        dashboardActivity.getmFirebaseAnalytics().logEvent("SORT_BY", bundle);
         returnSortValues();
         getParentFragmentManager().popBackStackImmediate();
     }

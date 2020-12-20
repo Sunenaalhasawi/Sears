@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <RadioButton
@@ -18,13 +18,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:button="@drawable/custom_radio_button_track_order"
-            android:checked="true"
+            android:checked="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
+            android:id="@+id/viewLine"
             android:layout_width="1dp"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:background="@drawable/vertical_dashed_line"
             app:layout_constraintEnd_toEndOf="@+id/radioButtonOrderStatus"
             app:layout_constraintStart_toStartOf="@+id/radioButtonOrderStatus"
@@ -35,14 +36,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/avantgarde_regular"
-            android:text="ORDER RECEIVED - 10-06-2020 - 4.10 PM "
             android:textColor="@color/txt_clr_blue"
             android:textSize="12sp"
+            android:text="ORDER RECEIVED "
             app:layout_constraintBottom_toBottomOf="@+id/radioButtonOrderStatus"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/radioButtonOrderStatus"
             app:layout_constraintTop_toTopOf="@+id/radioButtonOrderStatus" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text=""
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOrderStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvOrderStatus" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,6 +2,7 @@ package com.hasawi.sears.ui.main.view.signin.signup;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.DatePicker;
@@ -15,6 +16,7 @@ import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.SignupViewModel;
+import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.PreferenceHandler;
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
@@ -119,6 +121,16 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                             signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob().toString());
                             signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
 
+                            Bundle regSuccessAnalyticsBundle = new Bundle();
+                            try {
+                                regSuccessAnalyticsBundle.putString("registration_date", DateTimeUtils.getCurrentStringDateTime());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            regSuccessAnalyticsBundle.putString("country", signupResponse.data.getData().getuser().getNationality());
+                            regSuccessAnalyticsBundle.putString("gender", signupResponse.data.getData().getuser().getGender());
+                            signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_SUCCESS", regSuccessAnalyticsBundle);
+
                             Intent intent = new Intent(signinActivity, DashboardActivity.class);
                             startActivity(intent);
                             getActivity().finish();
@@ -126,6 +138,15 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                         case LOADING:
                             break;
                         case ERROR:
+                            Bundle regFailedAnalyticsBundle = new Bundle();
+                            regFailedAnalyticsBundle.putString("error", signupResponse.message);
+                            regFailedAnalyticsBundle.putString("error_code", signupResponse.data.getStatusCode() + "");
+                            try {
+                                regFailedAnalyticsBundle.putString("registration_date", DateTimeUtils.getCurrentStringDateTime());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_FAILED", regFailedAnalyticsBundle);
                             Toast.makeText(signinActivity, signupResponse.message, Toast.LENGTH_SHORT).show();
                             break;
                     }

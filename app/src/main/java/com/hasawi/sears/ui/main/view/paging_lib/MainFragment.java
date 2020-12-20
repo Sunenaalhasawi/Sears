@@ -249,6 +249,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
     }
 
     private void callWishlistApi(String productId, Content product, boolean isWishlisted) {
+        logAddToWishlistEvent(product);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sharedHomeViewModel.addToWishlist(productId, userID, sessionToken).observe(getActivity(), wishlistResponse -> {
@@ -263,11 +264,6 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
                     if (shouldRefreshTheList)
                         refreshProductList(currentSelectedCategory, filterArray, selectedSortString);
                     dashboardActivity.showCustomWislistToast(isWishlisted);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, productId);
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, product.getManufature());
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
 
                     break;
                 case LOADING:
@@ -361,8 +357,16 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
         currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
         refreshProductList(currentSelectedCategory, null, "");
         loadFilterData(filterArray);
-
-
+        try {
+            Bundle analyticsBundle = new Bundle();
+            analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
+            analyticsBundle.putString("category_name", categoryArrayList.get(position).getDescriptions().get(0).getCategoryName());
+            analyticsBundle.putString("category_code", categoryArrayList.get(position).getCategoryCode());
+            analyticsBundle.putString("parent_category_id", categoryArrayList.get(position).getParentId());
+            dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_SELECTED", analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshProductList(String currentSelectedCategory, JSONArray filterArray, String sort) {
@@ -407,6 +411,22 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
         else
             fragmentHomeBinding.progressBar.setVisibility(View.GONE);
 
+    }
+
+    private void logAddToWishlistEvent(Content product) {
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, product.getOriginalPrice());
+
+        Bundle itemBundle = new Bundle();
+        itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
+        itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+        itemBundle.putString("product_id", product.getProductId());
+        ArrayList<Bundle> parcelabeList = new ArrayList<>();
+        parcelabeList.add(itemBundle);
+
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, parcelabeList);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
     }
 }
 

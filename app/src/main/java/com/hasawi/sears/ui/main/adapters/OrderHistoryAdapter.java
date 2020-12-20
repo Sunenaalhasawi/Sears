@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Order;
 import com.hasawi.sears.data.api.model.pojo.OrderProduct;
+import com.hasawi.sears.data.api.model.pojo.OrderTrack;
 import com.hasawi.sears.databinding.LayoutOrderHistoryRecyclerItemBinding;
+import com.hasawi.sears.utils.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder> {
     ArrayList<Order> orderList;
@@ -39,26 +42,49 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         Order orderItem = orderList.get(position);
         holder.orderHistoryRecyclerItemBinding.tvOrderId.setText(orderItem.getOrderId());
         holder.orderHistoryRecyclerItemBinding.tvOrderAmount.setText("KWD " + orderItem.getTotal());
-        holder.orderHistoryRecyclerItemBinding.tvOrderedDate.setText(orderItem.getDateOfPurchase());
-        holder.orderHistoryRecyclerItemBinding.tvOrderQuantity.setText(orderItem.getOrderProducts().size());
-        holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText("Order Placed");
-        String[] orderStatus = {"Order Placed", "In Process", "In Transit", "Delivered"};
-        String currentStatus = orderStatus[2];
+
+        try {
+            String dateOfPurchase = orderItem.getDateOfPurchase();
+            String formattedDate = DateTimeUtils.changeDateFormat(DateTimeUtils.FORMAT_Y_M_D_T_H_m_s_S, DateTimeUtils.FORMAT_ORDER_STATUS, dateOfPurchase);
+            holder.orderHistoryRecyclerItemBinding.tvOrderedDate.setText(orderItem.getDateOfPurchase());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            holder.orderHistoryRecyclerItemBinding.tvOrderQuantity.setText(orderItem.getOrderProducts().size() + "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<OrderTrack> orderTrackList = orderItem.getOrderTrackList();
+        String currentStatus = "";
+        switch (orderTrackList.size()) {
+            case 1:
+                currentStatus = "Order Placed";
+                break;
+            case 2:
+                currentStatus = "In Process";
+                break;
+            case 3:
+                currentStatus = "In Transit";
+                break;
+            case 4:
+                currentStatus = "Delivered";
+                break;
+            default:
+                break;
+        }
+        holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText(currentStatus);
         switch (currentStatus) {
             case "Order Placed":
-                holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText(currentStatus);
                 holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.order_placed, 0, 0, 0);
                 break;
             case "In Process":
-                holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText(currentStatus);
                 holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ongoing, 0, 0, 0);
                 break;
             case "In Transit":
-                holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText(currentStatus);
                 holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.in_transit, 0, 0, 0);
                 break;
             case "Delivered":
-                holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setText(currentStatus);
                 holder.orderHistoryRecyclerItemBinding.tvOrderStatus.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.delivered, 0, 0, 0);
                 break;
             default:

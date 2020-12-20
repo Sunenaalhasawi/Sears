@@ -11,11 +11,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
+import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.data.api.model.pojo.ProductAttribute;
 import com.hasawi.sears.data.api.model.pojo.ProductConfigurable;
+import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
+import com.hasawi.sears.data.api.response.CartResponse;
 import com.hasawi.sears.databinding.FragmentSelectedProductDetailsBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.OffersAdapter;
@@ -103,6 +107,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     currentSelectedProduct = searchedProductDetailsResponse.data.getSingleProductData();
                     setUIValues(currentSelectedProduct);
                     setColorSizeAdapterList(currentSelectedProduct.getProductConfigurables());
+                    logProductViewEvent(currentSelectedProduct);
                     break;
                 case LOADING:
                     break;
@@ -180,6 +185,24 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             }
         });
         setRelatedProducts();
+    }
+
+    private void logProductViewEvent(Content currentSelectedProduct) {
+        Bundle itemBundle = new Bundle();
+        itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, currentSelectedProduct.getDescriptions().get(0).getProductName());
+        itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, currentSelectedProduct.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+        itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, currentSelectedProduct.getManufature());
+        itemBundle.putString("category_id", currentSelectedProduct.getCategories().get(0).getCategoryId());
+        itemBundle.putString("product_id", currentSelectedProduct.getProductId());
+        itemBundle.putString("product_type", currentSelectedProduct.getProductType());
+        ArrayList<Bundle> itemParcelableList = new ArrayList<>();
+        itemParcelableList.add(itemBundle);
+
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, currentSelectedProduct.getOriginalPrice());
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, analyticsBundle);
     }
 
     private void addingProductToCart() {
@@ -359,6 +382,10 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         try {
             if (view.getId() == R.id.cv_background_size) {
                 sizeAdapter.selectedItem();
+                String selectedSize = productAvailableSizes.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("selected_size", selectedSize);
+                dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
                 ProductColorAdapter.setsSelected(-1);
                 currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
                 setColorAdapter(currentColorsList);
@@ -413,6 +440,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                         cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
                     }
 
+                    logAddToCartEvent(addToCartResponse);
                     break;
                 case LOADING:
                     break;
@@ -422,6 +450,23 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             }
         });
 
+    }
+
+    private void logAddToCartEvent(Resource<CartResponse> addToCartResponse) {
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, addToCartResponse.data.getCartData().getSubTotal());
+        List<ShoppingCartItem> shoppingCartItemList = addToCartResponse.data.getCartData().getShoppingCartItems();
+        ArrayList<Bundle> cartedItemAnalyticBundles = new ArrayList<>();
+        for (int i = 0; i < shoppingCartItemList.size(); i++) {
+            Bundle itemBundle = new Bundle();
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString("product_id", shoppingCartItemList.get(i).getProductId());
+            cartedItemAnalyticBundles.add(itemBundle);
+        }
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, cartedItemAnalyticBundles);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
     }
 
     private void callWishlistApi(Content product, boolean isWishlisted) {

@@ -21,19 +21,22 @@ public class Cart {
     private Double subTotal;
     @SerializedName("total")
     @Expose
-    private Object total;
+    private Double total;
     @SerializedName("customerId")
     @Expose
     private String customerId;
     @SerializedName("couponCode")
     @Expose
-    private Object couponCode;
+    private String couponCode;
     @SerializedName("shoppingCartCode")
     @Expose
-    private Object shoppingCartCode;
+    private String shoppingCartCode;
     @SerializedName("itemCount")
     @Expose
     private int itemCount;
+    @SerializedName("discounted")
+    @Expose
+    private Double discountedAmount;
     @SerializedName("shoppingCartItems")
     @Expose
     private List<ShoppingCartItem> shoppingCartItems = null;
@@ -77,11 +80,11 @@ public class Cart {
         this.subTotal = subTotal;
     }
 
-    public Object getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Object total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -93,19 +96,27 @@ public class Cart {
         this.customerId = customerId;
     }
 
-    public Object getCouponCode() {
+    public String getCouponCode() {
         return couponCode;
     }
 
-    public void setCouponCode(Object couponCode) {
+    public void setCouponCode(String couponCode) {
         this.couponCode = couponCode;
     }
 
-    public Object getShoppingCartCode() {
+    public Double getDiscountedAmount() {
+        return discountedAmount;
+    }
+
+    public void setDiscountedAmount(Double discountedAmount) {
+        this.discountedAmount = discountedAmount;
+    }
+
+    public String getShoppingCartCode() {
         return shoppingCartCode;
     }
 
-    public void setShoppingCartCode(Object shoppingCartCode) {
+    public void setShoppingCartCode(String shoppingCartCode) {
         this.shoppingCartCode = shoppingCartCode;
     }
 

@@ -10,7 +10,7 @@ public class PaymentMode {
     private String OrderId;
     @SerializedName("paymentId")
     @Expose
-    private Object paymentId;
+    private String paymentId;
 
     @SerializedName("name")
     @Expose
@@ -38,17 +38,17 @@ public class PaymentMode {
 
     @SerializedName("paymentMethodId")
     @Expose
-    private String paymentMethodId;
+    private Integer paymentMethodId;
 
     @SerializedName("active")
     @Expose
     private boolean active;
 
-    public Object getPaymentId() {
+    public String getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(Object paymentId) {
+    public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
     }
 
@@ -100,11 +100,11 @@ public class PaymentMode {
         this.icon = icon;
     }
 
-    public String getPaymentMethodId() {
+    public Integer getPaymentMethodId() {
         return paymentMethodId;
     }
 
-    public void setPaymentMethodId(String paymentMethodId) {
+    public void setPaymentMethodId(Integer paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
     }
 

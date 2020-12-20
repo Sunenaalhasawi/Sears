@@ -82,10 +82,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
     implementation 'com.google.android.gms:play-services-basement:17.5.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
-    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
+    implementation 'com.android.installreferrer:installreferrer:2.1'
+    // google tag manager
+//    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+
+    // Image slideshow library
+    implementation 'com.synnapps:carouselview:0.1.5'
 
 }

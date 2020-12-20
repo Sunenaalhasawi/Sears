@@ -43,7 +43,7 @@ public class PaymentModeAdapter extends RecyclerView.Adapter<PaymentModeAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
-                .load(context.getResources().getDrawable(R.drawable.cod))
+                .load(paymentModeArrayList.get(position).getIcon())
                 .centerCrop()
                 .into(holder.layoutPaymentModeRecyclerItemBinding.imagePaymentIcon);
         holder.layoutPaymentModeRecyclerItemBinding.tvPaymentName.setText(paymentModeArrayList.get(position).getName());

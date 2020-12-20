@@ -175,6 +175,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
         String username = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
         boolean isUserLoggedin = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        String userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
+        //Setting analytics default parameter
+        if (isUserLoggedin) {
+            Bundle parameters = new Bundle();
+            parameters.putString("user_id", userId);
+            mFirebaseAnalytics.setDefaultEventParameters(parameters);
+        }
         if (isUserLoggedin)
             activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText(username);
         else
@@ -383,6 +390,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Bundle analyticsBundle = new Bundle();
+                analyticsBundle.putString(FirebaseAnalytics.Param.SEARCH_TERM, query);
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, analyticsBundle);
                 searchView.clearFocus();
              /*   if(list.contains(query)){
                     adapter.getFilter().filter(query);
@@ -571,6 +581,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             } else if (currentFragment instanceof CheckoutFragment) {
                 showBackButton(true, false);
             } else if (currentFragment instanceof UserProfileFragment) {
+                showBackButton(false, true);
+            } else if (currentFragment instanceof OrderHistoryFragment) {
                 showBackButton(false, true);
             }
 

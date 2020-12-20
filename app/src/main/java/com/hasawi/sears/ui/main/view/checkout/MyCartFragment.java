@@ -1,12 +1,15 @@
 package com.hasawi.sears.ui.main.view.checkout;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.ArrayMap;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
 import com.hasawi.sears.databinding.FragmentCartBinding;
@@ -17,8 +20,11 @@ import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.CartViewModel;
 import com.hasawi.sears.utils.PreferenceHandler;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener {
     FragmentCartBinding fragmentCartBinding;
@@ -31,6 +37,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     String cartId;
     boolean isUserLoggedIn = false;
     DashboardActivity dashboardActivity;
+    boolean isQuantityIncreased;
 
     @Override
     protected int getLayoutResId() {
@@ -44,12 +51,19 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         dashboardActivity.showBackButton(true, false);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         fragmentCartBinding.recyclerviewCart.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cartAdapter = new CartAdapter(getActivity()) {
+        cartAdapter = new CartAdapter(dashboardActivity) {
             @Override
             public void onItemDeleteClicked(ShoppingCartItem cartItem) {
                 fragmentCartBinding.progressBar.setVisibility(View.VISIBLE);
                 removeItemFromCartApi(cartItem);
             }
+
+            @Override
+            public void cartItemsUpdated(ShoppingCartItem cartItem, int quantity, boolean isIncreased) {
+                updateCartItemsApi(cartItem.getProductId(), cartItem.getRefSku(), quantity + "");
+                isQuantityIncreased = isIncreased;
+            }
+
         };
         fragmentCartBinding.recyclerviewCart.setAdapter(cartAdapter);
         fragmentCartBinding.tvContinueOrder.setOnClickListener(this);
@@ -139,6 +153,12 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             e.printStackTrace();
                         }
                     }
+
+                    try {
+                        logViewCartEvent((ArrayList<ShoppingCartItem>) cartResponse.data.getCartData().getShoppingCartItems(), cartResponse.data.getCartData().getTotal());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case LOADING:
                     break;
@@ -175,5 +195,60 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
             fragmentCartBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    private void updateCartItemsApi(String productId, String refSku, String quantity) {
+        fragmentCartBinding.progressBar.setVisibility(View.VISIBLE);
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("productId", productId);
+        jsonParams.put("refSku", refSku);
+        jsonParams.put("quantity", quantity);
+
+        String jsonParamString = (new JSONObject(jsonParams)).toString();
+        cartViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+            fragmentCartBinding.progressBar.setVisibility(View.GONE);
+            switch (addToCartResponse.status) {
+                case SUCCESS:
+                    totalPrice = addToCartResponse.data.getCartData().getSubTotal() + "";
+                    cartCount = addToCartResponse.data.getCartData().getShoppingCartItems().size();
+                    setUiValues();
+                    Toast.makeText(dashboardActivity, "Cart Updated Successfully", Toast.LENGTH_SHORT).show();
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        });
+    }
+
+    public void showProgressbar(boolean shouldShowProgressbar) {
+        if (shouldShowProgressbar)
+            fragmentCartBinding.progressBar.setVisibility(View.VISIBLE);
+        else
+            fragmentCartBinding.progressBar.setVisibility(View.GONE);
+    }
+
+    private void logViewCartEvent(ArrayList<ShoppingCartItem> cartItemsList, Double cartValue) {
+        ArrayList<Bundle> itemParcelableList = new ArrayList<>();
+        int cartCount = cartItemsList.size();
+        for (int i = 0; i < cartItemsList.size(); i++) {
+            Bundle itemBundle = new Bundle();
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cartItemsList.get(i).getProduct().getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, cartItemsList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, cartItemsList.get(i).getProduct().getManufature());
+            itemBundle.putString("category_id", cartItemsList.get(i).getProduct().getCategories().get(0).getCategoryId());
+            itemBundle.putString("product_id", cartItemsList.get(i).getProduct().getProductId());
+            itemParcelableList.add(itemBundle);
+        }
+
+
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, cartValue);
+        analyticsBundle.putLong("item_count", cartCount);
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, analyticsBundle);
     }
 }

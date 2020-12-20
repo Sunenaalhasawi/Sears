@@ -3,21 +3,21 @@ package com.hasawi.sears.ui.main.view.checkout;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.PaymentMode;
-import com.hasawi.sears.data.api.model.pojo.PaymentResponse;
 import com.hasawi.sears.databinding.FragmentPaymentNewBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.PaymentViewModel;
+import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.FailedPaymentDialog;
 import com.hasawi.sears.utils.PreferenceHandler;
 
@@ -76,14 +76,32 @@ public class PaymentFragment extends BaseFragment {
             public void onPageFinished(WebView view, String url) {
                 fragmentPaymentNewBinding.progressBar.setVisibility(View.GONE);
                 try {
-
+                    Bundle analyticsBundle = new Bundle();
+                    analyticsBundle.putString(FirebaseAnalytics.Param.PAYMENT_TYPE, selectedPaymentMode.getName());
+                    try {
+                        analyticsBundle.putString(FirebaseAnalytics.Param.END_DATE, DateTimeUtils.getCurrentStringDateTime());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     if (url.contains(selectedPaymentMode.getFailedUrl())) {
                         failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
+                        analyticsBundle.putLong(FirebaseAnalytics.Param.SUCCESS, 0);
+                        analyticsBundle.putString("payment_status", "failed");
+                        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, analyticsBundle);
                     } else if (url.contains(selectedPaymentMode.getSuccessUrl())) {
+//                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:HtmlViewer.showHTML" +
+//                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                        Gson gson = new Gson();
+                        String json = gson.toJson(selectedPaymentMode, PaymentMode.class);
+                        JSONObject jsonObject = new JSONObject(json);
+                        Map<String, Object> jsonParams = new ArrayMap<>();
+                        jsonParams.put("payment", jsonObject);
+                        jsonParams.put("paymentId", selectedPaymentMode.getPaymentId());
+                        callReviewOrderApi(jsonParams);
+                        analyticsBundle.putLong(FirebaseAnalytics.Param.SUCCESS, 1);
+                        analyticsBundle.putString("payment_status", "success");
+                        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, analyticsBundle);
                         fragmentPaymentNewBinding.webviewPayment.clearHistory();
-                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:HtmlViewer.showHTML" +
-                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-                        fragmentPaymentNewBinding.progressBar.setVisibility(View.VISIBLE);
                     }
 
                 } catch (Exception exception) {
@@ -98,16 +116,16 @@ public class PaymentFragment extends BaseFragment {
         fragmentPaymentNewBinding.webviewPayment.getSettings().setJavaScriptEnabled(true);
         fragmentPaymentNewBinding.webviewPayment.getSettings().setSupportZoom(true);
         fragmentPaymentNewBinding.webviewPayment.getSettings().setBuiltInZoomControls(true);
-        fragmentPaymentNewBinding.webviewPayment.addJavascriptInterface(new MyJavaScriptInterface(dashboardActivity), "HtmlViewer");
+//        fragmentPaymentNewBinding.webviewPayment.addJavascriptInterface(new MyJavaScriptInterface(dashboardActivity), "HtmlViewer");
 
     }
 
 
     private void callReviewOrderApi(Map<String, Object> jsonParams) {
+        fragmentPaymentNewBinding.progressBar.setVisibility(View.VISIBLE);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String customerId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-//        String addressId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
-        String addressId = "ADRE_00038";
+        String addressId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_ADDRESS_ID, "");
         shippingModeId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_SELECTED_SHIPPING_MODE_ID, "");
         jsonParams.put("shippingId", shippingModeId);
         String cartId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_CART_ID, "");
@@ -134,36 +152,29 @@ public class PaymentFragment extends BaseFragment {
 
     }
 
-    public class MyJavaScriptInterface {
-
-        PaymentResponse paymentResponse;
-        private DashboardActivity dashboardActivity;
-
-        MyJavaScriptInterface(DashboardActivity dashboardActivity) {
-            this.dashboardActivity = dashboardActivity;
-        }
-
-        @JavascriptInterface
-        public void showHTML(String html) {
-            try {
-//                fragmentPaymentNewBinding.progressBar.setVisibility(View.VISIBLE);
-                int startingIndex = html.indexOf("{");
-                int closingIndex = html.indexOf("statusCode");
-                String responseString = html.substring(startingIndex, closingIndex + 16);
-                JSONObject jsonObject = new JSONObject(responseString);
-                Gson gson = new Gson();
-                String paymentObject = gson
-                        .toJson(selectedPaymentMode, PaymentMode.class);
-                Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("payment", paymentObject);
-                jsonParams.put("paymentId", selectedPaymentMode.getPaymentId());
-                callReviewOrderApi(jsonParams);
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-        }
-
-    }
+//    public class MyJavaScriptInterface {
+//
+//        PaymentResponse paymentResponse;
+//        private DashboardActivity dashboardActivity;
+//
+//        MyJavaScriptInterface(DashboardActivity dashboardActivity) {
+//            this.dashboardActivity = dashboardActivity;
+//        }
+//
+//        @JavascriptInterface
+//        public void showHTML(String html) {
+//            try {
+////                int startingIndex = html.indexOf("{");
+////                int closingIndex = html.indexOf("statusCode");
+////                String responseString = html.substring(startingIndex, closingIndex + 16);
+////                JSONObject jsonObject = new JSONObject(responseString);
+//
+//            } catch (Exception e) {
+//
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 
 }

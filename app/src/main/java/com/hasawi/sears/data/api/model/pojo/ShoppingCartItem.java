@@ -23,7 +23,7 @@ public class ShoppingCartItem {
     private String productId;
     @SerializedName("refSku")
     @Expose
-    private Object refSku;
+    private String refSku;
     @SerializedName("oneTimePrice")
     @Expose
     private Double oneTimePrice;
@@ -76,11 +76,11 @@ public class ShoppingCartItem {
         this.productId = productId;
     }
 
-    public Object getRefSku() {
+    public String getRefSku() {
         return refSku;
     }
 
-    public void setRefSku(Object refSku) {
+    public void setRefSku(String refSku) {
         this.refSku = refSku;
     }
 

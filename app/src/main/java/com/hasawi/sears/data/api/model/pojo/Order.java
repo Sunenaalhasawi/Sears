@@ -23,7 +23,7 @@ public class Order {
     private Double total;
     @SerializedName("discounted")
     @Expose
-    private Object discounted;
+    private Double discounted;
     @SerializedName("couponCode")
     @Expose
     private String couponCode;
@@ -45,6 +45,12 @@ public class Order {
     @SerializedName("orderTracks")
     @Expose
     private List<OrderTrack> orderTrackList;
+    @SerializedName("shippingId")
+    @Expose
+    private String shippingId;
+    @SerializedName("shippingCharge")
+    @Expose
+    private Double shippingCharge;
     @SerializedName("paymentId")
     @Expose
     private String paymentId;
@@ -89,15 +95,15 @@ public class Order {
         this.total = total;
     }
 
-    public Object getDiscounted() {
+    public Double getDiscounted() {
         return discounted;
     }
 
-    public void setDiscounted(Object discounted) {
+    public void setDiscounted(Double discounted) {
         this.discounted = discounted;
     }
 
-    public Object getCouponCode() {
+    public String getCouponCode() {
         return couponCode;
     }
 
@@ -159,5 +165,21 @@ public class Order {
 
     public void setOrderTrackList(List<OrderTrack> orderTrackList) {
         this.orderTrackList = orderTrackList;
+    }
+
+    public String getShippingId() {
+        return shippingId;
+    }
+
+    public void setShippingId(String shippingId) {
+        this.shippingId = shippingId;
+    }
+
+    public Double getShippingCharge() {
+        return shippingCharge;
+    }
+
+    public void setShippingCharge(Double shippingCharge) {
+        this.shippingCharge = shippingCharge;
     }
 }

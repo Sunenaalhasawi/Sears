@@ -371,5 +371,13 @@ Approach:
 Step 1:Add the required dependencies
 Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
 Note: After adding the dependencies, click on Sync now.</string>
+    <string name="whats_new">WHAT\'S NEW ?</string>
+    <string name="new_product_landed">These products literally just landed</string>
+    <string name="shop_all">Shop all</string>
+    <string name="brands_you_love">BRANDS YOU LOVE</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="payment_date">Payment Date :</string>
+    <string name="reference_no">Reference No :</string>
+    <string name="transaction_id">Transaction ID :</string>
 
 </resources>

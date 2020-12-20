@@ -18,7 +18,8 @@ import retrofit2.Response;
 
 public class OrderRepository {
     public MutableLiveData<Resource<OrderResponse>> orderConfirmation(String userID, String addressId, String cartId, String sessionToken, Map<String, Object> jsonParams) {
-        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+        String jsonParamString = new JSONObject(jsonParams).toString();
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonParamString);
         MutableLiveData<Resource<OrderResponse>> orderMutableLiveData = new MutableLiveData<>();
         Call<OrderResponse> orderResponseCall = RetrofitApiClient.getInstance().getApiInterface().orderConfirmation(userID, addressId, cartId, "Bearer " + sessionToken, requestBody);
         orderResponseCall.enqueue(new Callback<OrderResponse>() {

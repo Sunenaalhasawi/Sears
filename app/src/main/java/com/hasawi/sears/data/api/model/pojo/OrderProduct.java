@@ -8,28 +8,31 @@ public class OrderProduct {
 
     @SerializedName("orderProductId")
     @Expose
-    private Object orderProductId;
+    private String orderProductId;
     @SerializedName("productName")
     @Expose
     private String productName;
     @SerializedName("sku")
     @Expose
-    private Object sku;
+    private String sku;
     @SerializedName("refSku")
     @Expose
-    private Object refSku;
+    private String refSku;
     @SerializedName("oneTimePrice")
     @Expose
     private Double oneTimePrice;
     @SerializedName("quantity")
     @Expose
     private Integer quantity;
+    @SerializedName("amount")
+    @Expose
+    private Double amount;
 
-    public Object getOrderProductId() {
+    public String getOrderProductId() {
         return orderProductId;
     }
 
-    public void setOrderProductId(Object orderProductId) {
+    public void setOrderProductId(String orderProductId) {
         this.orderProductId = orderProductId;
     }
 
@@ -41,19 +44,19 @@ public class OrderProduct {
         this.productName = productName;
     }
 
-    public Object getSku() {
+    public String getSku() {
         return sku;
     }
 
-    public void setSku(Object sku) {
+    public void setSku(String sku) {
         this.sku = sku;
     }
 
-    public Object getRefSku() {
+    public String getRefSku() {
         return refSku;
     }
 
-    public void setRefSku(Object refSku) {
+    public void setRefSku(String refSku) {
         this.refSku = refSku;
     }
 
@@ -73,4 +76,11 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 }

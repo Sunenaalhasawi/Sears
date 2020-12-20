@@ -135,7 +135,7 @@ public interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @POST("order/customers/{customerId}")
-    Call<OrderHistoryResponse> orderHistory(@Path("customerId") String customerId, @Header("") String sessionToken);
+    Call<OrderHistoryResponse> orderHistory(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
 
 
 //    @GET("api/v{api_version}/events")
