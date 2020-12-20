@@ -19,5 +19,11 @@ public class AppConstants {
 //    public static final int ID_MENU_TRACK_ORDER=7;
 //    public static final int ID_MENU_CUSTOMER_SERVICE=8;
 
+    public static final int GRID_VIEW = 100;
+    public static final int NEW_PRODUCTS_VIEW = 101;
+    public static final int SINGLE_BANNER_VIEW = 102;
+    public static final int BRAND_LIST_VIEW = 103;
+    public static final int CUSTOM_LIST_VIEW = 104;
+
 
 }

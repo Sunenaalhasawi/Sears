@@ -9,16 +9,15 @@ import android.widget.BaseAdapter;
 import androidx.databinding.DataBindingUtil;
 
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.DynamicGridItem;
 import com.hasawi.sears.databinding.LayoutHomeDynamicGridItemBinding;
 
 import java.util.ArrayList;
 
 public class DynamicGridAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<DynamicGridItem> gridItemArrayList = new ArrayList<>();
+    private ArrayList<Integer> gridItemArrayList = new ArrayList<>();
 
-    public DynamicGridAdapter(Context context, ArrayList<DynamicGridItem> gridItems) {
+    public DynamicGridAdapter(Context context, ArrayList<Integer> gridItems) {
         this.context = context;
         this.gridItemArrayList = gridItems;
     }
@@ -42,14 +41,15 @@ public class DynamicGridAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         LayoutHomeDynamicGridItemBinding dynamicGridItemBinding = DataBindingUtil.
                 inflate(inflater, R.layout.layout_home_dynamic_grid_item, null, false);
-        DynamicGridItem dynamicGridItem = gridItemArrayList.get(position);
-        try {
-            dynamicGridItemBinding.imageViewItem.setImageDrawable(dynamicGridItem.getItemDrawable());
-            if (dynamicGridItem.getItemName() != null && !dynamicGridItem.getItemName().equalsIgnoreCase(""))
-                dynamicGridItemBinding.tvItemName.setText(dynamicGridItem.getItemName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        DynamicGridItem dynamicGridItem = gridItemArrayList.get(position);
+//        try {
+//            dynamicGridItemBinding.imageViewItem.setImageDrawable(dynamicGridItem.getItemDrawable());
+//            if (dynamicGridItem.getItemName() != null && !dynamicGridItem.getItemName().equalsIgnoreCase(""))
+//                dynamicGridItemBinding.tvItemName.setText(dynamicGridItem.getItemName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        dynamicGridItemBinding.imageViewItem.setImageResource(gridItemArrayList.get(position));
 
         return dynamicGridItemBinding.getRoot();
 
