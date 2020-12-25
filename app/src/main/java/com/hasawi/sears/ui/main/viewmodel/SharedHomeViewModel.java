@@ -42,9 +42,7 @@ public class SharedHomeViewModel extends ViewModel {
     MutableLiveData<List<Content>> cartedProducts = new MutableLiveData<>();
     ArrayList<Content> wishlistItems = new ArrayList<>();
     ArrayList<Content> cartedItems = new ArrayList<>();
-    MutableLiveData<List<String>> sortStringMutableLiveData = new MutableLiveData<>();
     private ProductRepository productRepository;
-    private ProductResponse productResponse;
     //Pagination
     private Executor executor;
     private LiveData<NetworkState> networkState;
@@ -52,7 +50,6 @@ public class SharedHomeViewModel extends ViewModel {
 
 
     public SharedHomeViewModel() {
-        productResponse = new ProductResponse();
         productRepository = new ProductRepository();
         generalMutsbleLiveData = new MutableLiveData<>();
     }
@@ -110,26 +107,11 @@ public class SharedHomeViewModel extends ViewModel {
                 .setFetchExecutor(executor)
                 .build();
 
-
     }
-
-
-    public LiveData<NetworkState> getNetworkState() {
-        return networkState;
-    }
-
-    public LiveData<PagedList<Content>> getProductPaginationLiveData() {
-        return productPaginationLiveData;
-    }
-
-    public void invalidateProductLiveData() {
-        productPaginationLiveData = null;
-    }
-
     public MutableLiveData<Resource<ProductResponse>> callProductDataApi(String categoryId, String page_no) {
 
         RequestBody body = ProductRepository.addInputParams(categoryId, null);
-
+        MutableLiveData<Resource<ProductResponse>> generalMutsbleLiveData = new MutableLiveData<>();
         Call<ProductResponse> productsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getProductsList(body, page_no);
         productsResponseCall.enqueue(new Callback<ProductResponse>() {
             @Override
@@ -137,7 +119,6 @@ public class SharedHomeViewModel extends ViewModel {
                 if (response.code() == 200) {
                     if (response.body() != null)
                         generalMutsbleLiveData.setValue(Resource.success(response.body()));
-                    sortStringMutableLiveData.postValue(response.body().getData().getSortStrings());
                 } else {
                     generalMutsbleLiveData.setValue(Resource.error("Network Error !", null));
                 }
@@ -152,9 +133,18 @@ public class SharedHomeViewModel extends ViewModel {
         return generalMutsbleLiveData;
     }
 
-    public MutableLiveData<List<String>> getSortString() {
-        return sortStringMutableLiveData;
+    public LiveData<NetworkState> getNetworkState() {
+        return networkState;
     }
+
+    public LiveData<PagedList<Content>> getProductPaginationLiveData() {
+        return productPaginationLiveData;
+    }
+
+    public void invalidateProductLiveData() {
+        productPaginationLiveData = null;
+    }
+
 
     public MutableLiveData<Map<String, List<FilterAttributeValues>>> getFilterData() {
         return filterAttributesLiveData;

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.Resource;
@@ -85,7 +86,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         try {
 
             selectedObjectID = bundle.getString("product_object_id");
-            isSearch = bundle.getBoolean("is_search");
+//            isSearch = bundle.getBoolean("is_search");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,10 +239,15 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void setUIValues(Content currentSelectedProduct) {
-        Glide.with(this)
-                .load(currentSelectedProduct.getProductImages().get(0).getImageName())
-                .centerCrop()
-                .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+        try {
+            Glide.with(this)
+                    .load(currentSelectedProduct.getProductImages().get(0).getImageName())
+                    .centerCrop()
+                    .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+        } catch (Exception e) {
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().log(e.getMessage());
+        }
         fragmentSelectedProductDetailsBinding.tvProductName.setText(currentSelectedProduct.getDescriptions().get(0).getProductName());
         String description = currentSelectedProduct.getDescriptions().get(0).getProductDescription();
         if (description == null || description.equals("")) {
@@ -430,7 +436,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.GONE);
             switch (addToCartResponse.status) {
                 case SUCCESS:
-                    dashboardActivity.setCartCount(1);
                     if (isbuyNow) {
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
                         dashboardActivity.showBackButton(true, false);

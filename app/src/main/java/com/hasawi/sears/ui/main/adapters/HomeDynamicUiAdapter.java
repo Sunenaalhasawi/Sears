@@ -6,69 +6,118 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.pojo.DynamicData;
+import com.hasawi.sears.data.api.model.pojo.HomeSectionDetail;
+import com.hasawi.sears.data.api.model.pojo.HomeSectionElement;
+import com.hasawi.sears.data.api.model.pojo.Section;
 import com.hasawi.sears.databinding.LayoutHomeBrandsBinding;
 import com.hasawi.sears.databinding.LayoutHomeDynamicListViewBinding;
 import com.hasawi.sears.databinding.LayoutHomeGridViewBannersBinding;
 import com.hasawi.sears.databinding.LayoutHomeNewProductsBinding;
 import com.hasawi.sears.databinding.LayoutHomeSingleBannerItemBinding;
-import com.hasawi.sears.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeDynamicUiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class HomeDynamicUiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    List<DynamicData> dynamicDataList;
+    List<Section> sectionList;
     Context context;
 
-    public HomeDynamicUiAdapter(List<DynamicData> dynamicDataList, Context context) {
-        this.dynamicDataList = dynamicDataList;
+    public HomeDynamicUiAdapter(List<Section> sectionList, Context context) {
+        if (sectionList != null && sectionList.size() > 0) {
+            this.sectionList = sectionList;
+        } else
+            sectionList = new ArrayList<>();
         this.context = context;
     }
+
+    public abstract void onGridClicked(HomeSectionElement homeSectionElement);
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        switch (viewType) {
-            case AppConstants
-                    .GRID_VIEW:
-                LayoutHomeGridViewBannersBinding homeGridViewBannersBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.layout_home_grid_view_banners, parent, false);
-                return new GridViewHolder(homeGridViewBannersBinding);
-            case AppConstants.NEW_PRODUCTS_VIEW:
-                LayoutHomeNewProductsBinding homeNewProductsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.layout_home_new_products, parent, false);
-                return new NewProductsViewHolder(homeNewProductsBinding);
-            case AppConstants.SINGLE_BANNER_VIEW:
-                LayoutHomeSingleBannerItemBinding singleBannerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                        R.layout.layout_home_single_banner_item, parent, false);
-                return new CustomBannerViewHolder(singleBannerItemBinding);
-//            case 3:
-//                LayoutHomeBrandsBinding homeBrandsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-//                        R.layout.layout_home_brands, parent, false);
-//                return new BrandsViewHolder(homeBrandsBinding);
-//            case 4:
-//                LayoutHomeDynamicListViewBinding dynamicListViewBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-//                        R.layout.layout_home_dynamic_list_view, parent, false);
-//                return new CustomListViewHolder(dynamicListViewBinding);
-        }
-        return null;
+//        switch (viewType) {
+//            case AppConstants
+//                    .GRID_VIEW:
+//                LayoutHomeGridViewBannersBinding homeGridViewBannersBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+//                        R.layout.layout_home_grid_view_banners, parent, false);
+//                return new GridViewHolder(homeGridViewBannersBinding);
+//            case AppConstants.NEW_PRODUCTS_VIEW:
+//                LayoutHomeNewProductsBinding homeNewProductsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+//                        R.layout.layout_home_new_products, parent, false);
+//                return new NewProductsViewHolder(homeNewProductsBinding);
+//            case AppConstants.SINGLE_BANNER_VIEW:
+//                LayoutHomeSingleBannerItemBinding singleBannerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+//                        R.layout.layout_home_single_banner_item, parent, false);
+//                return new CustomBannerViewHolder(singleBannerItemBinding);
+//        }
+//        return null;
+        LayoutHomeGridViewBannersBinding homeGridViewBannersBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.layout_home_grid_view_banners, parent, false);
+        return new GridViewHolder(homeGridViewBannersBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        DynamicData dynamicData = dynamicDataList.get(position);
-        switch (dynamicData.getVIEW_TYPE()) {
-            case AppConstants.GRID_VIEW:
-                GridViewHolder gridViewHolder = (GridViewHolder) holder;
-                DynamicGridAdapter dynamicGridAdapter = new DynamicGridAdapter(context, (ArrayList<Integer>) dynamicData.getData().getGridBannerList());
-                gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setAdapter(dynamicGridAdapter);
-                gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setNumColumns(2);
+        Section sectionItem = sectionList.get(position);
+//        switch (dynamicData.getVIEW_TYPE()) {
+//            case AppConstants.GRID_VIEW:
+//                GridViewHolder gridViewHolder = (GridViewHolder) holder;
+//                DynamicGridAdapter dynamicGridAdapter = new DynamicGridAdapter(context, (ArrayList<Integer>) dynamicData.getData().getGridBannerList());
+//                gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setAdapter(dynamicGridAdapter);
+//                gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setNumColumns(2);
+//
+//                grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view,
+//                                            int position, long id) {
+//                        Toast.makeText(MainActivity.this, "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//                break;
+//            case AppConstants.NEW_PRODUCTS_VIEW:
+//                NewProductsViewHolder newProductsViewHolder = (NewProductsViewHolder) holder;
+//                break;
+//            case AppConstants.SINGLE_BANNER_VIEW:
+//                CustomBannerViewHolder customBannerViewHolder = (CustomBannerViewHolder) holder;
+//                break;
+//        }
+
+        GridViewHolder gridViewHolder = (GridViewHolder) holder;
+//        GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+//        // Create a custom SpanSizeLookup where the first item spans both columns
+//        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//            @Override
+//            public int getSpanSize(int position) {
+//                return position == 0 ? 2 : 1;
+//            }
+//        });
+//        List<HomeSectionDetail> homeSectionDetailList = sectionItem.getHomeSectionDetails();
+//        DynamicGridAdapter dynamicGridAdapter = new DynamicGridAdapter(context, (ArrayList<HomeSectionDetail>) homeSectionDetailList);
+//        gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setLayoutManager(layoutManager);
+//        gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setAdapter(dynamicGridAdapter);
+
+
+//        if (sectionItem.getTitle() != null && !sectionItem.equals("")) {
+//            gridViewHolder.homeGridViewBannersBinding.tvSectionTitle.setText(sectionItem.getTitle());
+////        }
+        List<HomeSectionDetail> homeSectionDetailList = sectionItem.getHomeSectionDetails();
+        DynamicGridAdapter dynamicGridAdapter = new DynamicGridAdapter(context, (ArrayList<HomeSectionDetail>) homeSectionDetailList) {
+            @Override
+            public void onGridItemClicked(HomeSectionElement homeSectionElement) {
+                onGridClicked(homeSectionElement);
+            }
+        };
+        gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setLayoutManager(new LinearLayoutManager(context));
+        gridViewHolder.homeGridViewBannersBinding.gridViewBanners.setAdapter(dynamicGridAdapter);
+
 
 //                grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //
@@ -79,19 +128,14 @@ public class HomeDynamicUiAdapter extends RecyclerView.Adapter<RecyclerView.View
 //
 //                    }
 //                });
-                break;
-            case AppConstants.NEW_PRODUCTS_VIEW:
-                NewProductsViewHolder newProductsViewHolder = (NewProductsViewHolder) holder;
-                break;
-            case AppConstants.SINGLE_BANNER_VIEW:
-                CustomBannerViewHolder customBannerViewHolder = (CustomBannerViewHolder) holder;
-                break;
-        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (sectionList == null)
+            return 0;
+        else
+            return sectionList.size();
     }
 
     class GridViewHolder extends RecyclerView.ViewHolder {

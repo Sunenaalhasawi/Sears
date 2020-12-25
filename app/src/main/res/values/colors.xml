@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--    <color name="colorPrimary">#161f40</color>-->
+    <!--    <color name="colorPrimaryDark">#161f40</color>-->
+    <!--    <color name="colorAccent">#161f40</color>-->
     <color name="colorPrimary">#161f40</color>
     <color name="colorPrimaryDark">#161f40</color>
-    <color name="colorAccent">#161f40</color>
+    <color name="colorAccent">#DFB600</color>
     <color name="app_blue">#20344F</color>
     <color name="grey">#ACACAC</color>
     <color name="txt_clr_blue">#161f40</color>
@@ -26,4 +29,9 @@
     <color name="dark_grey_txt">#5C5C5C</color>
     <color name="payment_card_select">#EEEEEE</color>
     <color name="txt_dark_yellow">#DFB600</color>
+    <color name="grid_bg">#F9F9F9</color>
+
+    <color name="sub_category_unselected">#F6F6F6</color>
+    <color name="sub_category_selected">#D2D1D7</color>
+    <color name="sub_category_unselected_text_color">#575757</color>
 </resources>

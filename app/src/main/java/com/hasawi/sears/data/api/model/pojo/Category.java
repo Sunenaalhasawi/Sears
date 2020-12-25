@@ -28,7 +28,7 @@ public class Category {
     private String lineAge;
     @SerializedName("categories")
     @Expose
-    private List<Object> categories = null;
+    private List<Category> categories = null;
     @SerializedName("descriptions")
     @Expose
     private List<Description> descriptions = null;
@@ -48,7 +48,7 @@ public class Category {
      * @param categoryId
      * @param parentId
      */
-    public Category(String categoryId, String categoryCode, int depth, boolean active, String parentId, List<Object> categories, List<Description> descriptions) {
+    public Category(String categoryId, String categoryCode, int depth, boolean active, String parentId, List<Category> categories, List<Description> descriptions) {
         super();
         this.categoryId = categoryId;
         this.categoryCode = categoryCode;
@@ -124,15 +124,15 @@ public class Category {
         return this;
     }
 
-    public List<Object> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Object> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    public Category withCategories(List<Object> categories) {
+    public Category withCategories(List<Category> categories) {
         this.categories = categories;
         return this;
     }

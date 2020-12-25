@@ -41,6 +41,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal"
             android:padding="8dp"
+            android:clickable="true"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/lv_filter"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +112,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clickable="true"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/txt_clr_blue"
                 android:orientation="vertical"
+                android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">

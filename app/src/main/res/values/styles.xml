@@ -11,6 +11,7 @@
         <item name="colorPrimary">@color/app_blue</item>
         <item name="colorPrimaryDark">@color/txt_clr_blue</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,7 +19,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="MyToolbarTheme">
+        <item name="colorControlNormal">@color/bronze</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -72,4 +77,17 @@
 
     </style>
 
+    <style name="HomeTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/txt_clr_blue</item>
+        <item name="tabMode">fixed</item>
+        <item name="android:textSize">14sp</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabTextColor">@color/txt_clr_blue</item>
+        <item name="tabSelectedTextColor">@color/txt_clr_blue</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/avantgarde_bold</item>
+
+    </style>
+
+    <color name="bronze">#B79984</color>
 </resources>

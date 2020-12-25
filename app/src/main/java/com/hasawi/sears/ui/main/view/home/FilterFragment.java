@@ -15,7 +15,7 @@ import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.FilterOptionAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
-import com.hasawi.sears.ui.main.view.paging_lib.MainFragment;
+import com.hasawi.sears.ui.main.view.paging_lib.ProductListingFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
 import com.hasawi.sears.utils.ProgressBarDialog;
 
@@ -155,8 +155,8 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     }
 
     private void returnFilterValues(JSONArray filterArray) {
-        MainFragment mainFragment = (MainFragment) getTargetFragment();
-        mainFragment.setFilterData(filterArray);
+        ProductListingFragment productListingFragment = (ProductListingFragment) getTargetFragment();
+        productListingFragment.setFilterData(filterArray);
         dashboardActivity.getSupportFragmentManager().popBackStackImmediate();
 
     }

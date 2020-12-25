@@ -166,7 +166,7 @@ UserProfileFragment extends BaseFragment {
                 case LOADING:
                     break;
                 case ERROR:
-                    Toast.makeText(getActivity(), userProfileResponseResource.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dashboardActivity, userProfileResponseResource.message, Toast.LENGTH_SHORT).show();
                     break;
             }
             fragmentUserProfileBinding.progressBar.setVisibility(View.GONE);

@@ -74,14 +74,18 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Content> {
         productsResponseCall.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                if (response.isSuccessful()) {
-                    callback.onResult(response.body().getData().getProducts().getContent(), null, 2l);
-                    initialLoading.postValue(NetworkState.LOADED);
-                    networkState.postValue(NetworkState.LOADED);
+                try {
+                    if (response.isSuccessful()) {
+                        callback.onResult(response.body().getData().getProducts().getContent(), null, 2l);
+                        initialLoading.postValue(NetworkState.LOADED);
+                        networkState.postValue(NetworkState.LOADED);
 
-                } else {
-                    initialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
-                    networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
+                    } else {
+                        initialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
+                        networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

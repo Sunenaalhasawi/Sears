@@ -12,7 +12,7 @@ import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.SortAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
-import com.hasawi.sears.ui.main.view.paging_lib.MainFragment;
+import com.hasawi.sears.ui.main.view.paging_lib.ProductListingFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
 
 import java.util.ArrayList;
@@ -73,8 +73,8 @@ public class SortFragment extends BaseFragment implements RecyclerviewSingleChoi
     }
 
     private void returnSortValues() {
-        MainFragment mainFragment = (MainFragment) getTargetFragment();
-        mainFragment.setSortData(selectedSort);
+        ProductListingFragment productListingFragment = (ProductListingFragment) getTargetFragment();
+        productListingFragment.setSortData(selectedSort);
         dashboardActivity.getSupportFragmentManager().popBackStackImmediate();
     }
 

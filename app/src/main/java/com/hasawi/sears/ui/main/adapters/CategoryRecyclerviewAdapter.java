@@ -27,6 +27,8 @@ public class CategoryRecyclerviewAdapter extends RecyclerView.Adapter<CategoryRe
 
     public CategoryRecyclerviewAdapter(Context context, ArrayList<Category> categories) {
         this.categoryArrayList = categories;
+        if (categoryArrayList == null)
+            categoryArrayList = new ArrayList<>();
         this.context = context;
     }
 
@@ -44,17 +46,21 @@ public class CategoryRecyclerviewAdapter extends RecyclerView.Adapter<CategoryRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Category categoryItem = categoryArrayList.get(position);
+        try {
+            Category categoryItem = categoryArrayList.get(position);
 //        holder.categoryBinding.imageCategory.setImageDrawable(context.getResources().getDrawable());
-        Glide.with(context)
-                .load(categoryItem.getDescriptions().get(0).getImageUrl())
-                .centerCrop()
-                .into(holder.categoryBinding.imageCategory);
-        holder.categoryBinding.tvCategory.setText(categoryItem.getDescriptions().get(0).getCategoryName());
-        if (sSelected == position) {
-            selectItem(holder, categoryItem);
-        } else {
-            unselectItem(holder, categoryItem);
+            Glide.with(context)
+                    .load(categoryItem.getDescriptions().get(0).getImageUrl())
+                    .centerCrop()
+                    .into(holder.categoryBinding.imageCategory);
+            holder.categoryBinding.tvCategory.setText(categoryItem.getDescriptions().get(0).getCategoryName());
+            if (sSelected == position) {
+                selectItem(holder, categoryItem);
+            } else {
+                unselectItem(holder, categoryItem);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -79,7 +85,10 @@ public class CategoryRecyclerviewAdapter extends RecyclerView.Adapter<CategoryRe
 
     @Override
     public int getItemCount() {
-        return categoryArrayList.size();
+        if (categoryArrayList == null)
+            return 0;
+        else
+            return categoryArrayList.size();
     }
 
     public void setOnItemClickListener(RecyclerviewSingleChoiceClickListener clickListener) {

@@ -26,9 +26,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/white"
                 android:paddingRight="8dp"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                android:theme="@style/MyToolbarTheme"
                 app:labelVisibilityMode="unlabeled"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -45,25 +45,72 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_sears_logo" />
+                    android:src="@drawable/sears_logo" />
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/fragmentHome"
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/fragmentHome"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:visibility="visible"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">-->
+        <!--            &lt;!&ndash;            <fragment&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:layout_height="match_parent"&ndash;&gt;-->
+        <!--            &lt;!&ndash;                android:name="com.hasawi.sears.ui.main.view.paging_lib.MainFragment"/>&ndash;&gt;-->
+        <!--        </FrameLayout>-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lvHome"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-            <!--            <fragment-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:name="com.hasawi.sears.ui.main.view.paging_lib.MainFragment"/>-->
-        </FrameLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutCategories"
+                style="@style/HomeTabLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="fill"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorHeight="3dp"
+                app:tabMaxWidth="0dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/black" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayoutCategories">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPagerHomeTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:id="@+id/fragment_replacer"
@@ -124,6 +171,24 @@
             app:menu="@menu/navigation">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                layout="@layout/fragment_dialog_loading_indicator"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

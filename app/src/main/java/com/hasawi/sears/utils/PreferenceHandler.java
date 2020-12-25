@@ -43,6 +43,7 @@ public class PreferenceHandler {
     public static final String LOGIN_USER_CART_ID = "cart_id";
     public static final String LOGIN_USER_SELECTED_ADDRESS_ID = "selected_address_id";
     public static final String LOGIN_USER_SELECTED_SHIPPING_MODE_ID = "selected_shipping_mode_id";
+    public static final String HAS_CATEGORY_PAGE_SHOWN = "has_category_page_shown";
 
     private final Context context;
     String selected = "";

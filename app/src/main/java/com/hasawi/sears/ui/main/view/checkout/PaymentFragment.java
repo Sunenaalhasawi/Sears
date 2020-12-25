@@ -139,7 +139,7 @@ public class PaymentFragment extends BaseFragment {
                     Gson gson = new Gson();
                     String orderConfirmationResponse = gson.toJson(orderResponseResource.data);
                     bundle.putString("order_confirmed_response", orderConfirmationResponse);
-                    dashboardActivity.showBackButton(true, true);
+                    dashboardActivity.showBackButton(true, false);
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), bundle, true, false);
                     break;
                 case LOADING:

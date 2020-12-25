@@ -8,6 +8,7 @@ import com.hasawi.sears.data.api.response.ChangePasswordResponse;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
 import com.hasawi.sears.data.api.response.DeleteAddressResponse;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
+import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.data.api.response.ForgotPasswordResponse;
 import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
@@ -67,6 +68,9 @@ public interface ApiInterface {
 
     @GET("categories/tree")
     Call<MainCategoryResponse> getMainCategories();
+
+    @GET("shop/landing/android/new")
+    Call<DynamicUiResponse> getDynamicUiDataHomePage();
 
     @FormUrlEncoded
     @POST("")

@@ -9,17 +9,6 @@
         android:id="@+id/nav_home"
         android:name="com.hasawi.sears.ui.main.view.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_product_listing" />
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.hasawi.sears.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.hasawi.sears.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>

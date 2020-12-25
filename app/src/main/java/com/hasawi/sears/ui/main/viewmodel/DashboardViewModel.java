@@ -7,15 +7,25 @@ import androidx.lifecycle.ViewModel;
 
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.Resource;
+import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
+import com.hasawi.sears.data.api.response.DynamicUiResponse;
+import com.hasawi.sears.data.api.response.MainCategoryResponse;
+import com.hasawi.sears.data.api.response.ProductResponse;
+import com.hasawi.sears.data.repository.DynamicDataRepository;
 import com.hasawi.sears.data.repository.ProductRepository;
 import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardViewModel extends ViewModel {
     ArrayList<NavigationMenuItem> menuItemArrayList;
@@ -24,10 +34,12 @@ public class DashboardViewModel extends ViewModel {
     ArrayList<Content> wishlistItems = new ArrayList<>();
     ArrayList<Content> cartedItems = new ArrayList<>();
     ProductRepository productRepository;
+    DynamicDataRepository dynamicDataRepository;
     MutableLiveData<SearchProductListResponse> searchProductListResponseMutableLiveData = new MutableLiveData<>();
 
     public DashboardViewModel() {
         this.productRepository = new ProductRepository();
+        dynamicDataRepository = new DynamicDataRepository();
     }
 
     public MutableLiveData<Resource<SearchProductListResponse>> searchProducts(String query) {
@@ -88,4 +100,40 @@ public class DashboardViewModel extends ViewModel {
         cartedItems.add(product);
         cartedProducts.setValue(cartedItems);
     }
+
+    public MutableLiveData<Resource<ProductResponse>> callProductDataApi(String categoryId, String page_no) {
+
+        RequestBody body = ProductRepository.addInputParams(categoryId, null);
+        MutableLiveData<Resource<ProductResponse>> generalMutsbleLiveData = new MutableLiveData<>();
+        Call<ProductResponse> productsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getProductsList(body, page_no);
+        productsResponseCall.enqueue(new Callback<ProductResponse>() {
+            @Override
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body() != null)
+                        generalMutsbleLiveData.setValue(Resource.success(response.body()));
+                } else {
+                    generalMutsbleLiveData.setValue(Resource.error("Network Error !", null));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
+                generalMutsbleLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return generalMutsbleLiveData;
+    }
+
+
+    public MutableLiveData<Resource<MainCategoryResponse>> getMainCateogries() {
+        return dynamicDataRepository.getMainCategories();
+    }
+
+    public MutableLiveData<Resource<DynamicUiResponse>> getDynamicUiHome() {
+        return dynamicDataRepository.getDynamicUiDataHome();
+    }
+
+
 }

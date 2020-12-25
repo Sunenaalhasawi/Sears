@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -14,7 +13,7 @@ import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.model.pojo.Content;
-import com.hasawi.sears.databinding.FragmentHomeBinding;
+import com.hasawi.sears.databinding.FragmentProductListingBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.CategoryRecyclerviewAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
@@ -36,7 +35,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ProductListingFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int SET_SORT_REQUEST_CODE = 200;
     private static final int SET_FILTER_REQUEST_CODE = 201;
     CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
@@ -53,30 +52,43 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
     ProgressBarDialog progressBarDialog;
     private ProductPagedListAdapter productPagedListAdapter;
     private SharedHomeViewModel sharedHomeViewModel;
-    private FragmentHomeBinding fragmentHomeBinding;
+    private FragmentProductListingBinding fragmentProductListingBinding;
     private List<Category> categoryArrayList = new ArrayList<>();
     private int currentPage = 0;
     private LoadingIndicator loadingIndicator;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_product_listing;
     }
 
     @Override
     protected void setup() {
-        fragmentHomeBinding = (FragmentHomeBinding) viewDataBinding;
+        fragmentProductListingBinding = (FragmentProductListingBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getBaseActivity();
         sharedHomeViewModel = new ViewModelProvider(getBaseActivity()).get(SharedHomeViewModel.class);
         fetchDataFromSharedPref();
-//        fragmentHomeBinding.swipeRefreshProducts.setOnRefreshListener(this);
-        fragmentHomeBinding.lvSort.setOnClickListener(this);
-        fragmentHomeBinding.lvFilter.setOnClickListener(this);
+//        fragmentProductListingBinding.swipeRefreshProducts.setOnRefreshListener(this);
+        fragmentProductListingBinding.lvSort.setOnClickListener(this);
+        fragmentProductListingBinding.lvFilter.setOnClickListener(this);
+        // Redirecting from home sub category
+        try {
+            Bundle bundle = getArguments();
+            currentSelectedCategory = bundle.getString("category_id");
+            String currentCategoryName = bundle.getString("category_name");
+            fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
+            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory);
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentCategoryName);
+            fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (!Connectivity.isConnected(dashboardActivity)) {
             showNoInternetDialog();
         } else {
             setupProductRecyclerview();
-            setupCategories();
+            getSortStrings();
             loadFilterData(filterArray);
         }
 
@@ -127,26 +139,26 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
             PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
             currentSelectedCategory = preferenceHandler.getData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
             String currentCategoryName = preferenceHandler.getData(PreferenceHandler.LOGIN_CATEGORY_NAME, "");
-            fragmentHomeBinding.tvTopDealsHeading.setText(currentCategoryName);
+            fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setupCategories() {
+    private void getSortStrings() {
         showProgressBarDialog(true);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        fragmentHomeBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
-        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
+//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+//        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
+//        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
         categoryRecyclerviewAdapter.setOnItemClickListener(this);
-        fragmentHomeBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+//        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
         sharedHomeViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
             switch (productResponseResource.status) {
                 case SUCCESS:
-                    categoryArrayList = productResponseResource.data.getData().getCategories();
+//                    categoryArrayList = productResponseResource.data.getData().getCategories();
                     sortStrings = productResponseResource.data.getData().getSortStrings();
-                    categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-                    fragmentHomeBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+//                    categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
+//                    fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
                     break;
                 case LOADING:
                     break;
@@ -180,7 +192,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
 
     private void setupProductRecyclerview() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        fragmentHomeBinding.recyclerviewProducts.setLayoutManager(gridLayoutManager);
+        fragmentProductListingBinding.recyclerviewProducts.setLayoutManager(gridLayoutManager);
         loadProductsFromApi(currentSelectedCategory, null, currentPage, "");
     }
 
@@ -202,7 +214,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
             productPagedListAdapter.setNetworkState(networkState);
         });
 
-        fragmentHomeBinding.recyclerviewProducts.setAdapter(productPagedListAdapter);
+        fragmentProductListingBinding.recyclerviewProducts.setAdapter(productPagedListAdapter);
     }
 
     private void initializeProductAdapter() {
@@ -278,13 +290,12 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
     public void callAddToCartApi(String jsonParamString) {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-        fragmentHomeBinding.progressBar.setVisibility(View.VISIBLE);
+        fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
 
         sharedHomeViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
-            fragmentHomeBinding.progressBar.setVisibility(View.GONE);
+            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
             switch (addToCartResponse.status) {
                 case SUCCESS:
-                    dashboardActivity.setCartCount(1);
                     preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
                     CartDialog cartDialog = new CartDialog(dashboardActivity);
                     cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
@@ -392,7 +403,7 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
             @Override
             public void positiveClick() {
                 loadProductsFromApi(currentSelectedCategory, null, currentPage, "");
-                setupCategories();
+//                setupCategories();
                 loadFilterData(filterArray);
 
             }
@@ -407,9 +418,9 @@ public class MainFragment extends BaseFragment implements RecyclerviewSingleChoi
 
     private void showProgressBarDialog(boolean shouldShow) {
         if (shouldShow)
-            fragmentHomeBinding.progressBar.setVisibility(View.VISIBLE);
+            fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
         else
-            fragmentHomeBinding.progressBar.setVisibility(View.GONE);
+            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
 
     }
 
