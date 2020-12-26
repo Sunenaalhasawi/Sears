@@ -48,7 +48,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     protected void setup() {
         fragmentCartBinding = (FragmentCartBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
-        dashboardActivity.showBackButton(true, false);
+        dashboardActivity.handleActionMenuBar(true, false, "My Cart");
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         fragmentCartBinding.recyclerviewCart.setLayoutManager(new LinearLayoutManager(getActivity()));
         cartAdapter = new CartAdapter(dashboardActivity) {
@@ -101,8 +101,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvContinueOrder:
-                dashboardActivity.showBackButton(true, false);
-                dashboardActivity.setTitle("Checkout");
+                dashboardActivity.handleActionMenuBar(true, false, "Checkout");
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new CheckoutFragment(), null, true, false);
                 break;
             case R.id.btnShopNow:
@@ -110,7 +109,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 for (int i = 0; i < fragmentCount; i++) {
                     getParentFragmentManager().popBackStackImmediate();
                 }
-                dashboardActivity.showBackButton(false, true);
+                dashboardActivity.handleActionMenuBar(false, true, "");
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils;
+package com.hasawi.sears.utils.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +9,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import com.hasawi.sears.R;
-import com.hasawi.sears.databinding.LayoutDialogDisabledCartBinding;
+import com.hasawi.sears.databinding.LayoutDialogChooseSizeFirstBinding;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 
-public class DisabledCartDialog extends DialogFragment {
+public class ChooseSizeDialog extends DialogFragment {
 
     DashboardActivity dashboardActivity;
 
-    public DisabledCartDialog(DashboardActivity dashboardActivity) {
+    public ChooseSizeDialog(DashboardActivity dashboardActivity) {
         this.dashboardActivity = dashboardActivity;
     }
 
@@ -28,15 +28,15 @@ public class DisabledCartDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LayoutDialogDisabledCartBinding dialogDisabledCartBinding = DataBindingUtil.inflate(inflater, R.layout.layout_dialog_disabled_cart, null, true);
-        dialogDisabledCartBinding.btnOk.setOnClickListener(new View.OnClickListener() {
+        LayoutDialogChooseSizeFirstBinding chooseSizeFirstBinding = DataBindingUtil.inflate(inflater, R.layout.layout_dialog_choose_size_first, null, true);
+        chooseSizeFirstBinding.btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
 
-        return dialogDisabledCartBinding.getRoot();
+        return chooseSizeFirstBinding.getRoot();
     }
 
 

@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils;
+package com.hasawi.sears.utils.dialogs;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;

@@ -17,7 +17,7 @@ import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.paging_lib.ProductListingFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
-import com.hasawi.sears.utils.ProgressBarDialog;
+import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import org.json.JSONArray;
 

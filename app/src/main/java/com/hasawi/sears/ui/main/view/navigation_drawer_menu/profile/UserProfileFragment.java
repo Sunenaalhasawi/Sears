@@ -100,7 +100,7 @@ UserProfileFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new ChangePasswordFragment(), null, true, false);
-                dashboardActivity.showBackButton(true, false);
+                dashboardActivity.handleActionMenuBar(true, false, "Change Password");
             }
         });
 

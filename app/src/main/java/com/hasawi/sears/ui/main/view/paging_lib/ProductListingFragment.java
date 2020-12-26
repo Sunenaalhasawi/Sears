@@ -23,12 +23,12 @@ import com.hasawi.sears.ui.main.view.home.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.home.SortFragment;
 import com.hasawi.sears.ui.main.view.home.WishListFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
-import com.hasawi.sears.utils.CartDialog;
 import com.hasawi.sears.utils.Connectivity;
-import com.hasawi.sears.utils.DialogGeneral;
 import com.hasawi.sears.utils.LoadingIndicator;
 import com.hasawi.sears.utils.PreferenceHandler;
-import com.hasawi.sears.utils.ProgressBarDialog;
+import com.hasawi.sears.utils.dialogs.CartDialog;
+import com.hasawi.sears.utils.dialogs.DialogGeneral;
+import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import org.json.JSONArray;
 
@@ -150,7 +150,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 //        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 //        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
 //        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-        categoryRecyclerviewAdapter.setOnItemClickListener(this);
+//        categoryRecyclerviewAdapter.setOnItemClickListener(this);
 //        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
         sharedHomeViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
             switch (productResponseResource.status) {
@@ -227,7 +227,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
                     callWishlistApi(product.getProductId(), product, checked);
                 } else {
                     preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, product.getProductId());
-                    dashboardActivity.showBackButton(true, true);
+                    dashboardActivity.handleActionMenuBar(true, true, "Wishlist");
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new WishListFragment(), null, true, false);
                 }
             }
@@ -243,8 +243,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
                     Bundle bundle = new Bundle();
                     bundle.putString("selected_product_object", objectString);
 
-                    dashboardActivity.showBackButton(true, false);
-                    dashboardActivity.setTitle(selectedProduct.getDescriptions().get(0).getProductName());
+                    dashboardActivity.handleActionMenuBar(true, false, selectedProduct.getDescriptions().get(0).getProductName());
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 
                 } catch (Exception e) {
@@ -345,7 +344,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     public void onResume() {
         super.onResume();
         CategoryRecyclerviewAdapter.setsSelected(-1);
-        dashboardActivity.showBackButton(false, true);
+        dashboardActivity.handleActionMenuBar(false, true, "");
         dashboardActivity.setTitle("");
     }
 
@@ -364,7 +363,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     @Override
     public void onItemClickListener(int position, View view) {
 
-        categoryRecyclerviewAdapter.selectedItem();
+//        categoryRecyclerviewAdapter.selectedItem();
         currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
         refreshProductList(currentSelectedCategory, null, "");
         loadFilterData(filterArray);

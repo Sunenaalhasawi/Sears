@@ -74,13 +74,13 @@ public class HomeFragment extends BaseFragment {
                         Bundle productBundle = new Bundle();
                         productBundle.putString("product_object_id", callback);
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), productBundle, true, false);
-                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.handleActionMenuBar(true, false, "");
 
                     } else if (type.equalsIgnoreCase("E")) {
                         Bundle webviewBundle = new Bundle();
                         webviewBundle.putString("url", callback);
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new WebviewFragment(), webviewBundle, true, false);
-                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.handleActionMenuBar(true, false, "");
 
                     }
                 }
@@ -141,13 +141,13 @@ public class HomeFragment extends BaseFragment {
                         Bundle productBundle = new Bundle();
                         productBundle.putString("product_object_id", callback);
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), productBundle, true, false);
-                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.handleActionMenuBar(true, false, "");
 
                     } else if (type.equalsIgnoreCase("E")) {
                         Bundle webviewBundle = new Bundle();
                         webviewBundle.putString("url", callback);
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new WebviewFragment(), webviewBundle, true, false);
-                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.handleActionMenuBar(true, false, "");
 
                     }
                 }

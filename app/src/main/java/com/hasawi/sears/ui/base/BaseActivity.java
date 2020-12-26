@@ -26,9 +26,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
 import com.hasawi.sears.R;
 import com.hasawi.sears.utils.LoadingIndicator;
-import com.hasawi.sears.utils.ProgressBarDialog;
+import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import java.util.ArrayList;
 
@@ -234,6 +239,30 @@ public abstract class BaseActivity extends AppCompatActivity {
         metrics.scaledDensity = configuration.fontScale * metrics.density;
         getBaseContext().getResources().updateConfiguration(configuration, metrics);
 
+    }
+
+    public boolean isAlreadyLoggedinWithFacebbok() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        return isLoggedIn;
+    }
+
+
+    public void disconnectFromFacebook() {
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            return; // already logged out
+        }
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                .Callback() {
+            @Override
+            public void onCompleted(GraphResponse graphResponse) {
+
+                LoginManager.getInstance().logOut();
+
+            }
+        }).executeAsync();
     }
 
 //    public void showProgressBarDialog() {

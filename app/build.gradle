@@ -89,7 +89,9 @@ dependencies {
     implementation 'com.android.installreferrer:installreferrer:2.1'
     // google tag manager
 //    implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-core:[8,9)'
+    implementation 'com.facebook.android:facebook-login:[8,9)'
+
 
     // Image slideshow library
     implementation 'com.synnapps:carouselview:0.1.5'

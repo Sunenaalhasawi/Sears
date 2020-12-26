@@ -63,7 +63,7 @@ public class WishListFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("selected_product_object", objectString);
 
-                dashboardActivity.showBackButton(true, false);
+                dashboardActivity.handleActionMenuBar(true, false, "");
                 dashboardActivity.setTitle(selectedProduct.getDescriptions().get(0).getProductName());
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 

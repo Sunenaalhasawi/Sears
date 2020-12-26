@@ -53,8 +53,7 @@ public class OrderHistoryFragment extends BaseFragment {
                     Gson gson = new Gson();
                     String orderObject = gson.toJson(selectedOrder);
                     bundle.putString("order_object", orderObject);
-                    dashboardActivity.showBackButton(true, false);
-                    dashboardActivity.setTitle("Order Details");
+                    dashboardActivity.handleActionMenuBar(true, false, "Order Details");
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderHistoryDetailFragment(), bundle, true, false);
 
                 } catch (Exception e) {

@@ -77,6 +77,12 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
                     subCategoryAdapter = new SubCategoryAdapter(getActivity(), subCategoryArrayList);
                     subCategoryAdapter.setOnItemClickListener(this);
                     fragmentCategoriesBinding.recyclerViewSubCategories.setAdapter(subCategoryAdapter);
+                    if (subCategoryArrayList.size() > 0) {
+                        currentGridList = (ArrayList<Category>) subCategoryArrayList.get(0).getCategories();
+                        categoryGridAdapter = new CategoryGridAdapter(dashboardActivity, currentGridList);
+                        fragmentCategoriesBinding.gridViewCategories.setAdapter(categoryGridAdapter);
+                    }
+
                     break;
                 case LOADING:
                     break;

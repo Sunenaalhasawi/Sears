@@ -54,8 +54,7 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
             case R.id.constraintLayoutReferEarn:
                 break;
             case R.id.constrainLayoutWishlist:
-                dashboardActivity.showBackButton(true, true);
-                dashboardActivity.setTitle("Wishlist");
+                dashboardActivity.handleActionMenuBar(true, true, "Wishlist");
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new WishListFragment(), null, true, false);
                 break;
             case R.id.btn_loginSignup:

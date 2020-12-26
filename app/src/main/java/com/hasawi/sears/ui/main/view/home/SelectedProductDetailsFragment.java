@@ -33,10 +33,10 @@ import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
-import com.hasawi.sears.utils.CartDialog;
-import com.hasawi.sears.utils.ChooseSizeDialog;
-import com.hasawi.sears.utils.DisabledCartDialog;
 import com.hasawi.sears.utils.PreferenceHandler;
+import com.hasawi.sears.utils.dialogs.CartDialog;
+import com.hasawi.sears.utils.dialogs.ChooseSizeDialog;
+import com.hasawi.sears.utils.dialogs.DisabledCartDialog;
 
 import org.json.JSONObject;
 
@@ -77,6 +77,8 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         fragmentSelectedProductDetailsBinding = (FragmentSelectedProductDetailsBinding) viewDataBinding;
         sharedHomeViewModel = new ViewModelProvider(getActivity()).get(SharedHomeViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionMenuBar(true, false, "");
+        dashboardActivity.hideSearchPage();
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
@@ -189,21 +191,25 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void logProductViewEvent(Content currentSelectedProduct) {
-        Bundle itemBundle = new Bundle();
-        itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, currentSelectedProduct.getDescriptions().get(0).getProductName());
-        itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, currentSelectedProduct.getCategories().get(0).getDescriptions().get(0).getCategoryName());
-        itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, currentSelectedProduct.getManufature());
-        itemBundle.putString("category_id", currentSelectedProduct.getCategories().get(0).getCategoryId());
-        itemBundle.putString("product_id", currentSelectedProduct.getProductId());
-        itemBundle.putString("product_type", currentSelectedProduct.getProductType());
-        ArrayList<Bundle> itemParcelableList = new ArrayList<>();
-        itemParcelableList.add(itemBundle);
+        try {
+            Bundle itemBundle = new Bundle();
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, currentSelectedProduct.getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, currentSelectedProduct.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, currentSelectedProduct.getManufature());
+            itemBundle.putString("category_id", currentSelectedProduct.getCategories().get(0).getCategoryId());
+            itemBundle.putString("product_id", currentSelectedProduct.getProductId());
+            itemBundle.putString("product_type", currentSelectedProduct.getProductType());
+            ArrayList<Bundle> itemParcelableList = new ArrayList<>();
+            itemParcelableList.add(itemBundle);
 
-        Bundle analyticsBundle = new Bundle();
-        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, currentSelectedProduct.getOriginalPrice());
-        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
-        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, analyticsBundle);
+            Bundle analyticsBundle = new Bundle();
+            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, currentSelectedProduct.getOriginalPrice());
+            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
+            dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addingProductToCart() {
@@ -419,13 +425,18 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        dashboardActivity.showBottomNavigationBar();
+        dashboardActivity.handleActionMenuBar(false, true, "");
         dashboardActivity.hideSearchPage();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            dashboardActivity.hideSearchPage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void callAddToCartApi(String jsonParamString) {
@@ -438,7 +449,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 case SUCCESS:
                     if (isbuyNow) {
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                        dashboardActivity.showBackButton(true, false);
+                        dashboardActivity.handleActionMenuBar(true, false, "My Cart");
                         dashboardActivity.setTitle("My Cart");
                     } else {
                         CartDialog cartDialog = new CartDialog(dashboardActivity);

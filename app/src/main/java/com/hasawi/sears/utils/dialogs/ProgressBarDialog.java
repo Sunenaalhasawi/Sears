@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils;
+package com.hasawi.sears.utils.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -10,13 +10,13 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -50,6 +50,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     AccessToken facebookAccessToken;
     GraphRequest facebookGraphRequest;
     FacebookCallback<LoginResult> facebookCallback;
+    private AccessTokenTracker accessTokenTracker;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -94,14 +95,17 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                         birthday = object.getString("birthday"); // 01/31/1980 format
                                     }
 
-                                    String fnm = object.getString("first_name");
-                                    String lnm = object.getString("last_name");
+                                    String first_name = object.getString("first_name");
+                                    String last_name = object.getString("last_name");
                                     String mail = object.getString("email");
                                     String gender = object.getString("gender");
                                     String fid = object.getString("id");
+                                    String picture = "https://graph.facebook.com/" + fid + "/picture?type=large";
+
+                                    userRegistration(first_name, last_name, mail);
 //                                    tvdetails.setText("Name: "+fnm+" "+lnm+" \n"+"Email: "+mail+" \n"+"Gender: "+gender+" \n"+"ID: "+fid+" \n"+"Birth Date: "+birthday);
 //                                    aQuery.id(ivpic).image("https://graph.facebook.com/" + fid + "/picture?type=large");
-                                    //https://graph.facebook.com/143990709444026/picture?type=large
+//                                    https://graph.facebook.com/143990709444026/picture?type=large
                                     Log.d("aswwww", "https://graph.facebook.com/" + fid + "/picture?type=large");
 
                                 } catch (JSONException e) {
@@ -126,6 +130,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
             }
         };
+        LoginManager.getInstance().registerCallback(callbackManager, facebookCallback);
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+            }
+        };
     }
 
     @Override
@@ -136,8 +148,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
                 break;
             case R.id.imageViewFacebook:
-                //Todo facebook integration here
-                facebookSignin();
+                if (signinActivity.isAlreadyLoggedinWithFacebbok()) {
+
+                } else
+                    facebookSignin();
                 break;
             case R.id.btn_login:
                 userAuthentication();
@@ -207,7 +221,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onActivityResult(int resultCode, int requestCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == GOOGLE_SIGN_IN) {
@@ -240,64 +254,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void facebookSignin() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-        LoginManager.getInstance().registerCallback(callbackManager, facebookCallback);
-//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d("response Success", "Login");
-//                facebookAccessToken = loginResult.getAccessToken();
-//                Log.d("response access_token", facebookAccessToken.toString());
-//                facebookGraphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-//                    @Override
-//                    public void onCompleted(JSONObject object, GraphResponse response) {
-//                        String email = "";
-//                        JSONObject json = response.getJSONObject();
-//                        try {
-//                            if (json != null) {
-//                                Log.d("response", json.toString());
-//                                try {
-//                                    email = json.getString("email");
-//                                } catch (Exception e) {
-//                                    Toast.makeText(getContext(), "Sorry!!! Your email is not verified on facebook.", Toast.LENGTH_LONG).show();
-//                                    return;
-//                                }
-//                                String facebook_uid = json.getString("id");
-////                                social_id = json.getString("id");
-//                                String first_name = json.getString("first_name");
-//                                String last_name = json.getString("last_name");
-//                                String name = json.getString("name");
-//                                String profileImage = "https://graph.facebook.com/" + facebook_uid + "/picture?type=large";
-//                                userRegistration(first_name, last_name, email);
-//
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            Log.d("response problem", "problem" + e.getMessage());
-//                        }
-//                    }
-//                });
-//            }
-//
-//
-//            @Override
-//            public void onCancel() {
-//                Toast.makeText(getActivity(), "Login Cancel", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
-
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_birthday"));
     }
 
-    private boolean isAlreadyLoggedinWithFacebbok() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        return isLoggedIn;
-    }
 
     private void userRegistration(String firstName, String lastName, String email) {
 
@@ -345,22 +304,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     }
 
-    public void disconnectFromFacebook() {
-
-        if (AccessToken.getCurrentAccessToken() == null) {
-            return; // already logged out
-        }
-
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                .Callback() {
-            @Override
-            public void onCompleted(GraphResponse graphResponse) {
-
-                LoginManager.getInstance().logOut();
-
-            }
-        }).executeAsync();
-    }
 }
 
 

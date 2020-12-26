@@ -93,8 +93,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                         shippingAddressAdapter = new ShippingAddressAdapter(getContext(), (ArrayList<Address>) addressList) {
                             @Override
                             public void onEditClicked(Address address) {
-                                dashboardActivity.showBackButton(true, false);
-                                dashboardActivity.setTitle("");
+                                dashboardActivity.handleActionMenuBar(true, false, "");
                                 Gson gson = new Gson();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("address", gson.toJson(address));
@@ -206,12 +205,11 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvAddAddress:
-                dashboardActivity.showBackButton(true, false);
-                dashboardActivity.setTitle("");
+                dashboardActivity.handleActionMenuBar(true, false, "");
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new AddShippingAddressFragment(), null, true, false);
                 break;
             case R.id.tvPurchaseMore:
-                dashboardActivity.showBackButton(false, true);
+                dashboardActivity.handleActionMenuBar(false, true, "");
                 int fragmentCount = getParentFragmentManager().getBackStackEntryCount();
                 for (int i = 0; i < fragmentCount; i++) {
                     getParentFragmentManager().popBackStackImmediate();
@@ -247,8 +245,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     String paymentModeString = gson.toJson(selectedPaymentMode);
                     Bundle bundle = new Bundle();
                     bundle.putString("payment_mode", paymentModeString);
-                    dashboardActivity.showBackButton(true, false);
-                    dashboardActivity.setTitle("Payment");
+                    dashboardActivity.handleActionMenuBar(true, false, "Payment");
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new PaymentFragment(), bundle, true, false);
 
                 }

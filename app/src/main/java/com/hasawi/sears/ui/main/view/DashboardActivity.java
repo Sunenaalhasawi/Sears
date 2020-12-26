@@ -1,7 +1,6 @@
 package com.hasawi.sears.ui.main.view;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
@@ -23,8 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.facebook.AccessToken;
-import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -84,7 +80,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private boolean shouldLoadHomeFragOnBackPress = true;
     private DashboardViewModel dashboardViewModel;
     private CharSequence mTitle;
-    private List<ProductSearch> productSearchList;
+    private List<ProductSearch> productSearchList = new ArrayList<>();
     private SearchProductAdapter searchProductAdapter;
     ActionBar actionBar;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -103,13 +99,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setSupportActionBar(activityDashboardBinding.appBarMain.toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setHomeAsUpIndicator(R.drawable.ic_back_bronze);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-        hideToolBarTitleShowLogo();
-
         try {
             dataBundle = getIntent().getExtras();
         } catch (Exception e) {
@@ -122,28 +111,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         setUpNavigationView();
         activityDashboardBinding.appBarMain.bottomNavigationView.setOnNavigationItemSelectedListener(this);
         activityDashboardBinding.appBarMain.bottomNavigationView.setItemIconTintList(null);
-        activityDashboardBinding.appBarMain.searchView.recyclerSearchProducts.setLayoutManager(new LinearLayoutManager(this));
-        activityDashboardBinding.appBarMain.searchView.recyclerSearchProducts.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                try {
-                    ProductSearch selectedProduct = productSearchList.get(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("product_object_id", selectedProduct.getObjectID());
-                    bundle.putBoolean("is_search", true);
-                    showBackButton(true, false);
-                    replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
-                    if (searchView != null)
-                        searchView.clearFocus();
-//                    if (searchItem != null)
-//                        searchItem.collapseActionView();
-                    activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
 
 
         PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
@@ -167,7 +134,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
         });
 
-
     }
 
     private void loadMenuFragments(int position) {
@@ -180,36 +146,33 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 if (menuItem.isEnabled()) {
                     UserProfileFragment profileFragment = new UserProfileFragment();
                     replaceFragment(R.id.fragment_replacer, profileFragment, null, true, false);
-                    setTitle("My Profile");
-                    showBackButton(true, false);
+                    handleActionMenuBar(true, false, "My Profile");
                 }
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_ORDERS:
                 replaceFragment(R.id.fragment_replacer, new OrderHistoryFragment(), null, true, false);
                 setTitle("My Orders");
-                showBackButton(true, false);
+                handleActionMenuBar(true, false, "My Orders");
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_WISHLIST:
                 if (menuItem.isEnabled()) {
                     WishListFragment wishListFragment = new WishListFragment();
                     replaceFragment(R.id.fragment_replacer, wishListFragment, null, true, false);
-                    setTitle("Wishlist");
-                    showBackButton(true, true);
+                    handleActionMenuBar(true, true, "Wishlist");
                 }
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_SIGNOUT:
-                if (menuItem.isEnabled()) {
-                    if (isAlreadyLoggedinWithFacebbok())
-                        LoginManager.getInstance().logOut();
-                    clearPreferences();
-                    closeDrawer();
-                    Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
-                    startActivity(intent);
-                    this.finish();
-                }
+                if (isAlreadyLoggedinWithFacebbok())
+                    disconnectFromFacebook();
+                clearPreferences();
+                closeDrawer();
+                Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
+                startActivity(intent);
+                this.finish();
+
                 break;
             default:
                 break;
@@ -217,13 +180,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
         }
     }
-
-    private boolean isAlreadyLoggedinWithFacebbok() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        return isLoggedIn;
-    }
-
 
     private void clearPreferences() {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getApplicationContext(), PreferenceHandler.TOKEN_LOGIN);
@@ -275,6 +231,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     }
 
     private void setUpNavigationView() {
+        actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(false);
+
         menuItemArrayList = dashboardViewModel.getMenuItemsList(this);
         activityDashboardBinding.listviewMenu.setAdapter(new NavigationDrawerAdapter(
                 this,
@@ -309,13 +268,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 super.onDrawerOpened(drawerView);
             }
         };
-//        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        showBackButton(false, false);
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.menu, this.getTheme());
-        actionBarDrawerToggle.setHomeAsUpIndicator(drawable);
-//        actionBar=getSupportActionBar();
-//        actionBar.setHomeAsUpIndicator(drawable);
         actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -334,6 +286,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
         //Setting the actionbarToggle to drawer layout
         activityDashboardBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        handleActionMenuBar(false, true, "");
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
     }
@@ -341,9 +294,30 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard, menu);
+        activityDashboardBinding.appBarMain.recyclerSearchProducts.setLayoutManager(new LinearLayoutManager(this));
+        activityDashboardBinding.appBarMain.recyclerSearchProducts.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                try {
+                    if (searchView != null) {
+                        searchView.clearFocus();
+                        searchItem.collapseActionView();
+                    }
+                    activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
+                    ProductSearch selectedProduct = productSearchList.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("product_object_id", selectedProduct.getObjectID());
+                    bundle.putBoolean("is_search", true);
+                    handleActionMenuBar(true, false, "");
+                    replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
         searchItem = menu.findItem(R.id.action_search);
-        searchView =
-                (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("What are you looking for?");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -357,30 +331,45 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
             @Override
             public boolean onQueryTextChange(String query) {
-                activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.VISIBLE);
-                activityDashboardBinding.appBarMain.searchView.shimmerViewContainer.startShimmer();
-                activityDashboardBinding.appBarMain.searchView.shimmerViewContainer.setVisibility(View.VISIBLE);
-
-                dashboardViewModel.searchProducts(query).observe(DashboardActivity.this, searchProductListResponse -> {
-                    activityDashboardBinding.appBarMain.searchView.shimmerViewContainer.stopShimmer();
-                    activityDashboardBinding.appBarMain.searchView.shimmerViewContainer.setVisibility(View.GONE);
-                    switch (searchProductListResponse.status) {
-                        case SUCCESS:
-                            productSearchList = searchProductListResponse.data.getData().getProductSearchs();
-                            searchProductAdapter = new SearchProductAdapter(getApplicationContext(), productSearchList);
-                            activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.VISIBLE);
-                            activityDashboardBinding.appBarMain.searchView.recyclerSearchProducts.setAdapter(searchProductAdapter);
-                            break;
-                        case LOADING:
-                            break;
-                        case ERROR:
-                            Toast.makeText(DashboardActivity.this, searchProductListResponse.message, Toast.LENGTH_SHORT).show();
-                            break;
+                if (!query.equalsIgnoreCase("")) {
+                    if (activityDashboardBinding.appBarMain.fragmentReplaceSearchView.getVisibility() != View.VISIBLE) {
+                        activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.VISIBLE);
                     }
-                });
+                    dashboardViewModel.searchProducts(query).observe(DashboardActivity.this, searchProductListResponse -> {
+                        switch (searchProductListResponse.status) {
+                            case SUCCESS:
+                                productSearchList.clear();
+                                productSearchList = searchProductListResponse.data.getData().getProductSearchs();
+                                searchProductAdapter = new SearchProductAdapter(getApplicationContext(), productSearchList);
+                                activityDashboardBinding.appBarMain.recyclerSearchProducts.setAdapter(searchProductAdapter);
+                                searchProductAdapter.notifyDataSetChanged();
+                                break;
+                            case LOADING:
+                                break;
+                            case ERROR:
+                                Toast.makeText(DashboardActivity.this, searchProductListResponse.message, Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    });
+                }
                 return false;
             }
         });
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -392,52 +381,36 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 for (int i = 0; i < fragmentCount; i++) {
                     getSupportFragmentManager().popBackStackImmediate();
                 }
-//                callHomeFragment();
+                handleActionMenuBar(false, true, "");
                 return true;
             case R.id.navigation_wishlist:
                 WishListFragment wishlistFragment = new WishListFragment();
                 replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
-                showBackButton(true, true);
-                setTitle("Wishlist");
+                handleActionMenuBar(true, true, "Wishlist");
                 return true;
             case R.id.navigation_categories:
+                int count = getSupportFragmentManager().getBackStackEntryCount();
+                for (int i = 0; i < count; i++) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
                 replaceFragment(R.id.framelayout_categories, new CategoryFragment(), null, true, false);
                 return true;
             case R.id.navigation_cart:
                 MyCartFragment myCartFragment = new MyCartFragment();
                 replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
-                showBackButton(true, false);
-                setTitle("My Cart");
+                handleActionMenuBar(true, true, "My Cart");
                 return true;
             case R.id.navigation_profile:
                 UserAccountFragment userAccountFragment = new UserAccountFragment();
                 replaceFragment(R.id.fragment_replacer, userAccountFragment, null, true, false);
-                showBackButton(true, true);
-                setTitle("My Account");
+                handleActionMenuBar(true, true, "My Account");
                 return true;
             default:
                 return true;
         }
 
-    }
-
-    public void hideBottomNavigationBar() {
-        activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.GONE);
-    }
-
-    public void showBottomNavigationBar() {
-        activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.VISIBLE);
-    }
-
-    public void hideToolBarTitleShowLogo() {
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.VISIBLE);
-    }
-
-    public void hideSearsLogo() {
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.GONE);
     }
 
     @Override
@@ -450,75 +423,108 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }
     }
 
-    void setupToolbar() {
-        setSupportActionBar(activityDashboardBinding.appBarMain.toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(true);
-    }
+//    public void showBackButton(boolean isBack, boolean showBottomBar) {
+//        try {
+//            if (isBack) {
+//                hideSearsLogo();
+//                activityDashboardBinding.appBarMain.imageViewBack.setVisibility(View.VISIBLE);
+//            } else {
+//                activityDashboardBinding.appBarMain.imageViewBack.setVisibility(View.GONE);
+//            }
+//            if (showBottomBar)
+//                showBottomNavigationBar();
+//            else
+//                hideBottomNavigationBar();
+//
+//            actionBarDrawerToggle.setDrawerIndicatorEnabled(!isBack);
+////            getSupportActionBar().setDisplayHomeAsUpEnabled(isBack);
+//            actionBarDrawerToggle.syncState();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void showBackButton(boolean isBack, boolean showBottomBar) {
-        try {
-            if (isBack) {
-                hideSearsLogo();
-            }
-            if (showBottomBar)
-                showBottomNavigationBar();
-            else
-                hideBottomNavigationBar();
-
-            actionBarDrawerToggle.setDrawerIndicatorEnabled(!isBack);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(isBack);
-            actionBarDrawerToggle.syncState();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void handleActionMenuBar(boolean showBackbutton, boolean showBottomNavigationMenu, String title) {
+//         Showing back arrow icon. true means show and false means do not show
+        getSupportActionBar().setDisplayHomeAsUpEnabled(showBackbutton);
+        //Showing title
+        getSupportActionBar().setDisplayShowTitleEnabled(showBackbutton);
+        // Showing or hiding ,menu icon
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(!showBackbutton);
+        if (showBackbutton)
+            activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.GONE);
+        else
+            activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.VISIBLE);
+        if (showBottomNavigationMenu)
+            activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.VISIBLE);
+        else
+            activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.GONE);
+        if (showBackbutton) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_bronze);
+        } else
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        if (showBackbutton)
+            setTitle(title);
+        else
+            setTitle("");
+        actionBarDrawerToggle.syncState();
     }
 
     @Override
     public void onBackPressed() {
-        hideToolBarTitleShowLogo();
-
-        if (activityDashboardBinding.appBarMain.fragmentReplaceSearchView.getVisibility() == View.VISIBLE)
-            activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
         if (activityDashboardBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             activityDashboardBinding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            setTitle(getTitle());
-            BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
-            if (currentFragment instanceof WishListFragment) {
-                showBackButton(false, true);
-            } else if (currentFragment instanceof MyCartFragment) {
-                showBackButton(false, true);
-            } else if (currentFragment instanceof UserAccountFragment) {
-                showBackButton(false, true);
-            } else if (currentFragment instanceof SelectedProductDetailsFragment) {
-                showBackButton(false, true);
-            } else if (currentFragment instanceof PaymentFragment) {
-                showBackButton(true, false);
-            } else if (currentFragment instanceof CheckoutFragment) {
-                showBackButton(true, false);
-            } else if (currentFragment instanceof UserProfileFragment) {
-                showBackButton(false, true);
-            } else if (currentFragment instanceof OrderHistoryFragment) {
-                showBackButton(false, true);
+        } else if (activityDashboardBinding.appBarMain.fragmentReplaceSearchView.getVisibility() == View.VISIBLE) {
+            if (searchView != null) {
+                searchView.setIconified(true);
+                searchView.onActionViewCollapsed();
+                searchView.clearFocus();
+                activityDashboardBinding.appBarMain.toolbar.collapseActionView();
+                activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
             }
+
+        } else {
             FragmentManager fm = getSupportFragmentManager();
-//            BaseFragment categoryFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
             if (fm.getBackStackEntryCount() > 0) {
-//                if (categoryFragment instanceof CategoryFragment)
-//                    super.onBackPressed();
-//                else
                 fm.popBackStack();
             } else {
                 super.onBackPressed();
             }
+            setTitle(getTitle());
+            BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
+            if (currentFragment instanceof WishListFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof MyCartFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof UserAccountFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof SelectedProductDetailsFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof PaymentFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof CheckoutFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof UserProfileFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof OrderHistoryFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            }
+
 
         }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
+        // Back arrow on click here
         onBackPressed();
         return true;
     }

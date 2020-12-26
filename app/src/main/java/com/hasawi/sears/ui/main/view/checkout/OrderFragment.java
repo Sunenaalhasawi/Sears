@@ -81,7 +81,7 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        dashboardActivity.showBackButton(false, true);
+        dashboardActivity.handleActionMenuBar(false, true, "");
         int fragmentCount = getParentFragmentManager().getBackStackEntryCount();
         for (int i = 0; i < fragmentCount; i++) {
             getParentFragmentManager().popBackStackImmediate();

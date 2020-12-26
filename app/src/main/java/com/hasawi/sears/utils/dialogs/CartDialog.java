@@ -1,4 +1,4 @@
-package com.hasawi.sears.utils;
+package com.hasawi.sears.utils.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,11 +40,8 @@ public class CartDialog extends DialogFragment {
         cartDialogNewDesignBinding.btnViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(dashboardActivity, MyCartActivity.class);
-//                startActivity(intent);
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                dashboardActivity.showBackButton(true, false);
-                dashboardActivity.setTitle("My Cart");
+                dashboardActivity.handleActionMenuBar(true, false, "My Cart");
                 dismiss();
             }
         });

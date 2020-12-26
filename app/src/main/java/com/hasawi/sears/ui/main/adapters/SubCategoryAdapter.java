@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
 
     private static RecyclerviewSingleChoiceClickListener sClickListener;
-    private static int sSelected = -1;
+    private static int sSelected = 0;
     private ArrayList<Category> categoryArrayList;
     private Context context;
 
@@ -60,13 +60,13 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     }
 
     public void unselectItem(SubCategoryAdapter.ViewHolder holder, Category adapterItem) {
-        holder.subcategoryRecyclerItemBinding.tvSubCategory.setBackgroundColor(context.getResources().getColor(R.color.sub_category_unselected));
-        holder.subcategoryRecyclerItemBinding.tvSubCategory.setTextColor(context.getResources().getColor(R.color.sub_category_unselected_text_color));
+        holder.subcategoryRecyclerItemBinding.tvSubCategory.setBackgroundColor(context.getResources().getColor(R.color.white));
+        holder.subcategoryRecyclerItemBinding.tvSubCategory.setTextColor(context.getResources().getColor(R.color.txt_clr_blue));
     }
 
     public void selectItem(SubCategoryAdapter.ViewHolder holder, Category adapterItem) {
-        holder.subcategoryRecyclerItemBinding.tvSubCategory.setBackgroundColor(context.getResources().getColor(R.color.sub_category_selected));
-        holder.subcategoryRecyclerItemBinding.tvSubCategory.setTextColor(context.getResources().getColor(R.color.black));
+        holder.subcategoryRecyclerItemBinding.tvSubCategory.setBackgroundColor(context.getResources().getColor(R.color.txt_clr_blue));
+        holder.subcategoryRecyclerItemBinding.tvSubCategory.setTextColor(context.getResources().getColor(R.color.white));
     }
 
     public void selectedItem() {
