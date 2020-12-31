@@ -26,9 +26,10 @@
         </activity>
         <activity
             android:name=".ui.main.view.signin.SigninActivity"
+            android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ui.main.view.home.user_details.UserPreferenceActivity"
+            android:name=".ui.main.view.user_details.UserPreferenceActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
@@ -46,7 +47,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ui.main.view.home.ProductImageActivity"
+            android:name=".ui.main.view.dashboard.product.SelectedProductDetailsFragment$ProductImageActivity"
             android:theme="@style/FullscreenTheme">
 
         </activity>

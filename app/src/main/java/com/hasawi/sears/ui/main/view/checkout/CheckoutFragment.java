@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
+import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.model.pojo.Address;
 import com.hasawi.sears.data.api.model.pojo.PaymentMode;
 import com.hasawi.sears.data.api.model.pojo.ShippingMode;
 import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
+import com.hasawi.sears.data.api.response.CheckoutResponse;
 import com.hasawi.sears.databinding.FragmentCheckoutNewBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.CheckoutProductListAdapter;
@@ -65,7 +67,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setOnClickListener(this);
         fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setOnClickListener(this);
         dashboardActivity = (DashboardActivity) getActivity();
-        dashboardActivity.setTitle("Checkout");
+        dashboardActivity.handleActionMenuBar(true, false, "Checkout");
         try {
             PreferenceHandler preferenceHandler = new PreferenceHandler(getActivity(), PreferenceHandler.TOKEN_LOGIN);
             userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
@@ -145,42 +147,42 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         checkoutViewModel.checkout(userId, cartId, couponCode, sessionToken).observe(this, checkoutResponseResource -> {
             switch (checkoutResponseResource.status) {
                 case SUCCESS:
-                    if (checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode() == null) {
-                        hasCouponApplied = false;
-                        fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.GONE);
-                        fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.setText("");
-                        fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.VISIBLE);
-                        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, "");
-                        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-                        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
-                    } else {
-                        hasCouponApplied = true;
-                        fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.VISIBLE);
-                        fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Coupon Applied", Toast.LENGTH_SHORT).show();
-                        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
-                        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-                        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
-                        Bundle couponBundle = new Bundle();
-                        couponBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
-                        dashboardActivity.getmFirebaseAnalytics().logEvent("COUPON_APPLIED", analyticsBundle);
+                    try {
+                        if (checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode() == null) {
+                            hasCouponApplied = false;
+                            fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.GONE);
+                            fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.setText("");
+                            fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.VISIBLE);
 
+                        } else {
+                            hasCouponApplied = true;
+                            fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setVisibility(View.VISIBLE);
+                            fragmentCheckoutNewBinding.layoutCheckout.tvApplyCoupon.setVisibility(View.GONE);
+                            dashboardActivity.showMessageToast("Coupon Applied", Toast.LENGTH_SHORT);
+                            logCouponAppliedEvent(checkoutResponseResource);
+
+                        }
+                        fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.clearFocus();
+
+                        shoppingCartItemList = checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems();
+                        paymentModeList = new ArrayList<>();
+                        paymentModeList = checkoutResponseResource.data.getCheckoutData().getPaymentModes();
+                        paymentModeAdapter = new PaymentModeAdapter(getContext(), (ArrayList<PaymentMode>) paymentModeList);
+                        paymentModeAdapter.setOnItemClickListener(this);
+                        shippingModeList = checkoutResponseResource.data.getCheckoutData().getShippingModes();
+                        setShippingModeAdapter(shippingModeList);
+                        fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setAdapter(paymentModeAdapter);
+                        fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount());
+                        fragmentCheckoutNewBinding.layoutCheckout.tvItemCount.setText("Bag " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getAvailable().size());
+                        fragmentCheckoutNewBinding.layoutCheckout.tvtotal.setText(checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal() + "");
+                        fragmentCheckoutNewBinding.layoutCheckout.tvSubTotalAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
+                        checkoutProductListAdapter = new CheckoutProductListAdapter((ArrayList<ShoppingCartItem>) checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems(), getContext());
+                        fragmentCheckoutNewBinding.layoutCheckout.recyclerViewProducts.setAdapter(checkoutProductListAdapter);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    shoppingCartItemList = checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems();
-                    paymentModeList = new ArrayList<>();
-                    paymentModeList = checkoutResponseResource.data.getCheckoutData().getPaymentModes();
-                    paymentModeAdapter = new PaymentModeAdapter(getContext(), (ArrayList<PaymentMode>) paymentModeList);
-                    paymentModeAdapter.setOnItemClickListener(this);
-                    shippingModeList = checkoutResponseResource.data.getCheckoutData().getShippingModes();
-                    setShippingModeAdapter(shippingModeList);
-                    fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setAdapter(paymentModeAdapter);
-                    fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount());
-                    fragmentCheckoutNewBinding.layoutCheckout.tvItemCount.setText("Bag " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getAvailable().size());
-                    fragmentCheckoutNewBinding.layoutCheckout.tvTotalAmount.setText(checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal() + "");
-                    fragmentCheckoutNewBinding.layoutCheckout.tvSubtotal.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal());
-                    checkoutProductListAdapter = new CheckoutProductListAdapter((ArrayList<ShoppingCartItem>) checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems(), getContext());
-                    fragmentCheckoutNewBinding.layoutCheckout.recyclerViewProducts.setAdapter(checkoutProductListAdapter);
-
                     break;
                 case LOADING:
                     break;
@@ -190,6 +192,15 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             }
         });
         fragmentCheckoutNewBinding.progressBar.setVisibility(View.GONE);
+    }
+
+    private void logCouponAppliedEvent(Resource<CheckoutResponse> checkoutResponseResource) {
+        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
+        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
+        Bundle couponBundle = new Bundle();
+        couponBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
+        dashboardActivity.getmFirebaseAnalytics().logEvent("COUPON_APPLIED", analyticsBundle);
     }
 
     private void setShippingModeAdapter(List<ShippingMode> shippingModeList) {
@@ -219,10 +230,11 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 String couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
                 if (couponCode.equals(""))
                     Toast.makeText(dashboardActivity, "Invalid Coupon code", Toast.LENGTH_SHORT).show();
-                callCheckoutApi(userId, cartId, couponCode, sessionToken);
-
+                else
+                    callCheckoutApi(userId, cartId, couponCode, sessionToken);
                 break;
             case R.id.tvRemoveCoupon:
+                dashboardActivity.showMessageToast("Coupon Removed", Toast.LENGTH_SHORT);
                 callCheckoutApi(userId, cartId, "", sessionToken);
                 break;
             case R.id.tvMakeYourpayment:
@@ -297,6 +309,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         callGetAddressApi(userId, sessionToken);
-        dashboardActivity.setTitle("My Cart");
+        dashboardActivity.setTitle("Checkout");
     }
 }

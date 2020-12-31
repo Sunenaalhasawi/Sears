@@ -14,7 +14,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.ActivitySigninBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
-import com.hasawi.sears.ui.main.view.signin.login.LoginFragment;
 
 public class SigninActivity extends BaseActivity {
 
@@ -35,8 +34,8 @@ public class SigninActivity extends BaseActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        LoginFragment loginFragment = new LoginFragment();
-        replaceFragment(loginFragment, null);
+//        LoginFragment loginFragment = new LoginFragment();
+//        replaceFragment(loginFragment, null);
     }
 
     public GoogleSignInAccount checksForAnExistingUser() {
@@ -54,6 +53,7 @@ public class SigninActivity extends BaseActivity {
         replaceFragment(R.id.fragment_replacer_signin, fragment, bundle, true, false);
     }
 
+
     public void showProgressBar(boolean shouldShow) {
         if (shouldShow)
             activitySigninBinding.progressBar.setVisibility(View.VISIBLE);
@@ -63,6 +63,10 @@ public class SigninActivity extends BaseActivity {
 
     public void hideFragment() {
         activitySigninBinding.fragmentReplacerSignin.setVisibility(View.GONE);
+    }
+
+    public void showFragment() {
+        activitySigninBinding.fragmentReplacerSignin.setVisibility(View.VISIBLE);
     }
 
     public FirebaseAnalytics getmFirebaseAnalytics() {

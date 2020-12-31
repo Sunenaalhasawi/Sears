@@ -3,7 +3,7 @@ package com.hasawi.sears.data.api.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
 
 public class ProductDetailsResponse {
 
@@ -15,7 +15,7 @@ public class ProductDetailsResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Content data;
+    private Product data;
     @SerializedName("statusCode")
     @Expose
     private int statusCode;
@@ -34,7 +34,7 @@ public class ProductDetailsResponse {
      * @param status
      * @param statusCode
      */
-    public ProductDetailsResponse(String status, String message, Content data, int statusCode) {
+    public ProductDetailsResponse(String status, String message, Product data, int statusCode) {
         super();
         this.status = status;
         this.message = message;
@@ -75,15 +75,15 @@ public class ProductDetailsResponse {
         return this;
     }
 
-    public Content getData() {
+    public Product getData() {
         return data;
     }
 
-    public void setData(Content data) {
+    public void setData(Product data) {
         this.data = data;
     }
 
-    public ProductDetailsResponse withData(Content data) {
+    public ProductDetailsResponse withData(Product data) {
         this.data = data;
         return this;
     }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.hasawi.sears.ui.main.view.home.HomeFragment"
+        android:name="com.hasawi.sears.ui.main.view.dashboard.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_product_listing" />
 

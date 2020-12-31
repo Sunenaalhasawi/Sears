@@ -344,6 +344,7 @@
                     layout="@layout/product_details" />
 
                 <TextView
+                    android:id="@+id/tvRecommendedProducts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

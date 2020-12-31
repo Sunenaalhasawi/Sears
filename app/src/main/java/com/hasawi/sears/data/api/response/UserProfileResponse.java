@@ -52,6 +52,10 @@ public class UserProfileResponse {
 
     public class Data {
 
+        @SerializedName("token")
+        @Expose
+        private String token;
+
         @SerializedName("customer")
         @Expose
         private User user;
@@ -64,5 +68,12 @@ public class UserProfileResponse {
             this.user = user;
         }
 
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
     }
 }

@@ -379,5 +379,15 @@ Note: After adding the dependencies, click on Sync now.</string>
     <string name="payment_date">Payment Date :</string>
     <string name="reference_no">Reference No :</string>
     <string name="transaction_id">Transaction ID :</string>
+    <string name="shop_kids">SHOP KIDS</string>
+    <string name="shop_women">SHOP WOMEN</string>
+    <string name="shop_men">SHOP MEN</string>
+
+    <string name="no_result">No results</string>
+    <string name="no_product_found">No product found for this category</string>
+    <string name="no_order">No Order</string>
+    <string name="no_orders_in_history">You don\'t have any orders</string>
+    <string name="sub_total_amount">Subtotal amount</string>
+    <string name="total">TOTAL</string>
 
 </resources>

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.model.pojo.Wishlist;
 import com.hasawi.sears.databinding.LayoutWishlistAdapterItemBinding;
 
@@ -28,9 +28,9 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
         this.wishlists = new ArrayList<>();
     }
 
-    public abstract void onWishListClicked(Content selectedProduct, boolean isChecked, int position);
+    public abstract void onWishListClicked(Product selectedProduct, boolean isChecked, int position);
 
-    public abstract void onItemClicked(Content selectedProduct);
+    public abstract void onItemClicked(Product selectedProduct);
 
     @NonNull
     @Override
@@ -43,13 +43,13 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
     @Override
     public void onBindViewHolder(@NonNull WishListAdapter.ViewHolder holder, int position) {
         Wishlist wishlistItem = wishlists.get(position);
-        Content wishlistedProduct = wishlistItem.getProduct();
+        Product wishlistedProduct = wishlistItem.getProduct();
         try {
             holder.wishlistAdapterItemBinding.tvProductName.setText(wishlistedProduct.getDescriptions().get(0).getProductName());
             holder.wishlistAdapterItemBinding.tvOffer.setText(wishlistedProduct.getDiscountPercentage() + "%");
             holder.wishlistAdapterItemBinding.tvProductPrice.setText("KWD " + wishlistedProduct.getOriginalPrice());
             Glide.with(context)
-                    .load(wishlistedProduct.getProductImages().get(0).getImageName())
+                    .load(wishlistedProduct.getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.wishlistAdapterItemBinding.imageViewProductImage);
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
         notifyDataSetChanged();
     }
 
-    public void removeItemFromWishList(Content product, int position) {
+    public void removeItemFromWishList(Product product, int position) {
         if (wishlists.contains(product))
             wishlists.remove(product);
         notifyItemRemoved(position);

@@ -1,6 +1,11 @@
 
 package com.hasawi.sears.data.api.model.pojo;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,215 +13,226 @@ import java.util.List;
 
 public class Product {
 
-    @SerializedName("content")
+    public static DiffUtil.ItemCallback<Product> DIFF_CALLBACK = new DiffUtil.ItemCallback<Product>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return oldItem.productId == newItem.productId;
+        }
+
+        @SuppressLint("DiffUtilEquals")
+        @Override
+        public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+    @SerializedName("productId")
     @Expose
-    private List<Content> content = null;
-    @SerializedName("pageable")
+    private String productId;
+    @SerializedName("sku")
     @Expose
-    private Pageable pageable;
-    @SerializedName("totalPages")
+    private String sku;
+    @SerializedName("active")
     @Expose
-    private int totalPages;
-    @SerializedName("totalElements")
+    private Boolean active;
+    @SerializedName("productType")
     @Expose
-    private int totalElements;
-    @SerializedName("last")
+    private String productType;
+    @SerializedName("descriptions")
     @Expose
-    private boolean last;
-    @SerializedName("sort")
+    private List<ProductDescription> descriptions;
+    @SerializedName("productGroup")
     @Expose
-    private Sort sort;
-    @SerializedName("first")
+    private Object productGroup;
+    @SerializedName("productImages")
     @Expose
-    private boolean first;
-    @SerializedName("numberOfElements")
+    private List<ProductImage> productImages = null;
+    @SerializedName("productAttributes")
     @Expose
-    private int numberOfElements;
-    @SerializedName("size")
+    private List<ProductAttribute> productAttributes = null;
+    @SerializedName("productConfigurables")
     @Expose
-    private int size;
-    @SerializedName("number")
+    private List<ProductConfigurable> productConfigurables = null;
+    @SerializedName("categories")
     @Expose
-    private int number;
-    @SerializedName("empty")
+    private List<Category> categories = null;
+    @SerializedName("brandLogoUrl")
     @Expose
-    private boolean empty;
+    private String brandLogoUrl;
+    @SerializedName("originalPrice")
+    @Expose
+    private Double originalPrice;
+    @SerializedName("discountPrice")
+    @Expose
+    private Double discountPrice;
+    @SerializedName("discountPercentage")
+    @Expose
+    private Integer discountPercentage;
+    @SerializedName("wishlist")
+    @Expose
+    private boolean wishlist;
+    @SerializedName("available")
+    @Expose
+    private boolean available;
+    @SerializedName("discount")
+    @Expose
+    private boolean discount;
+    @SerializedName("manufature")
+    @Expose
+    private String manufature;
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public Product() {
+    public String getProductId() {
+        return productId;
     }
 
-    /**
-     * @param number
-     * @param last
-     * @param numberOfElements
-     * @param size
-     * @param totalPages
-     * @param pageable
-     * @param sort
-     * @param content
-     * @param first
-     * @param totalElements
-     * @param empty
-     */
-    public Product(List<Content> content, Pageable pageable, int totalPages, int totalElements, boolean last, Sort sort, boolean first, int numberOfElements, int size, int number, boolean empty) {
-        super();
-        this.content = content;
-        this.pageable = pageable;
-        this.totalPages = totalPages;
-        this.totalElements = totalElements;
-        this.last = last;
-        this.sort = sort;
-        this.first = first;
-        this.numberOfElements = numberOfElements;
-        this.size = size;
-        this.number = number;
-        this.empty = empty;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public List<Content> getContent() {
-        return content;
+    public String getSku() {
+        return sku;
     }
 
-    public void setContent(List<Content> content) {
-        this.content = content;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
-    public Product withContent(List<Content> content) {
-        this.content = content;
-        return this;
+    public Boolean getActive() {
+        return active;
     }
 
-    public Pageable getPageable() {
-        return pageable;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
-    public void setPageable(Pageable pageable) {
-        this.pageable = pageable;
+    public String getProductType() {
+        return productType;
     }
 
-    public Product withPageable(Pageable pageable) {
-        this.pageable = pageable;
-        return this;
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
-    public int getTotalPages() {
-        return totalPages;
+    public List<ProductDescription> getDescriptions() {
+        return descriptions;
     }
 
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+    public void setDescriptions(List<ProductDescription> descriptions) {
+        this.descriptions = descriptions;
     }
 
-    public Product withTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-        return this;
+    public Object getProductGroup() {
+        return productGroup;
     }
 
-    public int getTotalElements() {
-        return totalElements;
+    public void setProductGroup(Object productGroup) {
+        this.productGroup = productGroup;
     }
 
-    public void setTotalElements(int totalElements) {
-        this.totalElements = totalElements;
+    public List<ProductImage> getProductImages() {
+        return productImages;
     }
 
-    public Product withTotalElements(int totalElements) {
-        this.totalElements = totalElements;
-        return this;
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
     }
 
-    public boolean isLast() {
-        return last;
+    public List<ProductAttribute> getProductAttributes() {
+        return productAttributes;
     }
 
-    public void setLast(boolean last) {
-        this.last = last;
+    public void setProductAttributes(List<ProductAttribute> productAttributes) {
+        this.productAttributes = productAttributes;
     }
 
-    public Product withLast(boolean last) {
-        this.last = last;
-        return this;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public Sort getSort() {
-        return sort;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
-    public void setSort(Sort sort) {
-        this.sort = sort;
+    public String getBrandLogoUrl() {
+        return brandLogoUrl;
     }
 
-    public Product withSort(Sort sort) {
-        this.sort = sort;
-        return this;
+    public void setBrandLogoUrl(String brandLogoUrl) {
+        this.brandLogoUrl = brandLogoUrl;
     }
 
-    public boolean isFirst() {
-        return first;
+    public Double getOriginalPrice() {
+        return originalPrice;
     }
 
-    public void setFirst(boolean first) {
-        this.first = first;
+    public void setOriginalPrice(Double originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
-    public Product withFirst(boolean first) {
-        this.first = first;
-        return this;
+    public Double getDiscountPrice() {
+        return discountPrice;
     }
 
-    public int getNumberOfElements() {
-        return numberOfElements;
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
+    public Integer getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public Product withNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
-        return this;
+    public void setDiscountPercentage(Integer discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
-    public int getSize() {
-        return size;
+    public List<ProductConfigurable> getProductConfigurables() {
+        return productConfigurables;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setProductConfigurables(List<ProductConfigurable> productConfigurables) {
+        this.productConfigurables = productConfigurables;
     }
 
-    public Product withSize(int size) {
-        this.size = size;
-        return this;
+    public String getManufature() {
+        return manufature;
     }
 
-    public int getNumber() {
-        return number;
+    public void setManufature(String manufature) {
+        this.manufature = manufature;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public Boolean getDiscount() {
+        return discount;
     }
 
-    public Product withNumber(int number) {
-        this.number = number;
-        return this;
+    public boolean getWishlist() {
+        return wishlist;
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setEmpty(boolean empty) {
-        this.empty = empty;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
-    public Product withEmpty(boolean empty) {
-        this.empty = empty;
-        return this;
+    public boolean isWishlist() {
+        return wishlist;
     }
 
+    public void setWishlist(boolean wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public boolean isDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Boolean discount) {
+        this.discount = discount;
+    }
+
+    public void setDiscount(boolean discount) {
+        this.discount = discount;
+    }
 }

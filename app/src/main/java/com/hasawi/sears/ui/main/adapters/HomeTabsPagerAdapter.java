@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
-import com.hasawi.sears.ui.main.view.home.HomeFragment;
+import com.hasawi.sears.ui.main.view.dashboard.home.HomeFragment;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.HashMap;

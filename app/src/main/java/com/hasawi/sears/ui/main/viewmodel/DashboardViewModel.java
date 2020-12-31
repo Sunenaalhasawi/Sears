@@ -9,7 +9,7 @@ import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.data.api.response.MainCategoryResponse;
@@ -29,10 +29,10 @@ import retrofit2.Response;
 
 public class DashboardViewModel extends ViewModel {
     ArrayList<NavigationMenuItem> menuItemArrayList;
-    MutableLiveData<List<Content>> wishListedProducts = new MutableLiveData<>();
-    MutableLiveData<List<Content>> cartedProducts = new MutableLiveData<>();
-    ArrayList<Content> wishlistItems = new ArrayList<>();
-    ArrayList<Content> cartedItems = new ArrayList<>();
+    MutableLiveData<List<Product>> wishListedProducts = new MutableLiveData<>();
+    MutableLiveData<List<Product>> cartedProducts = new MutableLiveData<>();
+    ArrayList<Product> wishlistItems = new ArrayList<>();
+    ArrayList<Product> cartedItems = new ArrayList<>();
     ProductRepository productRepository;
     DynamicDataRepository dynamicDataRepository;
     MutableLiveData<SearchProductListResponse> searchProductListResponseMutableLiveData = new MutableLiveData<>();
@@ -53,11 +53,11 @@ public class DashboardViewModel extends ViewModel {
         boolean isLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
         if (isLoggedIn) {
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_HOME, context.getResources().getString(R.string.menu_home), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), true));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), true));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), true));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_NOTIFICATION, context.getResources().getString(R.string.menu_notifications), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), true));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_FAQ, context.getResources().getString(R.string.faq), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ABOUT_US, context.getResources().getString(R.string.about_us), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PRIVACY_POLICY, context.getResources().getString(R.string.privacy_policy), false));
@@ -65,11 +65,11 @@ public class DashboardViewModel extends ViewModel {
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_SIGNOUT, context.getResources().getString(R.string.menu_signout), true));
         } else {
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_HOME, context.getResources().getString(R.string.menu_home), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), false));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), false));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_NOTIFICATION, context.getResources().getString(R.string.menu_notifications), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), false));
+//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_FAQ, context.getResources().getString(R.string.faq), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ABOUT_US, context.getResources().getString(R.string.about_us), false));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PRIVACY_POLICY, context.getResources().getString(R.string.privacy_policy), false));
@@ -83,20 +83,20 @@ public class DashboardViewModel extends ViewModel {
         return menuItemArrayList;
     }
 
-    public MutableLiveData<List<Content>> getWishListedProducts() {
+    public MutableLiveData<List<Product>> getWishListedProducts() {
         return wishListedProducts;
     }
 
-    public void setWishListedProducts(Content product) {
+    public void setWishListedProducts(Product product) {
         wishlistItems.add(product);
         wishListedProducts.setValue(wishlistItems);
     }
 
-    public MutableLiveData<List<Content>> getCartedProducts() {
+    public MutableLiveData<List<Product>> getCartedProducts() {
         return cartedProducts;
     }
 
-    public void setCartedItems(Content product) {
+    public void setCartedItems(Product product) {
         cartedItems.add(product);
         cartedProducts.setValue(cartedItems);
     }

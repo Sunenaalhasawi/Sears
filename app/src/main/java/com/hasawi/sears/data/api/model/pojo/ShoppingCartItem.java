@@ -32,7 +32,7 @@ public class ShoppingCartItem {
     private Integer quantity;
     @SerializedName("product")
     @Expose
-    private Content product;
+    private Product product;
 
     private boolean isOutOfStock;
 
@@ -100,11 +100,11 @@ public class ShoppingCartItem {
         this.quantity = quantity;
     }
 
-    public Content getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Content product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

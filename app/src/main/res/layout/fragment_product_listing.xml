@@ -110,6 +110,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_top_deals_heading" />
 
 
+
         <View
             android:id="@+id/view6"
             android:layout_width="0dp"
@@ -162,6 +163,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/view12"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -201,6 +203,22 @@
                 android:textSize="16sp"
                 tools:layout_editor_absoluteX="42dp"
                 tools:layout_editor_absoluteY="654dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lv_no_products_found"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/layout_no_products"
+                layout="@layout/layout_product_list_no_data" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

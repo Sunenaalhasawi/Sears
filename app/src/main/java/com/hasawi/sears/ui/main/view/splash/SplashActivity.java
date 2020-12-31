@@ -18,7 +18,7 @@ import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.ActivitySplashBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
-import com.hasawi.sears.ui.main.view.home.user_details.UserPreferenceActivity;
+import com.hasawi.sears.ui.main.view.user_details.UserPreferenceActivity;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 public class SplashActivity extends BaseActivity {

@@ -20,7 +20,7 @@ public class Data {
     private List<String> sortStrings = null;
     @SerializedName("products")
     @Expose
-    private Product products;
+    private ProductListData productList;
 
     /**
      * No args constructor for use in serialization
@@ -33,12 +33,12 @@ public class Data {
      * @param categories
      * @param products
      */
-    public Data(Map<String, List<FilterAttributeValues>> attributes, List<Category> categories, List<String> sortStrings, Product products) {
+    public Data(Map<String, List<FilterAttributeValues>> attributes, List<Category> categories, List<String> sortStrings, ProductListData products) {
         super();
         this.filterAttributes = attributes;
         this.categories = categories;
         this.sortStrings = sortStrings;
-        this.products = products;
+        this.productList = products;
     }
 
     public Map<String, List<FilterAttributeValues>> getFilterAttributes() {
@@ -67,16 +67,16 @@ public class Data {
         return this;
     }
 
-    public Product getProducts() {
-        return products;
+    public ProductListData getProductList() {
+        return productList;
     }
 
-    public void setProducts(Product products) {
-        this.products = products;
+    public void setProductList(ProductListData productList) {
+        this.productList = productList;
     }
 
-    public Data withProducts(Product products) {
-        this.products = products;
+    public Data withProducts(ProductListData products) {
+        this.productList = products;
         return this;
     }
 

@@ -2,7 +2,9 @@ package com.hasawi.sears.data.api.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
+
+import java.util.List;
 
 public class SearchedProductDetailsResponse {
 
@@ -14,7 +16,8 @@ public class SearchedProductDetailsResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Content singleProductData;
+    private Data data;
+
     @SerializedName("statusCode")
     @Expose
     private Integer statusCode;
@@ -35,12 +38,12 @@ public class SearchedProductDetailsResponse {
         this.message = message;
     }
 
-    public Content getSingleProductData() {
-        return singleProductData;
+    public Data getData() {
+        return data;
     }
 
-    public void setSingleProductData(Content singleProductData) {
-        this.singleProductData = singleProductData;
+    public void setData(Data data) {
+        this.data = data;
     }
 
     public Integer getStatusCode() {
@@ -49,6 +52,31 @@ public class SearchedProductDetailsResponse {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public class Data {
+        @SerializedName("product")
+        @Expose
+        Product product;
+        @SerializedName("recommended")
+        @Expose
+        List<Product> recommendedProductList;
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public void setProduct(Product product) {
+            this.product = product;
+        }
+
+        public List<Product> getRecommendedProductList() {
+            return recommendedProductList;
+        }
+
+        public void setRecommendedProductList(List<Product> recommendedProductList) {
+            this.recommendedProductList = recommendedProductList;
+        }
     }
 
 }

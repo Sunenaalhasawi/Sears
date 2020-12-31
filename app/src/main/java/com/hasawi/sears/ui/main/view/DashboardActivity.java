@@ -27,7 +27,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
-import com.hasawi.sears.data.api.model.pojo.Banner;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.model.pojo.ProductSearch;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
@@ -38,17 +37,16 @@ import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.HomeTabsPagerAdapter;
 import com.hasawi.sears.ui.main.adapters.NavigationDrawerAdapter;
 import com.hasawi.sears.ui.main.adapters.SearchProductAdapter;
-import com.hasawi.sears.ui.main.adapters.SubCategoryAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears.ui.main.view.checkout.CheckoutFragment;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears.ui.main.view.checkout.PaymentFragment;
-import com.hasawi.sears.ui.main.view.home.CategoryFragment;
-import com.hasawi.sears.ui.main.view.home.SelectedProductDetailsFragment;
-import com.hasawi.sears.ui.main.view.home.UserAccountFragment;
-import com.hasawi.sears.ui.main.view.home.WishListFragment;
-import com.hasawi.sears.ui.main.view.navigation_drawer_menu.order_history.OrderHistoryFragment;
-import com.hasawi.sears.ui.main.view.navigation_drawer_menu.profile.UserProfileFragment;
+import com.hasawi.sears.ui.main.view.dashboard.home.CategoryFragment;
+import com.hasawi.sears.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.UserAccountFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.order_history.OrderHistoryFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.DashboardViewModel;
 import com.hasawi.sears.utils.AppConstants;
@@ -76,20 +74,14 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     MenuItem searchItem;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
-    // flag to load home fragment when user presses back key
-    private boolean shouldLoadHomeFragOnBackPress = true;
     private DashboardViewModel dashboardViewModel;
     private CharSequence mTitle;
     private List<ProductSearch> productSearchList = new ArrayList<>();
     private SearchProductAdapter searchProductAdapter;
     ActionBar actionBar;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private SubCategoryAdapter subCategoryAdapter;
     private ArrayList<Category> mainCategoryList = new ArrayList<>();
-    private List<Banner> bannerList;
     private HashMap<String, DynamicUiResponse.UiData> dynamicUiDataHashmap = new HashMap<>();
-    private ArrayList<Category>
-            subCategoryArrayList = new ArrayList<>();
     private List<Category> allCategoryList = new ArrayList<>();
 
     @Override
@@ -142,28 +134,28 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             case AppConstants.ID_MENU_HOME:
                 closeDrawer();
                 break;
-            case AppConstants.ID_MENU_PROFILE:
-                if (menuItem.isEnabled()) {
-                    UserProfileFragment profileFragment = new UserProfileFragment();
-                    replaceFragment(R.id.fragment_replacer, profileFragment, null, true, false);
-                    handleActionMenuBar(true, false, "My Profile");
-                }
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_ORDERS:
-                replaceFragment(R.id.fragment_replacer, new OrderHistoryFragment(), null, true, false);
-                setTitle("My Orders");
-                handleActionMenuBar(true, false, "My Orders");
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_WISHLIST:
-                if (menuItem.isEnabled()) {
-                    WishListFragment wishListFragment = new WishListFragment();
-                    replaceFragment(R.id.fragment_replacer, wishListFragment, null, true, false);
-                    handleActionMenuBar(true, true, "Wishlist");
-                }
-                closeDrawer();
-                break;
+//            case AppConstants.ID_MENU_PROFILE:
+//                if (menuItem.isEnabled()) {
+//                    UserProfileFragment profileFragment = new UserProfileFragment();
+//                    replaceFragment(R.id.fragment_replacer, profileFragment, null, true, false);
+//                    handleActionMenuBar(true, false, "My Profile");
+//                }
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_ORDERS:
+//                replaceFragment(R.id.fragment_replacer, new OrderHistoryFragment(), null, true, false);
+//                setTitle("My Orders");
+//                handleActionMenuBar(true, false, "My Orders");
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_WISHLIST:
+//                if (menuItem.isEnabled()) {
+//                    WishListFragment wishListFragment = new WishListFragment();
+//                    replaceFragment(R.id.fragment_replacer, wishListFragment, null, true, false);
+//                    handleActionMenuBar(true, true, "Wishlist");
+//                }
+//                closeDrawer();
+//                break;
             case AppConstants.ID_MENU_SIGNOUT:
                 if (isAlreadyLoggedinWithFacebbok())
                     disconnectFromFacebook();
@@ -172,7 +164,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
                 startActivity(intent);
                 this.finish();
-
                 break;
             default:
                 break;
@@ -276,11 +267,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 } else {
                     onBackPressed();
                 }
-//                if (activityDashboardBinding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
-//                    activityDashboardBinding.drawerLayout.closeDrawer(GravityCompat.START);
-//                } else {
-//                    activityDashboardBinding.drawerLayout.openDrawer(GravityCompat.START);
-//                }
             }
         });
 
@@ -307,7 +293,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     ProductSearch selectedProduct = productSearchList.get(position);
                     Bundle bundle = new Bundle();
                     bundle.putString("product_object_id", selectedProduct.getObjectID());
-                    bundle.putBoolean("is_search", true);
                     handleActionMenuBar(true, false, "");
                     replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 
@@ -422,27 +407,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             e.printStackTrace();
         }
     }
-
-//    public void showBackButton(boolean isBack, boolean showBottomBar) {
-//        try {
-//            if (isBack) {
-//                hideSearsLogo();
-//                activityDashboardBinding.appBarMain.imageViewBack.setVisibility(View.VISIBLE);
-//            } else {
-//                activityDashboardBinding.appBarMain.imageViewBack.setVisibility(View.GONE);
-//            }
-//            if (showBottomBar)
-//                showBottomNavigationBar();
-//            else
-//                hideBottomNavigationBar();
-//
-//            actionBarDrawerToggle.setDrawerIndicatorEnabled(!isBack);
-////            getSupportActionBar().setDisplayHomeAsUpEnabled(isBack);
-//            actionBarDrawerToggle.syncState();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public void handleActionMenuBar(boolean showBackbutton, boolean showBottomNavigationMenu, String title) {
 //         Showing back arrow icon. true means show and false means do not show
@@ -648,6 +612,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
             activityDashboardBinding.appBarMain.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    public void showMessageToast(String message, int duration) {
+        Toast.makeText(DashboardActivity.this, message, duration).show();
     }
 
 }

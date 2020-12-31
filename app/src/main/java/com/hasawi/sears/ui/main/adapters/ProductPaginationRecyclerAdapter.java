@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.databinding.ItemLoadingBinding;
 import com.hasawi.sears.databinding.LayoutProductItemBinding;
 
@@ -25,7 +25,7 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
     private static final int VIEW_TYPE_NORMAL = 1;
     Context context;
     private boolean isLoaderVisible = false;
-    private List<Content> productList;
+    private List<Product> productList;
 
     public ProductPaginationRecyclerAdapter(Context context) {
 //        this.productList = productList;
@@ -33,9 +33,9 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
         this.context = context;
     }
 
-    public abstract void onLikeClicked(Content product, int position);
+    public abstract void onLikeClicked(Product product, int position);
 
-    public abstract void onItemClicked(Content productContent);
+    public abstract void onItemClicked(Product productContent);
 
     @NonNull
     @Override
@@ -72,7 +72,7 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
         return productList == null ? 0 : productList.size();
     }
 
-    public void addItems(List<Content> postItems) {
+    public void addItems(List<Product> postItems) {
         try {
             productList.addAll(postItems);
         } catch (Exception e) {
@@ -81,21 +81,21 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Content> list) {
+    public void addAll(List<Product> list) {
         if (!productList.contains(list))
             productList.addAll(list);
     }
 
     public void addLoading() {
         isLoaderVisible = true;
-        productList.add(new Content());
+        productList.add(new Product());
         notifyItemInserted(productList.size() - 1);
     }
 
     public void removeLoading() {
         isLoaderVisible = false;
         int position = productList.size() - 1;
-        Content productContent = getItem(position);
+        Product productContent = getItem(position);
         if (productContent != null) {
             productList.remove(position);
             notifyItemRemoved(position);
@@ -107,7 +107,7 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
         notifyDataSetChanged();
     }
 
-    Content getItem(int position) {
+    Product getItem(int position) {
         return productList.get(position);
     }
 
@@ -129,10 +129,10 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
             try {
 //                if (position > 0) {
 
-                Content productContent = productList.get(position);
+                Product productContent = productList.get(position);
                 productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
                 Glide.with(context)
-                        .load(productContent.getProductImages().get(0).getImageName())
+                        .load(productContent.getProductImages().get(0).getImageUrl())
                         .centerCrop()
                         .into(productItemBinding.imageViewProductImage);
                 productItemBinding.radioButtonWishlist.setChecked(false);

@@ -155,7 +155,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.btn_login:
                 userAuthentication();
+                break;
             case R.id.btn_signup:
+                signinActivity.showFragment();
                 signinActivity.replaceFragment(new SignupFragment(), null);
                 break;
             case R.id.tv_forgot_pswd:
@@ -181,7 +183,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 switch (loginResponse.status) {
                     case SUCCESS:
                         if (loginResponse != null && loginResponse.data.getStatusCode() == 200) {
-
                             Toast.makeText(signinActivity, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                             PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_TOKEN, loginResponse.data.getData().getToken());
@@ -195,10 +196,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                             redirectToHomePage();
 
                         } else if (loginResponse.data.getStatusCode() == 400) {
-                            Toast.makeText(signinActivity, loginResponse.data.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(signinActivity, "Incorrect email or password", Toast.LENGTH_SHORT).show();
                         }
-                        break;
-                    case LOADING:
                         break;
                     case ERROR:
                         Toast.makeText(getActivity(), loginResponse.message, Toast.LENGTH_SHORT).show();

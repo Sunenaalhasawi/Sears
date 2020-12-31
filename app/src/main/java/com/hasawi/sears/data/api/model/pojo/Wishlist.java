@@ -12,7 +12,7 @@ public class Wishlist {
     private String productId;
     @SerializedName("product")
     @Expose
-    private Content product;
+    private Product product;
     @SerializedName("customerId")
     @Expose
     private String customerId;
@@ -33,11 +33,11 @@ public class Wishlist {
         this.productId = productId;
     }
 
-    public Content getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Content product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

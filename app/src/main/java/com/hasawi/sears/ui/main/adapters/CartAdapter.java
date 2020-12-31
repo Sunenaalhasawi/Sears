@@ -98,7 +98,7 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
 
             holder.cartRecyclerItemBinding.tvAmountToPay.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
             Glide.with(dashboardActivity)
-                    .load(shoppingCartItem.getProduct().getProductImages().get(0).getImageName())
+                    .load(shoppingCartItem.getProduct().getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.cartRecyclerItemBinding.imageProduct);
 

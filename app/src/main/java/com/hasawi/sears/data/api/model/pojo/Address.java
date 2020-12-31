@@ -8,6 +8,15 @@ public class Address {
     @SerializedName("addressId")
     @Expose
     private String addressId;
+    @SerializedName("firstName")
+    @Expose
+    private String firstName;
+    @SerializedName("lastName")
+    @Expose
+    private String lastName;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
     @SerializedName("street")
     @Expose
     private String street;

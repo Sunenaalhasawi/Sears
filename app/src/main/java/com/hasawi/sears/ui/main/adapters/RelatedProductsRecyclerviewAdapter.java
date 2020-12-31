@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -13,24 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.pojo.Content;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.databinding.LayoutRelatedProductItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Adapter<RelatedProductsRecyclerviewAdapter.ViewHolder> {
-    ArrayList<Content> productArrayList;
+    ArrayList<Product> productArrayList;
     Context context;
 
-    public RelatedProductsRecyclerviewAdapter(Context context, ArrayList<Content> products) {
+    public RelatedProductsRecyclerviewAdapter(Context context, ArrayList<Product> products) {
         this.context = context;
         this.productArrayList = products;
     }
 
-    public abstract void onLikeClicked(Content product);
+    public abstract void onLikeClicked(Product product, boolean isWishlisted);
 
-    public abstract void onItemClicked(Content productContent);
+    public abstract void onItemClicked(Product productContent);
 
     @NonNull
     @Override
@@ -42,16 +41,26 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            Content productContent = productArrayList.get(position);
+            Product productContent = productArrayList.get(position);
+            if (productContent.getWishlist())
+                holder.productItemBinding.radioButtonWishlist.setChecked(true);
+            else
+                holder.productItemBinding.radioButtonWishlist.setChecked(false);
             holder.productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
             holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
             Glide.with(context)
-                    .load(productContent.getProductImages().get(0).getImageName())
+                    .load(productContent.getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.productItemBinding.imageViewProductImage);
             try {
-                holder.productItemBinding.tvOriginalPrice.setText("KWD " + productContent.getDiscountPrice());
-                holder.productItemBinding.tvOurPrice.setText("KWD " + productContent.getOriginalPrice());
+                if (productContent.getDiscountPrice() == null)
+                    holder.productItemBinding.tvOriginalPrice.setText("KWD 0");
+                else
+                    holder.productItemBinding.tvOriginalPrice.setText("KWD " + productContent.getDiscountPrice());
+                if (productContent.getOriginalPrice() == null)
+                    holder.productItemBinding.tvOurPrice.setText("KWD 0");
+                else
+                    holder.productItemBinding.tvOurPrice.setText("KWD " + productContent.getOriginalPrice());
 
                 if (productContent.getDiscountPrice() > 0) {
                     holder.productItemBinding.tvOriginalPrice.setVisibility(View.VISIBLE);
@@ -67,18 +76,7 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
             holder.productItemBinding.radioButtonWishlist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.productItemBinding.radioButtonWishlist.setChecked(true);
-                    onLikeClicked(productContent);
-                }
-            });
-
-            holder.productItemBinding.radioButtonWishlist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                        holder.productItemBinding.radioButtonWishlist.setChecked(false);
-                    else
-                        holder.productItemBinding.radioButtonWishlist.setChecked(true);
+                    onLikeClicked(productContent, holder.productItemBinding.radioButtonWishlist.isChecked());
                 }
             });
 
@@ -102,7 +100,7 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
         return productArrayList.size();
     }
 
-    public void addAll(List<Content> list) {
+    public void addAll(List<Product> list) {
         productArrayList.addAll(list);
     }
 

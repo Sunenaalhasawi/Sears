@@ -9,15 +9,15 @@ import androidx.paging.PagedList;
 
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
-import com.hasawi.sears.data.api.model.pojo.Content;
 import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.response.CartResponse;
 import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
 import com.hasawi.sears.data.api.response.WishlistResponse;
 import com.hasawi.sears.data.repository.ProductRepository;
-import com.hasawi.sears.ui.main.view.paging_lib.ProductDataFactory;
+import com.hasawi.sears.ui.main.view.dashboard.product.paging.ProductDataFactory;
 import com.hasawi.sears.utils.NetworkState;
 
 import org.json.JSONArray;
@@ -35,18 +35,18 @@ import retrofit2.Response;
 
 public class SharedHomeViewModel extends ViewModel {
 
-    private final MutableLiveData<Content> selectedProduct = new MutableLiveData<Content>();
+    private final MutableLiveData<Product> selectedProduct = new MutableLiveData<Product>();
     private final MutableLiveData<Map<String, List<FilterAttributeValues>>> filterAttributesLiveData = new MutableLiveData<>();
     MutableLiveData<Resource<ProductResponse>> generalMutsbleLiveData;
-    MutableLiveData<List<Content>> wishListedProducts = new MutableLiveData<>();
-    MutableLiveData<List<Content>> cartedProducts = new MutableLiveData<>();
-    ArrayList<Content> wishlistItems = new ArrayList<>();
-    ArrayList<Content> cartedItems = new ArrayList<>();
+    MutableLiveData<List<Product>> wishListedProducts = new MutableLiveData<>();
+    MutableLiveData<List<Product>> cartedProducts = new MutableLiveData<>();
+    ArrayList<Product> wishlistItems = new ArrayList<>();
+    ArrayList<Product> cartedItems = new ArrayList<>();
     private ProductRepository productRepository;
     //Pagination
     private Executor executor;
     private LiveData<NetworkState> networkState;
-    private LiveData<PagedList<Content>> productPaginationLiveData;
+    private LiveData<PagedList<Product>> productPaginationLiveData;
 
 
     public SharedHomeViewModel() {
@@ -54,11 +54,11 @@ public class SharedHomeViewModel extends ViewModel {
         generalMutsbleLiveData = new MutableLiveData<>();
     }
 
-    public void select(Content product) {
+    public void select(Product product) {
         selectedProduct.setValue(product);
     }
 
-    public LiveData<Content> getSelected() {
+    public LiveData<Product> getSelected() {
         return selectedProduct;
     }
 
@@ -71,20 +71,20 @@ public class SharedHomeViewModel extends ViewModel {
         return productRepository.getProductDetails(productName);
     }
 
-    public MutableLiveData<List<Content>> getWishListedProducts() {
+    public MutableLiveData<List<Product>> getWishListedProducts() {
         return wishListedProducts;
     }
 
-    public void setWishListedProducts(Content product) {
+    public void setWishListedProducts(Product product) {
         wishlistItems.add(product);
         wishListedProducts.setValue(wishlistItems);
     }
 
-    public MutableLiveData<List<Content>> getCartedProducts() {
+    public MutableLiveData<List<Product>> getCartedProducts() {
         return cartedProducts;
     }
 
-    public void setCartedItems(Content product) {
+    public void setCartedItems(Product product) {
         cartedItems.add(product);
         cartedProducts.setValue(cartedItems);
     }
@@ -137,7 +137,7 @@ public class SharedHomeViewModel extends ViewModel {
         return networkState;
     }
 
-    public LiveData<PagedList<Content>> getProductPaginationLiveData() {
+    public LiveData<PagedList<Product>> getProductPaginationLiveData() {
         return productPaginationLiveData;
     }
 

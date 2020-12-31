@@ -12,6 +12,12 @@ public class ProductImage {
     @SerializedName("imageName")
     @Expose
     private String imageName;
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl;
+    @SerializedName("defaultImg")
+    @Expose
+    private boolean defaultImg;
     @SerializedName("createDate")
     @Expose
     private Object createDate;
@@ -91,4 +97,19 @@ public class ProductImage {
         return this;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isDefaultImg() {
+        return defaultImg;
+    }
+
+    public void setDefaultImg(boolean defaultImg) {
+        this.defaultImg = defaultImg;
+    }
 }

@@ -29,10 +29,10 @@ public class DynamicData {
 
     public class Data {
         List<Integer> gridBannerList;
-        List<Content> newProductList;
+        List<Product> newProductList;
         private String singleBanner;
 
-        public Data(String singleBanner, List<Integer> gridBannerList, List<Content> newProductList) {
+        public Data(String singleBanner, List<Integer> gridBannerList, List<Product> newProductList) {
             this.singleBanner = singleBanner;
             this.gridBannerList = gridBannerList;
             this.newProductList = newProductList;
@@ -54,11 +54,11 @@ public class DynamicData {
             this.gridBannerList = gridBannerList;
         }
 
-        public List<Content> getNewProductList() {
+        public List<Product> getNewProductList() {
             return newProductList;
         }
 
-        public void setNewProductList(List<Content> newProductList) {
+        public void setNewProductList(List<Product> newProductList) {
             this.newProductList = newProductList;
         }
     }

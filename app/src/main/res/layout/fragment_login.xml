@@ -25,7 +25,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 android:background="@drawable/left_top_rounded_rectangle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
                         android:text="@string/password"
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
-
+                    <!--                    android:text="test125"-->
                     <EditText
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:text="test123"
+
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -137,7 +137,7 @@
                         android:text="@string/email"
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
-
+                    <!--                    android:text="sunenaks2021@gmail.com"-->
                     <EditText
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                         android:hint="@string/email"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:text="sunenaks2021@gmail.com"
+
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -242,11 +242,11 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/sears_logo" />
+                app:srcCompat="@drawable/sears_logo_login" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
