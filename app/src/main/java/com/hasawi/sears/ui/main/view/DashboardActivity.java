@@ -42,6 +42,9 @@ import com.hasawi.sears.ui.main.view.checkout.CheckoutFragment;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears.ui.main.view.checkout.PaymentFragment;
 import com.hasawi.sears.ui.main.view.dashboard.home.CategoryFragment;
+import com.hasawi.sears.ui.main.view.dashboard.home.NotificationFragment;
+import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.AboutUsFragment;
+import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.ContactUsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
@@ -132,6 +135,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         NavigationMenuItem menuItem = menuItemArrayList.get(position);
         switch (menuItem.get_ID()) {
             case AppConstants.ID_MENU_HOME:
+                handleActionMenuBar(false, true, "");
+                int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+                for (int i = 0; i < fragmentCount; i++) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
                 closeDrawer();
                 break;
 //            case AppConstants.ID_MENU_PROFILE:
@@ -156,6 +164,16 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 //                }
 //                closeDrawer();
 //                break;
+            case AppConstants.ID_MENU_CONTACT_US:
+                replaceFragment(R.id.fragment_replacer, new ContactUsFragment(), null, true, false);
+                closeDrawer();
+                break;
+            case AppConstants.ID_MENU_ABOUT_US:
+                replaceFragment(R.id.fragment_replacer, new AboutUsFragment(), null, true, false);
+                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+                handleActionMenuBar(true, false, "About Us");
+                closeDrawer();
+                break;
             case AppConstants.ID_MENU_SIGNOUT:
                 if (isAlreadyLoggedinWithFacebbok())
                     disconnectFromFacebook();
@@ -354,8 +372,20 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
         });
 
-
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_notifications:
+                handleActionMenuBar(true, true, "Notifications");
+                replaceFragment(R.id.fragment_replacer, new NotificationFragment(), null, true, false);
+                return true;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return false;
     }
 
     @Override
@@ -475,9 +505,16 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
             } else if (currentFragment instanceof UserProfileFragment) {
-                handleActionMenuBar(false, true, "");
+                handleActionMenuBar(true, true, "My Account");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
             } else if (currentFragment instanceof OrderHistoryFragment) {
+                handleActionMenuBar(true, true, "My Account");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof AboutUsFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.VISIBLE);
+            } else if (currentFragment instanceof NotificationFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
             }

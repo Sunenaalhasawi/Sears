@@ -107,7 +107,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             e.printStackTrace();
         }
 
-//        if (isSearch) {
         fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.VISIBLE);
         sharedHomeViewModel.getSearchedProductDetails(selectedObjectID).observe(getActivity(), searchedProductDetailsResponse -> {
             switch (searchedProductDetailsResponse.status) {
@@ -128,22 +127,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
             fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.GONE);
         });
-//        }
-//        else {
-//            fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.VISIBLE);
-//            callProductDetailApi(currentSelectedProduct.getDescriptions().get(0).getSlug());
-//            sharedHomeViewModel.getSelected().observe(getViewLifecycleOwner(), item -> {
-//                // Update the UI.Todo update all views here
-//                currentSelectedProduct = item;
-//                if (currentSelectedProduct != null) {
-//                    setUIValues(currentSelectedProduct);
-//                    callProductDetailApi(currentSelectedProduct.getDescriptions().get(0).getSlug());
-//                }
-//
-//
-//            });
-//        }
-
 
         fragmentSelectedProductDetailsBinding.imageViewSelected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,11 +222,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void setColorAdapter(List<ProductConfigurable> colors) {
-//        colorsList.add("#377AD3");
-//        colorsList.add("#61BF22");
-//        colorsList.add("#BF118F");
-//        colorsList.add("#43BFA8");
-//        colorsList.add("#7178BF");
         fragmentSelectedProductDetailsBinding.listviewColorVariants.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         productColorAdapter = new ProductColorAdapter(getContext(), (ArrayList<ProductConfigurable>) colors);
         productColorAdapter.setOnItemClickListener(this);
@@ -276,10 +254,14 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         fragmentSelectedProductDetailsBinding.tvOriginalPrice.setText("KWD " + currentSelectedProduct.getDiscountPrice());
         fragmentSelectedProductDetailsBinding.tvOurPrice.setText("KWD " + currentSelectedProduct.getOriginalPrice());
         fragmentSelectedProductDetailsBinding.tvSku.setText(currentSelectedProduct.getSku());
-        Glide.with(this)
-                .load(currentSelectedProduct.getBrandLogoUrl())
-                .centerCrop()
-                .into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
+        try {
+            Glide.with(getContext())
+                    .load(currentSelectedProduct.getBrandLogoUrl())
+                    .centerCrop()
+                    .into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         fragmentSelectedProductDetailsBinding.tvOfferPercent.setText(currentSelectedProduct.getDiscountPercentage() + "% OFF");
         fragmentSelectedProductDetailsBinding.tvOriginalPrice.setPaintFlags(fragmentSelectedProductDetailsBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
@@ -363,12 +345,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void setProductSizeRecyclerview(List<String> sizes) {
-//        productAvailableSizes.clear();
-//        productAvailableSizes.add("S");
-//        productAvailableSizes.add("M");
-//        productAvailableSizes.add("L");
-//        productAvailableSizes.add("XL");
-//        productAvailableSizes.add("XXL");
         productAvailableSizes = new ArrayList<>();
         productAvailableSizes.addAll(sizes);
         sizeAdapter = new ProductSizeAdapter(getContext(), productAvailableSizes);

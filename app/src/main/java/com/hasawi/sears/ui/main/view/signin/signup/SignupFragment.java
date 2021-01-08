@@ -44,7 +44,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         fragmentSignupBinding = (FragmentSignupBinding) viewDataBinding;
         signinActivity = (SigninActivity) getActivity();
         signupViewModel = new ViewModelProvider(getActivity()).get(SignupViewModel.class);
-        fragmentSignupBinding.btnSignup.setOnClickListener(this);
+        fragmentSignupBinding.layoutSignup.btnSignup.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.edtBirthday.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setOnClickListener(this);
@@ -87,7 +87,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
             fragmentSignupBinding.layoutSignup.tvPasswordError.setVisibility(View.VISIBLE);
         if (confirmPassword.equals(""))
             fragmentSignupBinding.layoutSignup.tvConfirmPasswordError.setVisibility(View.VISIBLE);
-        else {
+        if (!firstName.equals("") && !lastName.equals("") && !email.equals("") && !phone.equals("") && !password.equals("") && !confirmPassword.equals(""))
             if (password.equals(confirmPassword)) {
                 Map<String, Object> jsonParams = new ArrayMap<>();
                 jsonParams.put("customerFirstName", firstName);
@@ -106,21 +106,24 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                     switch (signupResponse.status) {
                         case SUCCESS:
                             PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_TOKEN, signupResponse.data.getData().getToken());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_ID, signupResponse.data.getData().getuser().getCustomerId());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_USERNAME, signupResponse.data.getData().getuser().getCustomerFirstName());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_EMAIL, signupResponse.data.getData().getuser().getEmailId());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_PASSWORD, signupResponse.data.getData().getuser().getPassword());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, signupResponse.data.getData().getuser().getConfirmPassword());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, signupResponse.data.getData().getuser().getMobileNo());
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, true);
-
                             try {
-                                signinActivity.getmFirebaseAnalytics().setUserProperty("email", signupResponse.data.getData().getuser().getEmailId());
-                                signinActivity.getmFirebaseAnalytics().setUserProperty("country", signupResponse.data.getData().getuser().getNationality());
-                                signinActivity.getmFirebaseAnalytics().setUserProperty("gender", signupResponse.data.getData().getuser().getGender());
-                                signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob());
-                                signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
+                                if (signupResponse.data.getData().getToken() != null)
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_TOKEN, signupResponse.data.getData().getToken());
+                                if (signupResponse.data.getData().getuser() != null) {
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_ID, signupResponse.data.getData().getuser().getCustomerId());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_USERNAME, signupResponse.data.getData().getuser().getCustomerFirstName());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_EMAIL, signupResponse.data.getData().getuser().getEmailId());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_PASSWORD, signupResponse.data.getData().getuser().getPassword());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, signupResponse.data.getData().getuser().getConfirmPassword());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, signupResponse.data.getData().getuser().getMobileNo());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, true);
+                                    signinActivity.getmFirebaseAnalytics().setUserProperty("email", signupResponse.data.getData().getuser().getEmailId());
+                                    signinActivity.getmFirebaseAnalytics().setUserProperty("country", signupResponse.data.getData().getuser().getNationality());
+                                    signinActivity.getmFirebaseAnalytics().setUserProperty("gender", signupResponse.data.getData().getuser().getGender());
+                                    signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob());
+                                    signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
+                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -159,13 +162,11 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
             } else {
                 Toast.makeText(signinActivity, "Password did not match", Toast.LENGTH_SHORT).show();
             }
-        }
-
 
     }
 
     private void selectMale() {
-        fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_rounded_rectangle_12dp_corner));
+        fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.bronze_gradient_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.tvMale.setTextColor(getResources().getColor(R.color.white));
         fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.txtFemale.setTextColor(getResources().getColor(R.color.txt_clr_blue));
@@ -173,7 +174,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void selectFemale() {
-        fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_rounded_rectangle_12dp_corner));
+        fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setBackground(getActivity().getResources().getDrawable(R.drawable.bronze_gradient_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.txtFemale.setTextColor(getResources().getColor(R.color.white));
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.tvMale.setTextColor(getResources().getColor(R.color.txt_clr_blue));

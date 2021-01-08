@@ -48,7 +48,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     protected void setup() {
         fragmentCartBinding = (FragmentCartBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
-        dashboardActivity.handleActionMenuBar(true, false, "My Cart");
+        Boolean isLoggedIn = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_STATUS, false);
+        if (isLoggedIn)
+            dashboardActivity.handleActionMenuBar(true, false, "My Cart");
+        else
+            dashboardActivity.handleActionMenuBar(true, true, "My Cart");
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
         fragmentCartBinding.recyclerviewCart.setLayoutManager(new LinearLayoutManager(getActivity()));
         cartAdapter = new CartAdapter(dashboardActivity) {

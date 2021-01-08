@@ -12,64 +12,78 @@
         android:background="@color/txt_clr_blue">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageViewcontent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toStartOf="@+id/textView78"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvTitle"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/online_shopping" />
 
         <TextView
-            android:id="@+id/textView78"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/avantgarde_bold"
-            android:text="RETURNS"
+            android:text="--"
             android:textColor="@color/white"
             android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewcontent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewcontent"
+            app:layout_constraintTop_toTopOf="@+id/imageViewcontent" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/top_2_corner_rounded_rectangle_white"
-            android:fillViewport="true"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4">
+            app:layout_constraintTop_toBottomOf="@+id/imageViewcontent">
 
-            <LinearLayout
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:orientation="vertical">-->
+
+            <!--                <TextView-->
+            <!--                    android:id="@+id/tvDynamicContent"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_margin="24dp"-->
+            <!--                    android:fontFamily="@font/avantgarde_regular"-->
+            <!--                    android:text="@string/static_content"-->
+            <!--                    android:textColor="@color/txt_clr_blue"-->
+            <!--                    android:textSize="12sp" />-->
+
+            <WebView
+                android:id="@+id/webviewDynamicContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp" />
+            <!--            </LinearLayout>-->
+        </ScrollView>
 
-                <TextView
-                    android:id="@+id/tvDynamicContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="24dp"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:text="@string/static_content"
-                    android:textColor="@color/txt_clr_blue"
-                    android:textSize="12sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-                <WebView
-                    android:id="@+id/webviewDynamicContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="24dp"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            <include layout="@layout/fragment_dialog_loading_indicator" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

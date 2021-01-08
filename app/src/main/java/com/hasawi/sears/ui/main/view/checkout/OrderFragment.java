@@ -25,6 +25,7 @@ public class OrderFragment extends BaseFragment {
     OrderViewModel orderViewModel;
     DashboardActivity dashboardActivity;
     OrderResponse orderConfirmedResponse;
+    String orderedDate = "";
 
     @Override
     protected int getLayoutResId() {
@@ -47,10 +48,14 @@ public class OrderFragment extends BaseFragment {
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderId.setText(orderConfirmedResponse.getOrderData().getOrderId());
 //                fragmentOrderReviewBinding.layoutOrderConfirmation.tvName.setText(orderConfirmedResponse.getOrderData().get().getCustomerName());
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentMode.setText(orderConfirmedResponse.getOrderData().getPayment().getName());
-                String orderedDate = DateTimeUtils.changeDateFormat(DateTimeUtils.FORMAT_D_M_Y, DateTimeUtils.FORMAT_ORDER_STATUS, orderConfirmedResponse.getOrderData().getDateOfPurchase());
+                try {
+                    orderedDate = DateTimeUtils.changeDateFormatFromAnother(orderConfirmedResponse.getOrderData().getDateOfPurchase());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderedDate.setText(orderedDate);
-                fragmentOrderReviewBinding.layoutOrderConfirmation.tvPurchaseDate.setText(orderConfirmedResponse
-                        .getOrderData().getDateOfPurchase());
+                fragmentOrderReviewBinding.layoutOrderConfirmation.tvPurchaseDate.setText(orderedDate);
                 Address shippingAddress = orderConfirmedResponse.getOrderData().getAddress();
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvStreetAddress.setText(shippingAddress.getStreet());
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvRuralAddress.setText(shippingAddress.getFlat() + " " + shippingAddress.getBlock());
@@ -61,7 +66,7 @@ public class OrderFragment extends BaseFragment {
                     OrderTrack orderTrackItem = orderTrackList.get(i);
                     if (orderTrackItem.getSortOrder() == 1) {
                         fragmentOrderReviewBinding.layoutOrderConfirmation.radioButtonOrdered.setChecked(true);
-                        fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderedDate.setText(orderConfirmedResponse.getOrderData().getDateOfPurchase());
+                        fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderedDate.setText(orderedDate);
                     }
                 }
                 fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentDate.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getTransactionDate());

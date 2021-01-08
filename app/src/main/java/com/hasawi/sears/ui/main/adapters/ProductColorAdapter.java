@@ -46,7 +46,8 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
         try {
             Drawable drawable = context.getResources().getDrawable(R.drawable.circle);
             GradientDrawable gradientDrawable = (GradientDrawable) drawable;
-            gradientDrawable.setColor(Color.parseColor(colorList.get(position).getColorCode()));
+            if (colorList.get(position).getColorCode() != null)
+                gradientDrawable.setColor(Color.parseColor(colorList.get(position).getColorCode()));
             gradientDrawable.setStroke(3, context.getResources().getColor(R.color.grey));
 
             if (sSelected == position) {

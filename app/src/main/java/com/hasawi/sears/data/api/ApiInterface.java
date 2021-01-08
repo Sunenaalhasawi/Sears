@@ -7,6 +7,7 @@ import com.hasawi.sears.data.api.response.CategoryResponse;
 import com.hasawi.sears.data.api.response.ChangePasswordResponse;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
 import com.hasawi.sears.data.api.response.DeleteAddressResponse;
+import com.hasawi.sears.data.api.response.DynamicContentResponse;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.data.api.response.ForgotPasswordResponse;
@@ -140,6 +141,9 @@ public interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("order/customers/{customerId}")
     Call<OrderHistoryResponse> orderHistory(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
+
+    @GET("consistent?name=About%20Us")
+    Call<DynamicContentResponse> getAboutsContent();
 
 
 //    @GET("api/v{api_version}/events")

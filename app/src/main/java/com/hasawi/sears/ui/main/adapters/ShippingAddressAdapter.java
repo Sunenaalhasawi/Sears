@@ -12,20 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Address;
 import com.hasawi.sears.databinding.LayoutAddressAdapterItemBinding;
+import com.hasawi.sears.databinding.LayoutAddressBookAdapterItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
+import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.ArrayList;
 
-public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddressAdapter.ViewHolder> {
+public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static RecyclerviewSingleChoiceClickListener sClickListener;
     private static int sSelected = -1;
     ArrayList<Address> addressArrayList;
     Context context;
+    private int ADDRESS_VIEW_TYPE;
 
-    public ShippingAddressAdapter(Context context, ArrayList<Address> addresses) {
+
+    public ShippingAddressAdapter(Context context, ArrayList<Address> addresses, int VIEW_TYPE) {
         this.context = context;
         this.addressArrayList = addresses;
+        this.ADDRESS_VIEW_TYPE = VIEW_TYPE;
     }
 
     public static void setsSelected(int sSelected) {
@@ -38,42 +43,74 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
 
     @NonNull
     @Override
-    public ShippingAddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutAddressAdapterItemBinding addressAdapterItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_address_adapter_item, parent, false);
-        return new ShippingAddressAdapter.ViewHolder(addressAdapterItemBinding);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (ADDRESS_VIEW_TYPE) {
+            case AppConstants.ADDRESS_VIEW_TYPE_ADDRESSBOOK:
+                LayoutAddressBookAdapterItemBinding addressBookAdapterItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_address_book_adapter_item, parent, false);
+                return new AddressbookViewHolder(addressBookAdapterItemBinding);
+            case AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT:
+                LayoutAddressAdapterItemBinding addressAdapterItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_address_adapter_item, parent, false);
+                return new CheckoutAddressViewHolder(addressAdapterItemBinding);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ShippingAddressAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Address addressItem = addressArrayList.get(position);
-        holder.addressAdapterItemBinding.tvLocation.setText("Street: " + addressItem.getStreet());
-        holder.addressAdapterItemBinding.tvPost.setText("Area: " + addressItem.getArea());
-        holder.addressAdapterItemBinding.tvName.setText(new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_USERNAME, ""));
-        holder.addressAdapterItemBinding.tvContact.setText("Flat: " + addressItem.getFlat() + " " + addressItem.getBlock());
-        holder.addressAdapterItemBinding.tvEmail.setText("Country: " + addressItem.getCountry());
-        if (sSelected == position) {
-            holder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
-            holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
-        } else {
-            holder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_12dp));
-            holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
+        switch (ADDRESS_VIEW_TYPE) {
+            case AppConstants.ADDRESS_VIEW_TYPE_ADDRESSBOOK:
+                AddressbookViewHolder addressbookViewHolder = (AddressbookViewHolder) holder;
+                addressbookViewHolder.addressBookAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
+                String address = addressItem.getFlat() + " " + addressItem.getBlock() + ", " + addressItem.getStreet() + " " + addressItem.getArea();
+                addressbookViewHolder.addressBookAdapterItemBinding.tvAddress.setText(address);
+                addressbookViewHolder.addressBookAdapterItemBinding.tvEditAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onEditClicked(addressItem);
+                    }
+                });
+                break;
+            case AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT:
+                CheckoutAddressViewHolder checkoutAddressViewHolder = (CheckoutAddressViewHolder) holder;
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvLocation.setText("Street: " + addressItem.getStreet());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvPost.setText("Area: " + addressItem.getArea());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_USERNAME, ""));
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvContact.setText("Flat: " + addressItem.getFlat() + " " + addressItem.getBlock());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvEmail.setText("Country: " + addressItem.getCountry());
+                if (sSelected == position) {
+                    checkoutAddressViewHolder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
+                    checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
+                } else {
+                    checkoutAddressViewHolder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_12dp));
+                    checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
+                }
+
+                checkoutAddressViewHolder.addressAdapterItemBinding.imageButtonEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onEditClicked(addressItem);
+                    }
+                });
+                checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (sSelected == position)
+                            checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
+                        else
+                            checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
+                    }
+                });
+                checkoutAddressViewHolder.addressAdapterItemBinding.imageViewDeleteAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDeleteClicked(addressItem);
+                    }
+                });
+                break;
         }
 
-        holder.addressAdapterItemBinding.imageButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onEditClicked(addressItem);
-            }
-        });
-        holder.addressAdapterItemBinding.radioButtonSelectAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sSelected == position)
-                    holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
-                else
-                    holder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
-            }
-        });
+
     }
 
     public void selectedItem() {
@@ -89,13 +126,31 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Shippi
         sClickListener = clickListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CheckoutAddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LayoutAddressAdapterItemBinding addressAdapterItemBinding;
 
-        public ViewHolder(@NonNull LayoutAddressAdapterItemBinding addressAdapterItemBinding) {
+        public CheckoutAddressViewHolder(@NonNull LayoutAddressAdapterItemBinding addressAdapterItemBinding) {
             super(addressAdapterItemBinding.getRoot());
             this.addressAdapterItemBinding = addressAdapterItemBinding;
             addressAdapterItemBinding.cvBackgroundAddress.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            sSelected = getAdapterPosition();
+            sClickListener.onItemClickListener(getAdapterPosition(), view);
+        }
+
+    }
+
+
+    public class AddressbookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        LayoutAddressBookAdapterItemBinding addressBookAdapterItemBinding;
+
+        public AddressbookViewHolder(@NonNull LayoutAddressBookAdapterItemBinding addressBookAdapterItemBinding) {
+            super(addressBookAdapterItemBinding.getRoot());
+            this.addressBookAdapterItemBinding = addressBookAdapterItemBinding;
+            addressBookAdapterItemBinding.cvBackground.setOnClickListener(this);
         }
 
         @Override

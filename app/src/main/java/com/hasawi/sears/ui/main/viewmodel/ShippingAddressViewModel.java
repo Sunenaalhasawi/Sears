@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.response.AddressResponse;
+import com.hasawi.sears.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears.data.repository.UserAccountRepository;
 
 import java.util.Map;
@@ -22,5 +23,9 @@ public class ShippingAddressViewModel extends ViewModel {
 
     public MutableLiveData<Resource<AddressResponse>> editAddress(String userId, String addressId, String sessionToken, Map<String, Object> jsonParams) {
         return userAccountRepository.editAddress(userId, addressId, sessionToken, jsonParams);
+    }
+
+    public MutableLiveData<Resource<GetAllAddressResponse>> getAddresses(String userId, String sessiontoken) {
+        return userAccountRepository.getAddresses(userId, sessiontoken);
     }
 }

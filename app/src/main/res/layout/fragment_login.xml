@@ -14,7 +14,7 @@
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/app_blue"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -22,27 +22,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/left_top_rounded_rectangle"
+                android:background="@drawable/left_top_rounded_rectangle_blue_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout16">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/left_top_rounded_rectangle_blue_bg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout16">
 
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="48dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="48dp"
+                        android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
 
                     android:orientation="vertical"
@@ -55,6 +63,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="@string/password"
                         android:textColor="@color/app_blue"
@@ -64,6 +73,7 @@
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="4dp"
                         android:background="@android:color/white"
                         android:fontFamily="@font/avantgarde_regular"
@@ -80,10 +90,10 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="48dp"
                     android:fontFamily="@font/avantgarde_bold"
                     android:text="@string/welcome_to_sears"
-                    android:textColor="@color/app_blue"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +106,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/avantgarde_regular"
                     android:text="@string/happy_shopping"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/bronze"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/textView2"
                     app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -109,7 +119,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/avantgarde_bold"
                     android:text="@string/login"
-                    android:textColor="@color/app_blue"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="@+id/textView2"
                     app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -133,6 +143,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="@string/email"
                         android:textColor="@color/app_blue"
@@ -142,6 +153,7 @@
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="4dp"
                         android:background="@android:color/white"
                         android:fontFamily="@font/avantgarde_regular"
@@ -175,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@drawable/gradient_rounded_rectangle"
+                    android:background="@drawable/bronze_gradient_rounded_rectangle"
                     android:fontFamily="@font/avantgarde_bold"
                     android:padding="8dp"
                     android:text="@string/signup"
@@ -190,10 +202,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/avantgarde_regular"
+                    android:fontFamily="@font/avantgarde_bold"
                     android:text="@string/forgot_password"
-                    android:textColor="@color/app_blue"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_login" />
@@ -204,6 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/tv_forgot_pswd"
                     app:layout_constraintStart_toStartOf="@+id/tv_forgot_pswd"
                     app:layout_constraintTop_toBottomOf="@+id/tv_forgot_pswd">
@@ -233,20 +247,33 @@
                     android:text="@string/login_with_social_media"
                     android:textColor="@color/app_blue"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout16"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/sears_logo_login" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/sears_logo_login" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

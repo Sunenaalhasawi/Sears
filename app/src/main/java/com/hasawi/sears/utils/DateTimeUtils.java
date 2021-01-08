@@ -1,5 +1,8 @@
 package com.hasawi.sears.utils;
 
+import android.annotation.SuppressLint;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +18,7 @@ public class DateTimeUtils {
     public static final String FORMAT_Y_M_D_T_H_m_s_S_Z = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String FORMAT_D_M_Y = "dd-MM-yyyy";
     public static final String FORMAT_M_D = "MMM dd";
-    public static final String FORMAT_ORDER_STATUS = "EEE dd MMM YYYY";
+    public static final String FORMAT_ORDER_STATUS = "EEE, dd MMM YYYY";
     public static final String FORMAT_D_M_Y_ = "dd MMM yyyy";
     public static final String FORMAT_H_m_s = "HH:mm:ss";
     public static final String FORMAT_H_m__am = "h:mm a";
@@ -287,5 +290,16 @@ public class DateTimeUtils {
         return time_12hr;
     }
 
+    public static String changeDateFormatFromAnother(String date) {
+        @SuppressLint("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("EEE, dd MMM YYYY");
+        String resultDate = "";
+        try {
+            resultDate = outputFormat.format(inputFormat.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return resultDate;
+    }
 
 }

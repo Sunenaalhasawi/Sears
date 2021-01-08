@@ -378,9 +378,9 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     public void onItemClickListener(int position, View view) {
 
 //        categoryRecyclerviewAdapter.selectedItem();
-        currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
-        refreshProductList(currentSelectedCategory, null, "");
-        loadFilterData(filterArray);
+//        currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
+//        refreshProductList(currentSelectedCategory, null, "");
+//        loadFilterData(filterArray);
         try {
             Bundle analyticsBundle = new Bundle();
             analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
@@ -439,18 +439,24 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 
     private void logAddToWishlistEvent(Product product) {
         Bundle analyticsBundle = new Bundle();
-        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, product.getOriginalPrice());
-
+        try {
+            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, product.getOriginalPrice());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Bundle itemBundle = new Bundle();
-        itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
-        itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
-        itemBundle.putString("product_id", product.getProductId());
-        ArrayList<Bundle> parcelabeList = new ArrayList<>();
-        parcelabeList.add(itemBundle);
-
-        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, parcelabeList);
-        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
+        try {
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString("product_id", product.getProductId());
+            ArrayList<Bundle> parcelabeList = new ArrayList<>();
+            parcelabeList.add(itemBundle);
+            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, parcelabeList);
+            dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

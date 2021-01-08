@@ -389,5 +389,26 @@ Note: After adding the dependencies, click on Sync now.</string>
     <string name="no_orders_in_history">You don\'t have any orders</string>
     <string name="sub_total_amount">Subtotal amount</string>
     <string name="total">TOTAL</string>
+    <string name="view_your_profile">View your profile</string>
+    <string name="profile">Profile</string>
+    <string name="enter_email_id">Enter Email ID</string>
+    <string name="new_password">New Password</string>
+    <string name="verify_email">Verify E-mail</string>
+    <string name="check_mail_to_reset_pswd">Please check the mail to reset password</string>
+    <string name="dont_receive_mail">If you don\'t receive an email ?</string>
+
+    <string name="no_promotions_for_now">No Promotions for Now</string>
+    <string name="stay_tuned">STAY TUNED!</string>
+
+    <string name="no_addresses">No Addresses</string>
+    <string name="no_address_error_msg">You haven\'t added any address yet</string>
+    <string name="add_addresses">Add Address</string>
+    <string name="edit">Edit</string>
+    <string name="your_shipping_addresses">Your Shipping Addresses </string>
+    <string name="cancel">Cancel</string>
+
+    <string name="sears_phone">Call +965 22212227</string>
+    <string name="sears_email">wecare@searskuwait.com</string>
+    <string name="please_login">Please Login/Signup</string>
 
 </resources>

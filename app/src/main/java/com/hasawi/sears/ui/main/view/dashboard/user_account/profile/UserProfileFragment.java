@@ -20,8 +20,7 @@ import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 import java.util.Calendar;
 import java.util.Map;
 
-public class
-UserProfileFragment extends BaseFragment {
+public class UserProfileFragment extends BaseFragment {
 
     UserProfileViewModel userProfileViewModel;
     FragmentUserProfileBinding fragmentUserProfileBinding;
@@ -41,7 +40,7 @@ UserProfileFragment extends BaseFragment {
         fragmentUserProfileBinding = (FragmentUserProfileBinding) viewDataBinding;
         userProfileViewModel = new ViewModelProvider(getActivity()).get(UserProfileViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
-        dashboardActivity.setTitle("My Profile");
+        dashboardActivity.handleActionMenuBar(true, false, "My Profile");
         try {
             PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
             String name = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
@@ -128,7 +127,7 @@ UserProfileFragment extends BaseFragment {
                         inputParams.put("emailId", emailId);
                         inputParams.put("gender", selectedGender);
                         inputParams.put("nationality", selectedNationality);
-                        inputParams.put("", selectedDob);
+                        inputParams.put("dob", selectedDob);
                         inputParams.put("mobileNo", mobileNo);
                         callEditUserProfileApi(customerId, inputParams, sessionToken);
                     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.pojo.Category;
+import com.hasawi.sears.data.api.response.DynamicContentResponse;
 import com.hasawi.sears.data.api.response.DynamicDataResponse;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.data.api.response.LanguageResponse;
@@ -118,5 +119,26 @@ public class DynamicDataRepository {
             }
         });
         return dynamicUiMutableLiveData;
+    }
+
+    public MutableLiveData<Resource<DynamicContentResponse>> getAboutUsContent() {
+        MutableLiveData<Resource<DynamicContentResponse>> aboutUsMutableLiveData = new MutableLiveData<>();
+        Call<DynamicContentResponse> aboutUsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getAboutsContent();
+        aboutUsResponseCall.enqueue(new Callback<DynamicContentResponse>() {
+            @Override
+            public void onResponse(Call<DynamicContentResponse> call, Response<DynamicContentResponse> response) {
+                if (response.code() != 200) {
+                    aboutUsMutableLiveData.setValue(Resource.error("Something Went Wrong !", null));
+                } else if (response.body() != null) {
+                    aboutUsMutableLiveData.postValue(Resource.success(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DynamicContentResponse> call, Throwable t) {
+                aboutUsMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return aboutUsMutableLiveData;
     }
 }

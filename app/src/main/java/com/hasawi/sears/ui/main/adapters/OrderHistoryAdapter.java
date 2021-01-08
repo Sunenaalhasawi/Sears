@@ -14,10 +14,11 @@ import com.hasawi.sears.data.api.model.pojo.Order;
 import com.hasawi.sears.data.api.model.pojo.OrderProduct;
 import com.hasawi.sears.data.api.model.pojo.OrderTrack;
 import com.hasawi.sears.databinding.LayoutOrderHistoryRecyclerItemBinding;
-import com.hasawi.sears.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.hasawi.sears.utils.DateTimeUtils.changeDateFormatFromAnother;
 
 public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.ViewHolder> {
     ArrayList<Order> orderList;
@@ -45,8 +46,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
         try {
             String dateOfPurchase = orderItem.getDateOfPurchase();
-            String formattedDate = DateTimeUtils.changeDateFormat(DateTimeUtils.FORMAT_Y_M_D_T_H_m_s_S, DateTimeUtils.FORMAT_ORDER_STATUS, dateOfPurchase);
-            holder.orderHistoryRecyclerItemBinding.tvOrderedDate.setText(orderItem.getDateOfPurchase());
+            String formattedString = changeDateFormatFromAnother(dateOfPurchase);
+            holder.orderHistoryRecyclerItemBinding.tvOrderedDate.setText(formattedString);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,4 +127,5 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             this.orderHistoryRecyclerItemBinding = orderHistoryRecyclerItemBinding;
         }
     }
+
 }

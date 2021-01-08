@@ -25,6 +25,7 @@ import com.hasawi.sears.ui.main.adapters.ShippingModeAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.CheckoutViewModel;
+import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 case SUCCESS:
                     try {
                         addressList = getAllAddressResponseResource.data.getData().getAddresses();
-                        shippingAddressAdapter = new ShippingAddressAdapter(getContext(), (ArrayList<Address>) addressList) {
+                        shippingAddressAdapter = new ShippingAddressAdapter(getContext(), (ArrayList<Address>) addressList, AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT) {
                             @Override
                             public void onEditClicked(Address address) {
                                 dashboardActivity.handleActionMenuBar(true, false, "");

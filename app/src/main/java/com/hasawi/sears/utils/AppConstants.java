@@ -25,5 +25,8 @@ public class AppConstants {
     public static final int BRAND_LIST_VIEW = 103;
     public static final int CUSTOM_LIST_VIEW = 104;
 
+    public static final int ADDRESS_VIEW_TYPE_CHECKOUT = 200;
+    public static final int ADDRESS_VIEW_TYPE_ADDRESSBOOK = 201;
+
 
 }
