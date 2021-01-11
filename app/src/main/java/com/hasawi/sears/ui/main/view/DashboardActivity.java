@@ -45,6 +45,8 @@ import com.hasawi.sears.ui.main.view.dashboard.home.CategoryFragment;
 import com.hasawi.sears.ui.main.view.dashboard.home.NotificationFragment;
 import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.AboutUsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.ContactUsFragment;
+import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.FAQFragment;
+import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.PrivatePolicyFragment;
 import com.hasawi.sears.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
@@ -74,7 +76,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     Bundle dataBundle = new Bundle();
     int cartCount = 0;
     SearchView searchView;
-    MenuItem searchItem;
+    MenuItem searchItem, notificationItem, shareItem;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
     private DashboardViewModel dashboardViewModel;
@@ -171,7 +173,16 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             case AppConstants.ID_MENU_ABOUT_US:
                 replaceFragment(R.id.fragment_replacer, new AboutUsFragment(), null, true, false);
                 activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
-                handleActionMenuBar(true, false, "About Us");
+                closeDrawer();
+                break;
+            case AppConstants.ID_MENU_PRIVACY_POLICY:
+                replaceFragment(R.id.fragment_replacer, new PrivatePolicyFragment(), null, true, false);
+                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+                closeDrawer();
+                break;
+            case AppConstants.ID_MENU_FAQ:
+                replaceFragment(R.id.fragment_replacer, new FAQFragment(), null, true, false);
+                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_SIGNOUT:
@@ -311,7 +322,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     ProductSearch selectedProduct = productSearchList.get(position);
                     Bundle bundle = new Bundle();
                     bundle.putString("product_object_id", selectedProduct.getObjectID());
-                    handleActionMenuBar(true, false, "");
+                    handleActionMenuBar(true, false, selectedProduct.getNameEn());
                     replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 
                 } catch (Exception e) {
@@ -320,6 +331,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
         }));
         searchItem = menu.findItem(R.id.action_search);
+        notificationItem = menu.findItem(R.id.action_notifications);
+        shareItem = menu.findItem(R.id.action_share);
+        shareItem.setVisible(false);
+        searchItem.setVisible(true);
+        notificationItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("What are you looking for?");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -382,6 +398,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 handleActionMenuBar(true, true, "Notifications");
                 replaceFragment(R.id.fragment_replacer, new NotificationFragment(), null, true, false);
                 return true;
+            case R.id.action_share:
+                shareProduct();
+                return true;
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -390,18 +409,25 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
         switch (item.getItemId()) {
+
             case R.id.navigation_home:
                 int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
                 for (int i = 0; i < fragmentCount; i++) {
-                    getSupportFragmentManager().popBackStackImmediate();
+                    getSupportFragmentManager().popBackStack();
                 }
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
                 handleActionMenuBar(false, true, "");
                 return true;
             case R.id.navigation_wishlist:
-                WishListFragment wishlistFragment = new WishListFragment();
-                replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
-                handleActionMenuBar(true, true, "Wishlist");
+                if (currentFragment instanceof WishListFragment) {
+
+                } else {
+                    WishListFragment wishlistFragment = new WishListFragment();
+                    replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
+                    handleActionMenuBar(true, true, "Wishlist");
+                }
                 return true;
             case R.id.navigation_categories:
                 int count = getSupportFragmentManager().getBackStackEntryCount();
@@ -413,14 +439,22 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 replaceFragment(R.id.framelayout_categories, new CategoryFragment(), null, true, false);
                 return true;
             case R.id.navigation_cart:
-                MyCartFragment myCartFragment = new MyCartFragment();
-                replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
-                handleActionMenuBar(true, true, "My Cart");
+                if (currentFragment instanceof MyCartFragment) {
+
+                } else {
+                    MyCartFragment myCartFragment = new MyCartFragment();
+                    replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
+                    handleActionMenuBar(true, true, "My Cart");
+                }
                 return true;
             case R.id.navigation_profile:
-                UserAccountFragment userAccountFragment = new UserAccountFragment();
-                replaceFragment(R.id.fragment_replacer, userAccountFragment, null, true, false);
-                handleActionMenuBar(true, true, "My Account");
+                if (currentFragment instanceof UserAccountFragment) {
+
+                } else {
+                    UserAccountFragment userAccountFragment = new UserAccountFragment();
+                    replaceFragment(R.id.fragment_replacer, userAccountFragment, null, true, false);
+                    handleActionMenuBar(true, true, "My Account");
+                }
                 return true;
             default:
                 return true;
@@ -462,6 +496,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         else
             setTitle("");
         actionBarDrawerToggle.syncState();
+
     }
 
     @Override
@@ -485,10 +520,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 super.onBackPressed();
             }
             setTitle(getTitle());
+            activityDashboardBinding.appBarMain.toolbar.setVisibility(View.VISIBLE);
             BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
+            handleActionBarIcons(true);
             if (currentFragment instanceof WishListFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+                activityDashboardBinding.appBarMain.bottomNavigationView.getMenu().findItem(R.id.navigation_wishlist).setChecked(false);
             } else if (currentFragment instanceof MyCartFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
@@ -517,6 +555,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             } else if (currentFragment instanceof NotificationFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof AboutUsFragment) {
+
             }
 
 
@@ -653,6 +693,48 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     public void showMessageToast(String message, int duration) {
         Toast.makeText(DashboardActivity.this, message, duration).show();
+    }
+
+    public void handleSocialShare(boolean shouldShow) {
+        if (shareItem != null) {
+            if (shouldShow)
+                shareItem.setVisible(true);
+            else
+                shareItem.setVisible(false);
+        }
+    }
+
+    public void shareProduct() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Install Sears Outlet App to shop world's most famous brands at great prices!\n" +
+                "https://searskuwait.com/");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+//        Intent myIntent = new Intent(Intent.ACTION_SEND);
+//        myIntent.setType("text/plain");
+//        String shareBody = "Install Sears Outlet App to shop world's most famous brands at great prices!\n" +
+//                "https://searskuwait.com/";
+////        String shareSub = "";
+////        myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+//        myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+//        startActivity(Intent.createChooser(myIntent, "Share using"));
+    }
+
+    public void handleActionBarIcons(boolean showActionBaritems) {
+        if (shareItem != null)
+            shareItem.setVisible(false);
+        if (showActionBaritems) {
+            if (searchItem != null)
+                searchItem.setVisible(true);
+            if (notificationItem != null)
+                notificationItem.setVisible(true);
+        } else {
+            if (searchItem != null)
+                searchItem.setVisible(false);
+            if (notificationItem != null)
+                notificationItem.setVisible(false);
+        }
     }
 
 }

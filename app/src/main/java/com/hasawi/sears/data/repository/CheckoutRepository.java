@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.response.CheckoutResponse;
+import com.hasawi.sears.data.api.response.PaymentResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +32,28 @@ public class CheckoutRepository {
             }
         });
         return cheResourceMutableLiveData;
+    }
+
+    public MutableLiveData<Resource<PaymentResponse>> getPaymentSuccess(String url) {
+        MutableLiveData<Resource<PaymentResponse>> paymentSuccessMutableData = new MutableLiveData<>();
+        Call<PaymentResponse> paymentSuccessResponseCall = RetrofitApiClient.getInstance().getApiInterface().getPaymentSuccessResponse(url);
+        paymentSuccessResponseCall.enqueue(new Callback<PaymentResponse>() {
+            @Override
+            public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                if (response.code() != 200) {
+                    paymentSuccessMutableData.setValue(Resource.error("Network Error !", null));
+                } else if (response.body() != null) {
+                    paymentSuccessMutableData.setValue(Resource.success(response.body()));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PaymentResponse> call, Throwable t) {
+                paymentSuccessMutableData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return paymentSuccessMutableData;
     }
 
 }

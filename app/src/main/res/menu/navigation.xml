@@ -3,12 +3,14 @@
 
     <item
         android:id="@+id/navigation_home"
+        android:checked="true"
         android:enabled="true"
         android:icon="@drawable/home_selector"
         android:iconTint="@color/white"
         android:title="@string/home" />
     <item
         android:id="@+id/navigation_categories"
+        android:checked="false"
         android:enabled="true"
         android:icon="@drawable/category_selector"
         android:iconTint="@color/white"
@@ -16,6 +18,7 @@
 
     <item
         android:id="@+id/navigation_wishlist"
+        android:checked="false"
         android:enabled="true"
         android:icon="@drawable/wishlist_selector"
         android:iconTint="@color/white"
@@ -24,6 +27,7 @@
 
     <item
         android:id="@+id/navigation_cart"
+        android:checked="false"
         android:enabled="true"
         android:icon="@drawable/cart_selector"
         android:iconTint="@color/white"

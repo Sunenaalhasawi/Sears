@@ -11,10 +11,7 @@ import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
 import com.hasawi.sears.data.api.model.pojo.Product;
-import com.hasawi.sears.data.api.response.CartResponse;
-import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
-import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
 import com.hasawi.sears.data.api.response.WishlistResponse;
 import com.hasawi.sears.data.repository.ProductRepository;
 import com.hasawi.sears.ui.main.view.dashboard.product.paging.ProductDataFactory;
@@ -22,7 +19,6 @@ import com.hasawi.sears.utils.NetworkState;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -33,15 +29,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SharedHomeViewModel extends ViewModel {
-
+public class ProductListingViewModel extends ViewModel {
     private final MutableLiveData<Product> selectedProduct = new MutableLiveData<Product>();
     private final MutableLiveData<Map<String, List<FilterAttributeValues>>> filterAttributesLiveData = new MutableLiveData<>();
     MutableLiveData<Resource<ProductResponse>> generalMutsbleLiveData;
-    MutableLiveData<List<Product>> wishListedProducts = new MutableLiveData<>();
-    MutableLiveData<List<Product>> cartedProducts = new MutableLiveData<>();
-    ArrayList<Product> wishlistItems = new ArrayList<>();
-    ArrayList<Product> cartedItems = new ArrayList<>();
     private ProductRepository productRepository;
     //Pagination
     private Executor executor;
@@ -49,26 +40,22 @@ public class SharedHomeViewModel extends ViewModel {
     private LiveData<PagedList<Product>> productPaginationLiveData;
 
 
-    public SharedHomeViewModel() {
+    public ProductListingViewModel() {
         productRepository = new ProductRepository();
         generalMutsbleLiveData = new MutableLiveData<>();
     }
 
-    public void select(Product product) {
-        selectedProduct.setValue(product);
-    }
-
-    public LiveData<Product> getSelected() {
-        return selectedProduct;
-    }
+//    public void select(Product product) {
+//        selectedProduct.setValue(product);
+//    }
+//
+//    public LiveData<Product> getSelected() {
+//        return selectedProduct;
+//    }
 
 
     public MutableLiveData<Resource<ProductResponse>> getProductsInfo(String selectedCategoryId, String page_no, JSONArray filterArray) {
         return productRepository.getProductsInfo(selectedCategoryId, page_no, filterArray);
-    }
-
-    public MutableLiveData<Resource<ProductDetailsResponse>> getProductDetails(String productName) {
-        return productRepository.getProductDetails(productName);
     }
 
     public void fetchProductData(String categoryId, JSONArray filterArray, String pageNo, String sortString) {
@@ -90,6 +77,7 @@ public class SharedHomeViewModel extends ViewModel {
                 .build();
 
     }
+
     public MutableLiveData<Resource<ProductResponse>> callProductDataApi(String categoryId, String page_no) {
 
         RequestBody body = ProductRepository.addInputParams(categoryId, null);
@@ -136,15 +124,9 @@ public class SharedHomeViewModel extends ViewModel {
         this.filterAttributesLiveData.postValue(filterData);
     }
 
-    public MutableLiveData<Resource<SearchedProductDetailsResponse>> getSearchedProductDetails(String objectId) {
-        return productRepository.getSearchedProductDetails(objectId);
-    }
 
     public MutableLiveData<Resource<WishlistResponse>> addToWishlist(String productID, String userID, String sessionToken) {
         return productRepository.addToWishlist(productID, userID, sessionToken);
     }
 
-    public MutableLiveData<Resource<CartResponse>> addToCart(String userID, String jsonParams, String sessionToken) {
-        return productRepository.addToCart(userID, jsonParams, sessionToken);
-    }
 }

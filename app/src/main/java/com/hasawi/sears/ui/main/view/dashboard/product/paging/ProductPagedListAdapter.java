@@ -117,7 +117,10 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Product, 
             else
                 productItemBinding.radioButtonWishlist.setChecked(false);
             productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
-            productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "%");
+            if (productContent.getDiscountPercentage() == null || productContent.getDiscountPercentage() == 0) {
+                productItemBinding.tvOfferPercent.setVisibility(View.GONE);
+            } else
+                productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "%");
             Glide.with(context)
                     .load(productContent.getProductImages().get(0).getImageUrl())
                     .centerCrop()

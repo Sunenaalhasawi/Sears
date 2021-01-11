@@ -7,10 +7,12 @@ import android.webkit.WebViewClient;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.FragmentWebviewBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
+import com.hasawi.sears.ui.main.view.DashboardActivity;
 
 public class WebviewFragment extends BaseFragment {
     FragmentWebviewBinding fragmentWebviewBinding;
     String url = "";
+    DashboardActivity dashboardActivity;
 
     @Override
     protected int getLayoutResId() {
@@ -20,6 +22,8 @@ public class WebviewFragment extends BaseFragment {
     @Override
     protected void setup() {
         fragmentWebviewBinding = (FragmentWebviewBinding) viewDataBinding;
+        dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         try {
             Bundle bundle = getArguments();
             url = bundle.getString("url");

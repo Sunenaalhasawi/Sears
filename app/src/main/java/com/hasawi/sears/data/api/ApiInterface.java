@@ -17,6 +17,7 @@ import com.hasawi.sears.data.api.response.LoginResponse;
 import com.hasawi.sears.data.api.response.MainCategoryResponse;
 import com.hasawi.sears.data.api.response.OrderHistoryResponse;
 import com.hasawi.sears.data.api.response.OrderResponse;
+import com.hasawi.sears.data.api.response.PaymentResponse;
 import com.hasawi.sears.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.data.api.response.SearchedProductDetailsResponse;
@@ -39,6 +40,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -142,9 +144,11 @@ public interface ApiInterface {
     @POST("order/customers/{customerId}")
     Call<OrderHistoryResponse> orderHistory(@Path("customerId") String customerId, @Header("Authorization") String sessionToken);
 
-    @GET("consistent?name=About%20Us")
-    Call<DynamicContentResponse> getAboutsContent();
+    @GET("consistent?")
+    Call<DynamicContentResponse> getDynamicWebviewContent(@Query("name") String query);
 
+    @GET
+    Call<PaymentResponse> getPaymentSuccessResponse(@Url String url);
 
 //    @GET("api/v{api_version}/events")
 //    Call<RetrofitModelEvents> getEventsSearchPagination(

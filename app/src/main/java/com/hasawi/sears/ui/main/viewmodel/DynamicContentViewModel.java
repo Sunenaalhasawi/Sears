@@ -15,7 +15,7 @@ public class DynamicContentViewModel extends ViewModel {
         dynamicDataRepository = new DynamicDataRepository();
     }
 
-    public MutableLiveData<Resource<DynamicContentResponse>> getAboutUsContent() {
-        return dynamicDataRepository.getAboutUsContent();
+    public MutableLiveData<Resource<DynamicContentResponse>> getDynamicWebviewContent(String name) {
+        return dynamicDataRepository.getDynamicWebviewContent(name);
     }
 }

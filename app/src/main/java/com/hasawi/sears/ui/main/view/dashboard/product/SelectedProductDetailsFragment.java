@@ -37,7 +37,7 @@ import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
-import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
+import com.hasawi.sears.ui.main.viewmodel.ProductDetailViewModel;
 import com.hasawi.sears.utils.PreferenceHandler;
 import com.hasawi.sears.utils.dialogs.CartDialog;
 import com.hasawi.sears.utils.dialogs.ChooseSizeDialog;
@@ -52,7 +52,7 @@ import java.util.Map;
 
 public class SelectedProductDetailsFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener {
 
-    SharedHomeViewModel sharedHomeViewModel;
+    ProductDetailViewModel productDetailViewModel;
     FragmentSelectedProductDetailsBinding fragmentSelectedProductDetailsBinding;
     Product currentSelectedProduct;
     DashboardActivity dashboardActivity;
@@ -81,10 +81,11 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     @Override
     protected void setup() {
         fragmentSelectedProductDetailsBinding = (FragmentSelectedProductDetailsBinding) viewDataBinding;
-        sharedHomeViewModel = new ViewModelProvider(getActivity()).get(SharedHomeViewModel.class);
+        productDetailViewModel = new ViewModelProvider(getActivity()).get(ProductDetailViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
-        dashboardActivity.handleActionMenuBar(true, false, "");
         dashboardActivity.hideSearchPage();
+        dashboardActivity.handleActionBarIcons(false);
+        dashboardActivity.handleSocialShare(true);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
@@ -108,15 +109,21 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         }
 
         fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.VISIBLE);
-        sharedHomeViewModel.getSearchedProductDetails(selectedObjectID).observe(getActivity(), searchedProductDetailsResponse -> {
+        productDetailViewModel.getSearchedProductDetails(selectedObjectID).observe(getActivity(), searchedProductDetailsResponse -> {
             switch (searchedProductDetailsResponse.status) {
                 case SUCCESS:
-                    currentSelectedProduct = searchedProductDetailsResponse.data.getData().getProduct();
-                    recommendedProductList = (ArrayList<Product>) searchedProductDetailsResponse.data.getData().getRecommendedProductList();
-                    setRelatedProducts();
-                    setUIValues(currentSelectedProduct);
-                    setColorSizeAdapterList(currentSelectedProduct.getProductConfigurables());
-                    logProductViewEvent(currentSelectedProduct);
+                    try {
+                        currentSelectedProduct = searchedProductDetailsResponse.data.getData().getProduct();
+                        if (currentSelectedProduct.getDescriptions() != null)
+                            dashboardActivity.setTitle(currentSelectedProduct.getDescriptions().get(0).getProductName());
+                        recommendedProductList = (ArrayList<Product>) searchedProductDetailsResponse.data.getData().getRecommendedProductList();
+                        setRelatedProducts();
+                        setUIValues(currentSelectedProduct);
+                        setColorSizeAdapterList(currentSelectedProduct.getProductConfigurables());
+                        logProductViewEvent(currentSelectedProduct);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case LOADING:
                     break;
@@ -230,50 +237,64 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     private void setUIValues(Product currentSelectedProduct) {
         try {
-            Glide.with(this)
-                    .load(currentSelectedProduct.getProductImages().get(0).getImageUrl())
-                    .centerCrop()
-                    .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+            try {
+                Glide.with(this)
+                        .load(currentSelectedProduct.getProductImages().get(0).getImageUrl())
+                        .centerCrop()
+                        .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+            } catch (Exception e) {
+                e.printStackTrace();
+                FirebaseCrashlytics.getInstance().log(e.getMessage());
+            }
+            fragmentSelectedProductDetailsBinding.tvProductName.setText(currentSelectedProduct.getDescriptions().get(0).getProductName());
+            String description = currentSelectedProduct.getDescriptions().get(0).getProductDescription();
+            if (description == null || description.equals("")) {
+                fragmentSelectedProductDetailsBinding.tvProductDescription.setVisibility(View.GONE);
+            } else if (description != null) {
+
+                fragmentSelectedProductDetailsBinding.tvProductDescription.setVisibility(View.VISIBLE);
+                fragmentSelectedProductDetailsBinding.tvProductDescription.setText(currentSelectedProduct.getDescriptions().get(0).getProductDescription());
+            }
+            if (currentSelectedProduct.getWishlist())
+                fragmentSelectedProductDetailsBinding.checkboxWishlist.setChecked(true);
+            else
+                fragmentSelectedProductDetailsBinding.checkboxWishlist.setChecked(false);
+            fragmentSelectedProductDetailsBinding.tvOriginalPrice.setText("KWD " + currentSelectedProduct.getDiscountPrice());
+            fragmentSelectedProductDetailsBinding.tvOurPrice.setText("KWD " + currentSelectedProduct.getOriginalPrice());
+            if (currentSelectedProduct.getSku() != null)
+                fragmentSelectedProductDetailsBinding.tvSku.setText(currentSelectedProduct.getSku());
+            try {
+                Glide.with(getContext())
+                        .load(currentSelectedProduct.getBrandLogoUrl())
+                        .centerCrop()
+                        .into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (currentSelectedProduct.getDiscountPercentage() == null || currentSelectedProduct.getDiscountPercentage() == 0)
+                fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
+            else
+                fragmentSelectedProductDetailsBinding.tvOfferPercent.setText(currentSelectedProduct.getDiscountPercentage() + "% OFF");
+            fragmentSelectedProductDetailsBinding.tvOriginalPrice.setPaintFlags(fragmentSelectedProductDetailsBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            productAttributeArrayList = (ArrayList<ProductAttribute>) currentSelectedProduct.getProductAttributes();
+            productAttributesAdapter = new ProductAttributesAdapter(getActivity(), productAttributeArrayList);
+            fragmentSelectedProductDetailsBinding.productDetails.recyclerviewProductDetails.setAdapter(productAttributesAdapter);
+            if (!currentSelectedProduct.isAvailable()) {
+                fragmentSelectedProductDetailsBinding.tvOutOfStock.setVisibility(View.VISIBLE);
+                fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
+                disableAddToCart = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            FirebaseCrashlytics.getInstance().log(e.getMessage());
-        }
-        fragmentSelectedProductDetailsBinding.tvProductName.setText(currentSelectedProduct.getDescriptions().get(0).getProductName());
-        String description = currentSelectedProduct.getDescriptions().get(0).getProductDescription();
-        if (description == null || description.equals("")) {
-            fragmentSelectedProductDetailsBinding.tvProductDescription.setVisibility(View.GONE);
-        } else if (description != null) {
-
-            fragmentSelectedProductDetailsBinding.tvProductDescription.setVisibility(View.VISIBLE);
-            fragmentSelectedProductDetailsBinding.tvProductDescription.setText(currentSelectedProduct.getDescriptions().get(0).getProductDescription());
-        }
-        if (currentSelectedProduct.getWishlist())
-            fragmentSelectedProductDetailsBinding.checkboxWishlist.setChecked(true);
-        else
-            fragmentSelectedProductDetailsBinding.checkboxWishlist.setChecked(false);
-        fragmentSelectedProductDetailsBinding.tvOriginalPrice.setText("KWD " + currentSelectedProduct.getDiscountPrice());
-        fragmentSelectedProductDetailsBinding.tvOurPrice.setText("KWD " + currentSelectedProduct.getOriginalPrice());
-        fragmentSelectedProductDetailsBinding.tvSku.setText(currentSelectedProduct.getSku());
-        try {
-            Glide.with(getContext())
-                    .load(currentSelectedProduct.getBrandLogoUrl())
-                    .centerCrop()
-                    .into(fragmentSelectedProductDetailsBinding.imageViewBrandLogo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        fragmentSelectedProductDetailsBinding.tvOfferPercent.setText(currentSelectedProduct.getDiscountPercentage() + "% OFF");
-        fragmentSelectedProductDetailsBinding.tvOriginalPrice.setPaintFlags(fragmentSelectedProductDetailsBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-        productAttributeArrayList = (ArrayList<ProductAttribute>) currentSelectedProduct.getProductAttributes();
-        productAttributesAdapter = new ProductAttributesAdapter(getActivity(), productAttributeArrayList);
-        fragmentSelectedProductDetailsBinding.productDetails.recyclerviewProductDetails.setAdapter(productAttributesAdapter);
-        if (!currentSelectedProduct.isAvailable()) {
-            fragmentSelectedProductDetailsBinding.tvOutOfStock.setVisibility(View.VISIBLE);
-            fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
-            disableAddToCart = true;
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dashboardActivity.handleSocialShare(false);
     }
 
     public void setUpProductDescriptionRecyclerview() {
@@ -283,7 +304,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     public void callProductDetailApi(String productName) {
-        sharedHomeViewModel.getProductDetails(productName).observe(getActivity(), productDetailsResponse -> {
+        productDetailViewModel.getProductDetails(productName).observe(getActivity(), productDetailsResponse -> {
             switch (productDetailsResponse.status) {
                 case SUCCESS:
                     currentSelectedProduct = productDetailsResponse.data.getData();
@@ -424,8 +445,10 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     public void callAddToCartApi(String jsonParamString) {
 
         fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.VISIBLE);
-
-        sharedHomeViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+        userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
+        sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
+        productDetailViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
             fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.GONE);
             switch (addToCartResponse.status) {
                 case SUCCESS:
@@ -470,7 +493,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     private void callWishlistApi(Product product, boolean isWishlisted) {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-        sharedHomeViewModel.addToWishlist(product.getProductId(), userID, sessionToken).observe(getActivity(), wishlistResponse -> {
+        productDetailViewModel.addToWishlist(product.getProductId(), userID, sessionToken).observe(getActivity(), wishlistResponse -> {
             switch (wishlistResponse.status) {
                 case SUCCESS:
                     if (isWishlisted)
@@ -500,6 +523,16 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
                 @Override
                 public void onItemClicked(Product productContent) {
+                    Product selectedProduct = productContent;
+//                    productListingViewModel.select(selectedProduct);
+                    Gson gson = new Gson();
+                    String objectString = gson.toJson(selectedProduct);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("selected_product_object", objectString);
+
+                    dashboardActivity.handleActionMenuBar(true, false, selectedProduct.getDescriptions().get(0).getProductName());
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer_product, new SelectedProductDetailsFragment(), bundle, true, false);
+
 
                 }
             };
@@ -514,6 +547,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         }
 
     }
+
 
     public static class ProductImageActivity extends BaseActivity {
 

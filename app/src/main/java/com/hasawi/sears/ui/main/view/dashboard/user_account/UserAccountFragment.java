@@ -29,6 +29,7 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
         fragmentUserAccountBinding = (FragmentUserAccountBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.handleActionMenuBar(true, true, "My Account");
+        dashboardActivity.handleActionBarIcons(false);
         fragmentUserAccountBinding.constraintLayoutProfile.setOnClickListener(this);
         fragmentUserAccountBinding.constraintLayoutOrder.setOnClickListener(this);
         fragmentUserAccountBinding.constrainLayoutHelpCenter.setOnClickListener(this);

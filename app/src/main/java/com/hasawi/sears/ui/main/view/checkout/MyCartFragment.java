@@ -48,6 +48,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     protected void setup() {
         fragmentCartBinding = (FragmentCartBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         Boolean isLoggedIn = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_STATUS, false);
         if (isLoggedIn)
             dashboardActivity.handleActionMenuBar(true, false, "My Cart");
@@ -99,6 +100,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     private void setUiValues() {
         fragmentCartBinding.tvItemCount.setText("Bag " + cartCount);
         fragmentCartBinding.tvTotalPrice.setText("KWD " + totalPrice);
+        fragmentCartBinding.tvTotalAmount.setText("KWD " + totalPrice);
     }
 
     @Override

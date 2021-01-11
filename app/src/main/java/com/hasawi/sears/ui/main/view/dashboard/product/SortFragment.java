@@ -34,6 +34,7 @@ public class SortFragment extends BaseFragment implements RecyclerviewSingleChoi
     protected void setup() {
         fragmentSortBinding = (FragmentSortBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(true);
         sharedHomeViewModel = new ViewModelProvider(getActivity()).get(SharedHomeViewModel.class);
         try {
             Bundle bundle = getArguments();
@@ -86,6 +87,5 @@ public class SortFragment extends BaseFragment implements RecyclerviewSingleChoi
         bundle.putString("sort_value", selectedSort);
         dashboardActivity.getmFirebaseAnalytics().logEvent("SORT_BY", bundle);
         returnSortValues();
-        getParentFragmentManager().popBackStackImmediate();
     }
 }

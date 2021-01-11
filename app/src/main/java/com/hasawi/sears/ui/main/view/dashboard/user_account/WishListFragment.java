@@ -43,6 +43,7 @@ public class WishListFragment extends BaseFragment {
     protected void setup() {
         fragmentWishlistBinding = (FragmentWishlistBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         wishListViewModel = new ViewModelProvider(dashboardActivity).get(WishListViewModel.class);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");

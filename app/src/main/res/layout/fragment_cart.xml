@@ -32,18 +32,17 @@
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView62"
-                app:layout_constraintEnd_toStartOf="@+id/textView61"
+                app:layout_constraintEnd_toStartOf="@+id/tvTotalAmount"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView61"
+                android:id="@+id/tvTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="KWD 750"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView54"

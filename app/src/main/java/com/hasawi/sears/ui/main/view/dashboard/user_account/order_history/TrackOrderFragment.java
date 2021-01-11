@@ -12,6 +12,7 @@ import com.hasawi.sears.data.api.model.pojo.OrderTrack;
 import com.hasawi.sears.databinding.FragmentTrackOrderBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.TrackOrderAdapter;
+import com.hasawi.sears.ui.main.view.DashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class TrackOrderFragment extends BaseFragment {
     FragmentTrackOrderBinding fragmentTrackOrderBinding;
     TrackOrderAdapter trackOrderAdapter;
     Order selectedOrder;
+    DashboardActivity dashboardActivity;
 
     @Override
     protected int getLayoutResId() {
@@ -29,6 +31,8 @@ public class TrackOrderFragment extends BaseFragment {
     @Override
     protected void setup() {
         fragmentTrackOrderBinding = (FragmentTrackOrderBinding) viewDataBinding;
+        dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         try {
             Bundle bundle = getArguments();
             String orderObject = bundle.getString("order_object");

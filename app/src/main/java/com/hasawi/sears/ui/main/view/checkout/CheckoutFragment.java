@@ -69,6 +69,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         fragmentCheckoutNewBinding.layoutCheckout.tvRemoveCoupon.setOnClickListener(this);
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.handleActionMenuBar(true, false, "Checkout");
+        dashboardActivity.handleActionBarIcons(false);
         try {
             PreferenceHandler preferenceHandler = new PreferenceHandler(getActivity(), PreferenceHandler.TOKEN_LOGIN);
             userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
@@ -310,6 +311,9 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         callGetAddressApi(userId, sessionToken);
+        ShippingModeAdapter.setsSelected(-1);
+        ShippingAddressAdapter.setsSelected(-1);
+        PaymentModeAdapter.setsSelected(-1);
         dashboardActivity.setTitle("Checkout");
     }
 }

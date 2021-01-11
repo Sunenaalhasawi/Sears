@@ -13,13 +13,15 @@
 
         <TextView
             android:id="@+id/tvProductName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/avantgarde_bold"
             android:text="TextView"
             android:textColor="@color/cart_grey"
             android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tvProductPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

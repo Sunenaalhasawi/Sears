@@ -48,7 +48,7 @@ public class PaymentModeAdapter extends RecyclerView.Adapter<PaymentModeAdapter.
                 .into(holder.layoutPaymentModeRecyclerItemBinding.imagePaymentIcon);
         holder.layoutPaymentModeRecyclerItemBinding.tvPaymentName.setText(paymentModeArrayList.get(position).getName());
         if (sSelected == position) {
-            holder.layoutPaymentModeRecyclerItemBinding.lvPaymentModeCod.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
+            holder.layoutPaymentModeRecyclerItemBinding.lvPaymentModeCod.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp_grey_fill));
             holder.layoutPaymentModeRecyclerItemBinding.tvPaymentName.setTextColor(context.getResources().getColor(R.color.txt_clr_blue));
         } else {
             holder.layoutPaymentModeRecyclerItemBinding.lvPaymentModeCod.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_12dp));

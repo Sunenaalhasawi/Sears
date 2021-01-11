@@ -29,6 +29,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     protected void setup() {
         fragmentOrderDetailsBinding = (FragmentOrderDetailsBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         try {
             Bundle bundle = getArguments();
             String orderObject = bundle.getString("order_object");

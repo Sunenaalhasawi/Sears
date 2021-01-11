@@ -71,7 +71,6 @@ public class SearchFragment extends BaseFragment {
                     ProductSearch selectedProduct = productSearchList.get(position);
                     Bundle bundle = new Bundle();
                     bundle.putString("product_object_id", selectedProduct.getObjectID());
-                    bundle.putBoolean("is_search", true);
                     dashboardActivity.replaceFragment(R.id.fragment_replace_search_view, new SelectedProductDetailsFragment(), bundle, true, false);
 //                    getParentFragmentManager().popBackStackImmediate();
 

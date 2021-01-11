@@ -73,11 +73,11 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 break;
             case AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT:
                 CheckoutAddressViewHolder checkoutAddressViewHolder = (CheckoutAddressViewHolder) holder;
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvLocation.setText("Street: " + addressItem.getStreet());
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvPost.setText("Area: " + addressItem.getArea());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvLocation.setText(addressItem.getStreet());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvArea.setText(addressItem.getArea());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_USERNAME, ""));
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvContact.setText("Flat: " + addressItem.getFlat() + " " + addressItem.getBlock());
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvEmail.setText("Country: " + addressItem.getCountry());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvFlat.setText(addressItem.getFlat() + " " + addressItem.getBlock());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
                 if (sSelected == position) {
                     checkoutAddressViewHolder.addressAdapterItemBinding.cvBackgroundAddress.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
                     checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);

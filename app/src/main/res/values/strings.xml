@@ -410,5 +410,9 @@ Note: After adding the dependencies, click on Sync now.</string>
     <string name="sears_phone">Call +965 22212227</string>
     <string name="sears_email">wecare@searskuwait.com</string>
     <string name="please_login">Please Login/Signup</string>
+    <string name="street_colon">Street :</string>
+    <string name="area_colon">Area :</string>
+    <string name="flat_colon">Flat :</string>
+    <string name="country_colon">Country :</string>
 
 </resources>

@@ -121,6 +121,7 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding = (FragmentHomeBinding) viewDataBinding;
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(true);
         fragmentHomeBinding.carouselViewBanners.setImageListener(imageListener);
         try {
             if (bannerList != null)

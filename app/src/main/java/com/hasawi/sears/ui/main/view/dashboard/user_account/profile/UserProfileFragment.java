@@ -40,6 +40,7 @@ public class UserProfileFragment extends BaseFragment {
         fragmentUserProfileBinding = (FragmentUserProfileBinding) viewDataBinding;
         userProfileViewModel = new ViewModelProvider(getActivity()).get(UserProfileViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         dashboardActivity.handleActionMenuBar(true, false, "My Profile");
         try {
             PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);

@@ -21,7 +21,7 @@ public class Invoice {
     private String customerReference;
     @SerializedName("CreatedDate")
     @Expose
-    private Integer createdDate;
+    private Object createdDate;
     @SerializedName("ExpiryDate")
     @Expose
     private String expiryDate;
@@ -85,11 +85,11 @@ public class Invoice {
         this.customerReference = customerReference;
     }
 
-    public Integer getCreatedDate() {
+    public Object getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(Object createdDate) {
         this.createdDate = createdDate;
     }
 

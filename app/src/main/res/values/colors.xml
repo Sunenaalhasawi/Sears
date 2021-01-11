@@ -37,4 +37,5 @@
     <color name="sub_category_selected">#D2D1D7</color>
     <color name="sub_category_unselected_text_color">#575757</color>
     <color name="call_blue">#006CFE</color>
+    <color name="bronze">#B79984</color>
 </resources>

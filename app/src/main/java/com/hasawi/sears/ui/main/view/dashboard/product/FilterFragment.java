@@ -49,6 +49,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     protected void setup() {
         fragmentFilterBinding = (FragmentFilterBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(true);
         sharedHomeViewModel = new ViewModelProvider(dashboardActivity).get(SharedHomeViewModel.class);
         fragmentFilterBinding.recyclerFilterOptions.setLayoutManager(new LinearLayoutManager(getActivity()));
         fragmentFilterBinding.recyclerFilterValues.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -133,6 +134,13 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
             filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
             fragmentFilterBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dashboardActivity.handleActionMenuBar(false, true, "");
+        dashboardActivity.handleActionBarIcons(true);
     }
 
     public void resetilterData() {

@@ -28,6 +28,7 @@ public class ChangePasswordFragment extends BaseFragment {
         userProfileViewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.setTitle("Change Password");
+        dashboardActivity.handleActionBarIcons(false);
         fragmentChangePasswordBinding.btnUpdatePswd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

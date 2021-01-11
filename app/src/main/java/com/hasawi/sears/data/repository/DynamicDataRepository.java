@@ -121,24 +121,24 @@ public class DynamicDataRepository {
         return dynamicUiMutableLiveData;
     }
 
-    public MutableLiveData<Resource<DynamicContentResponse>> getAboutUsContent() {
-        MutableLiveData<Resource<DynamicContentResponse>> aboutUsMutableLiveData = new MutableLiveData<>();
-        Call<DynamicContentResponse> aboutUsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getAboutsContent();
+    public MutableLiveData<Resource<DynamicContentResponse>> getDynamicWebviewContent(String name) {
+        MutableLiveData<Resource<DynamicContentResponse>> webviewMutableLiveData = new MutableLiveData<>();
+        Call<DynamicContentResponse> aboutUsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getDynamicWebviewContent(name);
         aboutUsResponseCall.enqueue(new Callback<DynamicContentResponse>() {
             @Override
             public void onResponse(Call<DynamicContentResponse> call, Response<DynamicContentResponse> response) {
                 if (response.code() != 200) {
-                    aboutUsMutableLiveData.setValue(Resource.error("Something Went Wrong !", null));
+                    webviewMutableLiveData.setValue(Resource.error("Something Went Wrong !", null));
                 } else if (response.body() != null) {
-                    aboutUsMutableLiveData.postValue(Resource.success(response.body()));
+                    webviewMutableLiveData.postValue(Resource.success(response.body()));
                 }
             }
 
             @Override
             public void onFailure(Call<DynamicContentResponse> call, Throwable t) {
-                aboutUsMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+                webviewMutableLiveData.setValue(Resource.error(t.getMessage(), null));
             }
         });
-        return aboutUsMutableLiveData;
+        return webviewMutableLiveData;
     }
 }

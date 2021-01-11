@@ -312,7 +312,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:background="@drawable/blue_rounded_rectangle_12dp_corner"
+            android:background="@drawable/blue_outlined_rounded_rectangle_12dp"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayoutFemale"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"

@@ -107,6 +107,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"></FrameLayout>
 
+
         <LinearLayout
             android:id="@+id/fragment_replace_search_view"
             android:layout_width="match_parent"

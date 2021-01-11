@@ -36,6 +36,7 @@ public class OrderHistoryFragment extends BaseFragment {
     protected void setup() {
         fragmentOrderHistoryBinding = (FragmentOrderHistoryBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         orderHistoryViewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getActivity(), PreferenceHandler.TOKEN_LOGIN);
         String userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");

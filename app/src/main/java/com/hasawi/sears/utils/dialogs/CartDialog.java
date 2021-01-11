@@ -41,7 +41,6 @@ public class CartDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                dashboardActivity.handleActionMenuBar(true, false, "My Cart");
                 dismiss();
             }
         });

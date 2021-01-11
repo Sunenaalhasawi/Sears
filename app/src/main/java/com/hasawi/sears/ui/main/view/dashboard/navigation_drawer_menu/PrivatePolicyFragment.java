@@ -13,7 +13,7 @@ import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.DynamicContentViewModel;
 import com.hasawi.sears.utils.AppConstants;
 
-public class AboutUsFragment extends BaseFragment {
+public class PrivatePolicyFragment extends BaseFragment {
     FragmentDynamicContentBinding fragmentDynamicContentBinding;
     DynamicContentViewModel dynamicContentViewModel;
     DashboardActivity dashboardActivity;
@@ -28,15 +28,15 @@ public class AboutUsFragment extends BaseFragment {
         fragmentDynamicContentBinding = (FragmentDynamicContentBinding) viewDataBinding;
         dynamicContentViewModel = new ViewModelProvider(this).get(DynamicContentViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
-        fragmentDynamicContentBinding.tvTitle.setText("ABOUT US");
-        fragmentDynamicContentBinding.imageViewcontent.setImageDrawable(getResources().getDrawable(R.drawable.about_us));
-        getAboutUsContent();
+        fragmentDynamicContentBinding.tvTitle.setText("PRIVATE POLICY");
+        fragmentDynamicContentBinding.imageViewcontent.setImageDrawable(getResources().getDrawable(R.drawable.privacy_policy));
+        getContent();
 
     }
 
-    private void getAboutUsContent() {
+    private void getContent() {
         fragmentDynamicContentBinding.progressBar.setVisibility(View.VISIBLE);
-        dynamicContentViewModel.getDynamicWebviewContent(AppConstants.ABOUT_US).observe(this, dynamicContentResponseResource -> {
+        dynamicContentViewModel.getDynamicWebviewContent(AppConstants.PRIVATE_POLICY).observe(this, dynamicContentResponseResource -> {
             switch (dynamicContentResponseResource.status) {
                 case SUCCESS:
                     try {

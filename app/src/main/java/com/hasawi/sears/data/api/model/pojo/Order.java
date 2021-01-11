@@ -15,6 +15,9 @@ public class Order {
     @SerializedName("customerId")
     @Expose
     private String customerId;
+    @SerializedName("customerName")
+    @Expose
+    private String customerName;
     @SerializedName("addressId")
     @Expose
     private String addressId;
@@ -181,5 +184,13 @@ public class Order {
 
     public void setShippingCharge(Double shippingCharge) {
         this.shippingCharge = shippingCharge;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

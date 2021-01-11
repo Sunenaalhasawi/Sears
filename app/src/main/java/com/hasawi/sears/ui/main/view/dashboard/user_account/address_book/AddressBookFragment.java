@@ -39,6 +39,7 @@ public class AddressBookFragment extends BaseFragment implements RecyclerviewSin
     protected void setup() {
         fragmentAddressbookBinding = (FragmentAddressbookBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionBarIcons(false);
         shippingAddressViewModel = new ViewModelProvider(this).get(ShippingAddressViewModel.class);
         fragmentAddressbookBinding.recyclerviewAddress.setLayoutManager(new LinearLayoutManager(getContext()));
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);

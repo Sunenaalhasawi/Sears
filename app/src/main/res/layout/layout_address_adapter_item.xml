@@ -8,11 +8,24 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cv_background_address"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/blue_outlined_rounded_rectangle_12dp">
+
+        <TextView
+            android:id="@+id/tvArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="--"
+            android:textColor="@color/cart_grey"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvLocation"
+            app:layout_constraintStart_toEndOf="@+id/textView107"
+            app:layout_constraintTop_toTopOf="@+id/textView107" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radioButtonSelectAddress"
@@ -41,54 +54,48 @@
             android:id="@+id/tvLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/avantgarde_regular"
-            android:text="Location"
+            android:text="--"
             android:textColor="@color/cart_grey"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tvName"
-            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView78"
+            app:layout_constraintTop_toTopOf="@+id/textView78" />
 
         <TextView
-            android:id="@+id/tvPost"
+            android:id="@+id/tvFlat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/po_box"
+            android:text="--"
             android:textColor="@color/cart_grey"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tvLocation"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+            app:layout_constraintEnd_toEndOf="@+id/tvArea"
+            app:layout_constraintStart_toEndOf="@+id/textView108"
+            app:layout_constraintTop_toTopOf="@+id/textView108" />
 
         <TextView
-            android:id="@+id/tvContact"
+            android:id="@+id/tvCountry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/avantgarde_regular"
-            android:text="Contact"
+            android:text="--"
             android:textColor="@color/cart_grey"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tvLocation"
-            app:layout_constraintTop_toBottomOf="@+id/tvPost" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="Email"
-            android:textColor="@color/cart_grey"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/tvContact"
-            app:layout_constraintTop_toBottomOf="@+id/tvContact" />
+            app:layout_constraintEnd_toEndOf="@+id/tvFlat"
+            app:layout_constraintStart_toEndOf="@+id/textView109"
+            app:layout_constraintTop_toTopOf="@+id/textView109" />
 
         <ImageButton
             android:id="@+id/imageButtonEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/top_2_corner_rounded_rectangle_blue_8dp"
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
@@ -96,8 +103,7 @@
             android:paddingBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvEmail"
-            app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+            app:layout_constraintTop_toBottomOf="@+id/textView109"
             app:srcCompat="@drawable/ic_edit" />
 
         <TextView
@@ -122,5 +128,50 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_delete" />
+
+        <TextView
+            android:id="@+id/textView78"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/street_colon"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tvName"
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+        <TextView
+            android:id="@+id/textView107"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/area_colon"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView78"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+
+        <TextView
+            android:id="@+id/textView108"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/flat_colon"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView107"
+            app:layout_constraintTop_toBottomOf="@+id/tvArea" />
+
+        <TextView
+            android:id="@+id/textView109"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/country_colon"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView108"
+            app:layout_constraintTop_toBottomOf="@+id/tvFlat" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

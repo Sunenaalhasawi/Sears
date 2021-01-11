@@ -22,11 +22,10 @@ import com.hasawi.sears.ui.main.view.dashboard.product.FilterFragment;
 import com.hasawi.sears.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.product.SortFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
-import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
+import com.hasawi.sears.ui.main.viewmodel.ProductListingViewModel;
 import com.hasawi.sears.utils.Connectivity;
 import com.hasawi.sears.utils.LoadingIndicator;
 import com.hasawi.sears.utils.PreferenceHandler;
-import com.hasawi.sears.utils.dialogs.CartDialog;
 import com.hasawi.sears.utils.dialogs.DialogGeneral;
 import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
@@ -38,7 +37,7 @@ import java.util.List;
 public class ProductListingFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int SET_SORT_REQUEST_CODE = 200;
     private static final int SET_FILTER_REQUEST_CODE = 201;
-    CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
+    //    CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
     DashboardActivity dashboardActivity;
     String currentSelectedCategory = "";
     JSONArray selectedFilterData;
@@ -51,7 +50,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     boolean isUserLoggedIn = false;
     ProgressBarDialog progressBarDialog;
     private ProductPagedListAdapter productPagedListAdapter;
-    private SharedHomeViewModel sharedHomeViewModel;
+    private ProductListingViewModel productListingViewModel;
     private FragmentProductListingBinding fragmentProductListingBinding;
     private List<Category> categoryArrayList = new ArrayList<>();
     private int currentPage = 0;
@@ -66,7 +65,8 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     protected void setup() {
         fragmentProductListingBinding = (FragmentProductListingBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getBaseActivity();
-        sharedHomeViewModel = new ViewModelProvider(getBaseActivity()).get(SharedHomeViewModel.class);
+        dashboardActivity.handleActionBarIcons(true);
+        productListingViewModel = new ViewModelProvider(getBaseActivity()).get(ProductListingViewModel.class);
         fetchDataFromSharedPref();
 //        fragmentProductListingBinding.swipeRefreshProducts.setOnRefreshListener(this);
         fragmentProductListingBinding.lvSort.setOnClickListener(this);
@@ -78,9 +78,9 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             currentSelectedCategory = bundle.getString("category_id");
             String currentCategoryName = bundle.getString("category_name");
             fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
-            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory);
-            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentCategoryName);
+//            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory);
+//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentCategoryName);
             fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,22 +118,22 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 //            dashboardActivity.showBackButton(true);
 //        }
 
-        if (!preferenceHandler.getData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "").equalsIgnoreCase("") && isUserLoggedIn) {
-            dashboardActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String jsonParmsString = preferenceHandler.getData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
-                    callAddToCartApi(jsonParmsString);
-                }
-            });
-        }
+//        if (!preferenceHandler.getData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "").equalsIgnoreCase("") && isUserLoggedIn) {
+//            dashboardActivity.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    String jsonParmsString = preferenceHandler.getData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
+//                    callAddToCartApi(jsonParmsString);
+//                }
+//            });
+    }
 //        else {
 //            dashboardActivity.setTitle("My Cart");
 //            dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
 //            dashboardActivity.showBackButton(true);
 //        }
 
-    }
+//    }
 
     private void fetchDataFromSharedPref() {
         try {
@@ -153,7 +153,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 //        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
 //        categoryRecyclerviewAdapter.setOnItemClickListener(this);
 //        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
-        sharedHomeViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
+        productListingViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
             switch (productResponseResource.status) {
                 case SUCCESS:
 //                    categoryArrayList = productResponseResource.data.getData().getCategories();
@@ -174,11 +174,11 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 
     public void loadFilterData(JSONArray filterArray) {
         showProgressBarDialog(true);
-        sharedHomeViewModel.getProductsInfo(currentSelectedCategory, "0" +
+        productListingViewModel.getProductsInfo(currentSelectedCategory, "0" +
                 "", filterArray).observe(dashboardActivity, productResponse -> {
             switch (productResponse.status) {
                 case SUCCESS:
-                    sharedHomeViewModel.setFilterData(productResponse.data.getData().getFilterAttributes());
+                    productListingViewModel.setFilterData(productResponse.data.getData().getFilterAttributes());
                     break;
                 case LOADING:
                     break;
@@ -200,8 +200,8 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     private void loadProductsFromApi(String category, JSONArray jsonArray, int page, String selectedSortString) {
         showProgressBarDialog(true);
         initializeProductAdapter();
-        sharedHomeViewModel.fetchProductData(category, jsonArray, page + "", selectedSortString);
-        sharedHomeViewModel.getProductPaginationLiveData().observe(this, pagedList -> {
+        productListingViewModel.fetchProductData(category, jsonArray, page + "", selectedSortString);
+        productListingViewModel.getProductPaginationLiveData().observe(this, pagedList -> {
             fragmentProductListingBinding.lvNoProductsFound.setVisibility(View.GONE);
             productPagedListAdapter.submitList(pagedList);
             shouldRefreshTheList = false;
@@ -213,7 +213,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
          * of the PagedListAdapter class
          *
          * */
-        sharedHomeViewModel.getNetworkState().observe(this, networkState -> {
+        productListingViewModel.getNetworkState().observe(this, networkState -> {
             productPagedListAdapter.setNetworkState(networkState);
         });
 
@@ -240,14 +240,14 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
                 try {
 
                     Product selectedProduct = productContent;
-                    sharedHomeViewModel.select(selectedProduct);
+//                    productListingViewModel.select(selectedProduct);
                     Gson gson = new Gson();
                     String objectString = gson.toJson(selectedProduct);
                     Bundle bundle = new Bundle();
                     bundle.putString("selected_product_object", objectString);
 
                     dashboardActivity.handleActionMenuBar(true, false, selectedProduct.getDescriptions().get(0).getProductName());
-                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer_product, new SelectedProductDetailsFragment(), bundle, true, false);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -275,7 +275,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         logAddToWishlistEvent(product);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-        sharedHomeViewModel.addToWishlist(productId, userID, sessionToken).observe(getActivity(), wishlistResponse -> {
+        productListingViewModel.addToWishlist(productId, userID, sessionToken).observe(getActivity(), wishlistResponse -> {
             switch (wishlistResponse.status) {
                 case SUCCESS:
                     if (product != null)
@@ -303,21 +303,21 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
 
-        sharedHomeViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
-            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
-            switch (addToCartResponse.status) {
-                case SUCCESS:
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
-                    CartDialog cartDialog = new CartDialog(dashboardActivity);
-                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
-                    break;
-                case LOADING:
-                    break;
-                case ERROR:
-                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        });
+//        productListingViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+//            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
+//            switch (addToCartResponse.status) {
+//                case SUCCESS:
+//                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
+//                    CartDialog cartDialog = new CartDialog(dashboardActivity);
+//                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
+//                    break;
+//                case LOADING:
+//                    break;
+//                case ERROR:
+//                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        });
 
     }
 
@@ -326,7 +326,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         sortFragment.setTargetFragment(this, SET_SORT_REQUEST_CODE);
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("sort_string", (ArrayList<String>) sortStrings);
-        dashboardActivity.replaceFragment(R.id.fragment_replacer, sortFragment, bundle, true, false);
+        dashboardActivity.replaceFragment(R.id.fragment_replacer_product, sortFragment, bundle, true, false);
 
     }
 
@@ -335,7 +335,9 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         filterFragment.setTargetFragment(this, SET_FILTER_REQUEST_CODE);
         Bundle bundle = new Bundle();
         bundle.putString("category_id", currentSelectedCategory);
-        dashboardActivity.replaceFragment(R.id.fragment_replacer, filterFragment, bundle, true, false);
+        dashboardActivity.handleActionMenuBar(true, true, "");
+        dashboardActivity.handleActionBarIcons(false);
+        dashboardActivity.replaceFragment(R.id.fragment_replacer_product, filterFragment, bundle, true, false);
     }
 
     @Override
@@ -394,7 +396,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     }
 
     private void refreshProductList(String currentSelectedCategory, JSONArray filterArray, String sort) {
-        sharedHomeViewModel.invalidateProductLiveData();
+        productListingViewModel.invalidateProductLiveData();
         loadProductsFromApi(currentSelectedCategory, filterArray, 0, sort);
     }
 

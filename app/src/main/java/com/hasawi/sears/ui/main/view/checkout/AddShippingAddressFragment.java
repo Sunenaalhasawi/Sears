@@ -12,6 +12,7 @@ import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Address;
 import com.hasawi.sears.databinding.FragmentAddAddressBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
+import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.ShippingAddressViewModel;
 import com.hasawi.sears.utils.PreferenceHandler;
 
@@ -22,6 +23,7 @@ public class AddShippingAddressFragment extends BaseFragment {
     ShippingAddressViewModel shippingAddressViewModel;
     boolean isEdit = false;
     Address addressObj;
+    DashboardActivity dashboardActivity;
 
     @Override
     protected int getLayoutResId() {
@@ -31,7 +33,9 @@ public class AddShippingAddressFragment extends BaseFragment {
     @Override
     protected void setup() {
         fragmentAddAddressBinding = (FragmentAddAddressBinding) viewDataBinding;
+        dashboardActivity = (DashboardActivity) getActivity();
         shippingAddressViewModel = new ViewModelProvider(getActivity()).get(ShippingAddressViewModel.class);
+        dashboardActivity.handleActionBarIcons(false);
         try {
             Bundle bundle = getArguments();
             if (bundle != null) {
@@ -78,6 +82,7 @@ public class AddShippingAddressFragment extends BaseFragment {
         jsonParams.put("flat", flat);
         jsonParams.put("block", block);
         jsonParams.put("country", country);
+        jsonParams.put("customerId", userID);
 
         shippingAddressViewModel.addNewAddress(userID, jsonParams, sessionToken).observe(getActivity(), addressResponseResource -> {
             switch (addressResponseResource.status) {
