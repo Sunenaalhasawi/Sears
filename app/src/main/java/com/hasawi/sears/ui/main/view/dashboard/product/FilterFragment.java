@@ -16,7 +16,7 @@ import com.hasawi.sears.ui.main.adapters.FilterOptionAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.dashboard.product.paging.ProductListingFragment;
-import com.hasawi.sears.ui.main.viewmodel.SharedHomeViewModel;
+import com.hasawi.sears.ui.main.viewmodel.ProductListingViewModel;
 import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import org.json.JSONArray;
@@ -29,7 +29,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     public List<FilterAttributeValues> selectedFilters = new ArrayList<>();
     DashboardActivity dashboardActivity;
     List<FilterAttributeValues> filterAttributeValuesList = new ArrayList<>();
-    SharedHomeViewModel sharedHomeViewModel;
+    ProductListingViewModel sharedHomeViewModel;
     FragmentFilterBinding fragmentFilterBinding;
     FilterOptionAdapter filterOptionAdapter;
     //    FilterValueAdapter filterValueAdapter;
@@ -50,7 +50,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
         fragmentFilterBinding = (FragmentFilterBinding) viewDataBinding;
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.handleActionBarIcons(true);
-        sharedHomeViewModel = new ViewModelProvider(dashboardActivity).get(SharedHomeViewModel.class);
+        sharedHomeViewModel = new ViewModelProvider(dashboardActivity).get(ProductListingViewModel.class);
         fragmentFilterBinding.recyclerFilterOptions.setLayoutManager(new LinearLayoutManager(getActivity()));
         fragmentFilterBinding.recyclerFilterValues.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -106,14 +106,13 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     }
 
     public void loadFilterData(JSONArray filterArray) {
-
+        fragmentFilterBinding.progressBar.setVisibility(View.VISIBLE);
 //        sharedHomeViewModel.getProductsInfo(selectedCategoryId, "0" +
 //                "", filterArray).observe(dashboardActivity, productResponse -> {
 //            switch (productResponse.status) {
 //                case SUCCESS:
 //                    filterKeysList.clear();
-//                    ProductResponse productResponseData = productResponse.data;
-//                    filterAttributeMap = productResponseData.getData().getFilterAttributes();
+//                    filterAttributeMap = productResponse.data.getData().getFilterAttributes();
 //                    filterKeysList = new ArrayList<>(filterAttributeMap.keySet());
 //                    filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
 //                    break;
@@ -124,9 +123,9 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
 //                    break;
 //            }
 //
-//            fragmentFilterBinding.cvLoadingIndicator.setVisibility(View.GONE);
+//            fragmentFilterBinding.progressBar.setVisibility(View.GONE);
 //        });
-        fragmentFilterBinding.progressBar.setVisibility(View.VISIBLE);
+
         sharedHomeViewModel.getFilterData().observe(getActivity(), stringListMap -> {
             filterKeysList.clear();
             filterAttributeMap = stringListMap;

@@ -29,8 +29,8 @@ public class AppConstants {
     public static final int ADDRESS_VIEW_TYPE_ADDRESSBOOK = 201;
 
     public static final String ABOUT_US = "About Us";
-    public static final String PRIVATE_POLICY = "Private Policy";
-    public static final String FAQ = "FAQ";
+    public static final String PRIVATE_POLICY = "Privacy Policy";
+    public static final String FAQ = "FAQ's";
 
 
 }

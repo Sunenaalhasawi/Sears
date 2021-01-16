@@ -72,6 +72,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     private ArrayList<ProductConfigurable> currentColorsList = new ArrayList<>();
     private boolean isbuyNow = false;
     private boolean disableAddToCart = false;
+    private boolean isRedirectedFromProductListing = false;
 
     @Override
     protected int getLayoutResId() {
@@ -90,7 +91,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
         setUpProductDescriptionRecyclerview();
-        setOffersAdapter();
+//        setOffersAdapter();
         Bundle bundle = getArguments();
         try {
 
@@ -101,6 +102,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
         try {
             String selectedProductObj = bundle.getString("selected_product_object");
+            isRedirectedFromProductListing = bundle.getBoolean("from_product_list");
             Gson gson = new Gson();
             currentSelectedProduct = gson.fromJson(selectedProductObj, Product.class);
             selectedObjectID = currentSelectedProduct.getProductId();
@@ -115,7 +117,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     try {
                         currentSelectedProduct = searchedProductDetailsResponse.data.getData().getProduct();
                         if (currentSelectedProduct.getDescriptions() != null)
-                            dashboardActivity.setTitle(currentSelectedProduct.getDescriptions().get(0).getProductName());
+                            dashboardActivity.handleActionMenuBar(true, false, currentSelectedProduct.getDescriptions().get(0).getProductName());
                         recommendedProductList = (ArrayList<Product>) searchedProductDetailsResponse.data.getData().getRecommendedProductList();
                         setRelatedProducts();
                         setUIValues(currentSelectedProduct);
@@ -354,8 +356,18 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             setProductSizeRecyclerview(sizeList);
             if (sizeColorHashMap.size() > 0) {
                 currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(sizeList.get(0));
-                if (currentColorsList.size() > 0)
+                //Hiding colors if color code is null
+                for (int i = 0; i < currentColorsList.size(); i++) {
+                    if (currentColorsList.get(i).getColorCode() == null)
+                        currentColorsList.remove(i);
+                }
+                // hiding views
+                if (currentColorsList.size() == 0) {
+                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
+                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
+                } else if (currentColorsList.size() > 0)
                     selectedColor = currentColorsList.get(0);
+
                 setColorAdapter(currentColorsList);
             }
 
@@ -403,6 +415,17 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
                 ProductColorAdapter.setsSelected(-1);
                 currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
+                //Hiding colors if color code is null
+                for (int i = 0; i < currentColorsList.size(); i++) {
+                    if (currentColorsList.get(i).getColorCode() == null)
+                        currentColorsList.remove(i);
+                }
+                // hiding views
+                if (currentColorsList.size() == 0) {
+                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
+                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
+                } else if (currentColorsList.size() > 0)
+                    selectedColor = currentColorsList.get(0);
                 setColorAdapter(currentColorsList);
             }
         } catch (Exception e) {
@@ -410,7 +433,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         }
 
         try {
-            if (view.getId() == R.id.imageViewColorVariant) {
+            if (view.getId() == R.id.tvColorVariant) {
                 productColorAdapter.selectedItem();
                 if (ProductSizeAdapter.sSelected == -1) {
                     ChooseSizeDialog chooseSizeDialog = new ChooseSizeDialog(dashboardActivity);
@@ -474,20 +497,24 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void logAddToCartEvent(Resource<CartResponse> addToCartResponse) {
-        Bundle analyticsBundle = new Bundle();
-        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, addToCartResponse.data.getCartData().getSubTotal());
-        List<ShoppingCartItem> shoppingCartItemList = addToCartResponse.data.getCartData().getShoppingCartItems();
-        ArrayList<Bundle> cartedItemAnalyticBundles = new ArrayList<>();
-        for (int i = 0; i < shoppingCartItemList.size(); i++) {
-            Bundle itemBundle = new Bundle();
-            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
-            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
-            itemBundle.putString("product_id", shoppingCartItemList.get(i).getProductId());
-            cartedItemAnalyticBundles.add(itemBundle);
+        try {
+            Bundle analyticsBundle = new Bundle();
+            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, addToCartResponse.data.getCartData().getSubTotal());
+            List<ShoppingCartItem> shoppingCartItemList = addToCartResponse.data.getCartData().getShoppingCartItems();
+            ArrayList<Bundle> cartedItemAnalyticBundles = new ArrayList<>();
+            for (int i = 0; i < shoppingCartItemList.size(); i++) {
+                Bundle itemBundle = new Bundle();
+                itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
+                itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+                itemBundle.putString("product_id", shoppingCartItemList.get(i).getProductId());
+                cartedItemAnalyticBundles.add(itemBundle);
+            }
+            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, cartedItemAnalyticBundles);
+            dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, cartedItemAnalyticBundles);
-        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
     }
 
     private void callWishlistApi(Product product, boolean isWishlisted) {
@@ -530,8 +557,11 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     Bundle bundle = new Bundle();
                     bundle.putString("selected_product_object", objectString);
 
-                    dashboardActivity.handleActionMenuBar(true, false, selectedProduct.getDescriptions().get(0).getProductName());
-                    dashboardActivity.replaceFragment(R.id.fragment_replacer_product, new SelectedProductDetailsFragment(), bundle, true, false);
+                    dashboardActivity.setTitle(selectedProduct.getDescriptions().get(0).getProductName());
+                    if (isRedirectedFromProductListing)
+                        dashboardActivity.replaceFragment(R.id.fragment_replacer_product, new SelectedProductDetailsFragment(), bundle, true, false);
+                    else
+                        dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
 
 
                 }

@@ -9,15 +9,31 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cv_color"
         android:layout_width="wrap_content"
-        android:background="@drawable/plane_circle"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/imageViewColorVariant"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+        <!--        android:background="@drawable/plane_circle"-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imageViewColorVariant"-->
+        <!--            android:layout_width="20dp"-->
+        <!--            android:layout_height="20dp"-->
+        <!--            android:layout_margin="4dp"-->
+        <!--            android:src="@drawable/circle"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <TextView
+            android:id="@+id/tvColorVariant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:src="@drawable/circle"
+            android:background="@drawable/grey_outlined_rounded_rectangle"
+            android:fontFamily="@font/avantgarde_regular"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/cart_grey"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

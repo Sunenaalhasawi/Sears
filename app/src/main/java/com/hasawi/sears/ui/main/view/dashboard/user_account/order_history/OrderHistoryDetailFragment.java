@@ -46,11 +46,17 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new TrackOrderFragment(), bundle1, true, false);
                     }
                 });
-//                fragmentOrderDetailsBinding.tvStreetAddress.setText(selectedOrder.getAddress().getStreet());
-//                fragmentOrderDetailsBinding.tvRuralAddress.setText(selectedOrder.getAddress().getFlat() + " " + selectedOrder.getAddress().getBlock());
-//                fragmentOrderDetailsBinding.tvLandmark.setText(selectedOrder.getAddress().getArea());
-                if (selectedOrder.getPayment() != null)
-                    fragmentOrderDetailsBinding.tvPaymentMode.setText(selectedOrder.getPayment().getName());
+                if (selectedOrder.getPaymentType() != null)
+                    fragmentOrderDetailsBinding.tvPaymentMode.setText(selectedOrder.getPaymentType());
+                if (selectedOrder.getAddress() != null) {
+                    if (selectedOrder.getAddress().getStreet() != null)
+                        fragmentOrderDetailsBinding.tvStreetAddress.setText(selectedOrder.getAddress().getStreet());
+                    if (selectedOrder.getAddress().getFlat() != null && selectedOrder.getAddress().getBlock() != null)
+                        fragmentOrderDetailsBinding.tvRuralAddress.setText(selectedOrder.getAddress().getFlat() + " " + selectedOrder.getAddress().getBlock());
+                    if (selectedOrder.getAddress().getArea() != null)
+                        fragmentOrderDetailsBinding.tvLandmark.setText(selectedOrder.getAddress().getArea());
+                }
+
                 if (selectedOrder.getTotal() != null)
                     fragmentOrderDetailsBinding.tvOrderPrice.setText("KWD " + selectedOrder.getTotal());
                 if (selectedOrder.getDiscounted() != null)

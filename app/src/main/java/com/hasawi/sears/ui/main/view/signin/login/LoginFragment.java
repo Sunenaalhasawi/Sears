@@ -154,6 +154,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     facebookSignin();
                 break;
             case R.id.btn_login:
+                hideSoftKeyboard(signinActivity);
                 userAuthentication();
                 break;
             case R.id.btn_signup:
@@ -189,6 +190,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_ID, loginResponse.data.getData().getCustomer().getCustomerId());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_USERNAME, loginResponse.data.getData().getCustomer().getCustomerFirstName());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_EMAIL, loginResponse.data.getData().getCustomer().getEmailId());
+                            preferenceHandler.saveData(PreferenceHandler.LOGIN_GENDER, loginResponse.data.getData().getCustomer().getGender());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, loginResponse.data.getData().getCustomer().getMobileNo());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_PASSWORD, loginResponse.data.getData().getCustomer().getPassword());
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, loginResponse.data.getData().getCustomer().getConfirmPassword());

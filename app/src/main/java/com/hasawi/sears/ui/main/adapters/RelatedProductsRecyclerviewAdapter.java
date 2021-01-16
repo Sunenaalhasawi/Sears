@@ -47,7 +47,10 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
             else
                 holder.productItemBinding.radioButtonWishlist.setChecked(false);
             holder.productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
-            holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
+            if (productContent.getDiscountPercentage() == null || productContent.getDiscountPercentage() == 0)
+                holder.productItemBinding.tvOfferPercent.setVisibility(View.GONE);
+            else
+                holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
             Glide.with(context)
                     .load(productContent.getProductImages().get(0).getImageUrl())
                     .centerCrop()

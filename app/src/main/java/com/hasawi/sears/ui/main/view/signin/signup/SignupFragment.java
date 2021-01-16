@@ -134,8 +134,11 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            regSuccessAnalyticsBundle.putString("country", signupResponse.data.getData().getuser().getNationality());
-                            regSuccessAnalyticsBundle.putString("gender", signupResponse.data.getData().getuser().getGender());
+                            if (signupResponse.data.getData().getuser() != null) {
+                                regSuccessAnalyticsBundle.putString("country", signupResponse.data.getData().getuser().getNationality());
+                                regSuccessAnalyticsBundle.putString("gender", signupResponse.data.getData().getuser().getGender());
+                            }
+
                             signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_SUCCESS", regSuccessAnalyticsBundle);
 
                             Intent intent = new Intent(signinActivity, DashboardActivity.class);

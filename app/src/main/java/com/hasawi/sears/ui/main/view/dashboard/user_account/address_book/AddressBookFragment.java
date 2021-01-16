@@ -46,6 +46,13 @@ public class AddressBookFragment extends BaseFragment implements RecyclerviewSin
         String userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         String token = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
         callGetAddressApi(userId, token);
+        fragmentAddressbookBinding.layoutNoAddress.btnAddAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashboardActivity.handleActionMenuBar(true, false, "Add New Address");
+                dashboardActivity.replaceFragment(R.id.fragment_replacer_address, new AddShippingAddressFragment(), null, true, false);
+            }
+        });
     }
 
     private void callGetAddressApi(String userId, String sessionToken) {

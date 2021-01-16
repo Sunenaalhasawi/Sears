@@ -245,6 +245,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
                     String objectString = gson.toJson(selectedProduct);
                     Bundle bundle = new Bundle();
                     bundle.putString("selected_product_object", objectString);
+                    bundle.putBoolean("from_product_list", true);
 
                     dashboardActivity.handleActionMenuBar(true, false, selectedProduct.getDescriptions().get(0).getProductName());
                     dashboardActivity.replaceFragment(R.id.fragment_replacer_product, new SelectedProductDetailsFragment(), bundle, true, false);

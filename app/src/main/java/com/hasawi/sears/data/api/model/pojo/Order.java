@@ -54,6 +54,9 @@ public class Order {
     @SerializedName("shippingCharge")
     @Expose
     private Double shippingCharge;
+    @SerializedName("synStatus")
+    @Expose
+    private boolean synStatus;
     @SerializedName("paymentId")
     @Expose
     private String paymentId;
@@ -192,5 +195,13 @@ public class Order {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public boolean isSynStatus() {
+        return synStatus;
+    }
+
+    public void setSynStatus(boolean synStatus) {
+        this.synStatus = synStatus;
     }
 }

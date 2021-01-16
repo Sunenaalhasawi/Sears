@@ -235,20 +235,38 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/avantgarde_bold"
-            android:text="@string/add_address_caps"
+            android:text="@string/add_new_address"
             android:textColor="@color/txt_clr_blue"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/recyclerviewPaymentmode"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewShippingMode" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewAddress"
+
+        <LinearLayout
+            android:id="@+id/lvShippingAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="@+id/tvAddAddress"
             app:layout_constraintStart_toStartOf="@+id/textView72"
-            app:layout_constraintTop_toBottomOf="@+id/textView72" />
+            app:layout_constraintTop_toBottomOf="@+id/textView72">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/layout_no_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <include layout="@layout/layout_empty_address_list" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView75"
@@ -259,8 +277,8 @@
             android:text="@string/order_information"
             android:textColor="@color/txt_clr_blue"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/recyclerViewAddress"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAddress" />
+            app:layout_constraintStart_toStartOf="@+id/lvShippingAddress"
+            app:layout_constraintTop_toBottomOf="@+id/lvShippingAddress" />
 
         <TextView
             android:id="@+id/tvPurchaseMore"
@@ -271,8 +289,8 @@
             android:text="@string/purchase_more"
             android:textColor="@color/txt_clr_blue"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/recyclerViewAddress"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewAddress" />
+            app:layout_constraintEnd_toEndOf="@+id/lvShippingAddress"
+            app:layout_constraintTop_toBottomOf="@+id/lvShippingAddress" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"

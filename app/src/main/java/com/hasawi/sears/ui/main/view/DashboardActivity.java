@@ -50,7 +50,9 @@ import com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu.PrivatePol
 import com.hasawi.sears.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.UserAccountFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.WishListFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.order_history.OrderHistoryDetailFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.order_history.OrderHistoryFragment;
+import com.hasawi.sears.ui.main.view.dashboard.user_account.order_history.TrackOrderFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.DashboardViewModel;
@@ -555,8 +557,12 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             } else if (currentFragment instanceof NotificationFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
-            } else if (currentFragment instanceof AboutUsFragment) {
-
+            } else if (currentFragment instanceof TrackOrderFragment) {
+                handleActionMenuBar(true, false, "Order Details");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof OrderHistoryDetailFragment) {
+                handleActionMenuBar(true, false, "My Orders");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
             }
 
 

@@ -39,6 +39,11 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
         fragmentUserAccountBinding.btnLoginSignup.setOnClickListener(this);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String username = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
+        String gender = preferenceHandler.getData(PreferenceHandler.LOGIN_GENDER, "");
+        if (gender.equalsIgnoreCase("f"))
+            fragmentUserAccountBinding.circleImageView.setImageDrawable(getResources().getDrawable(R.drawable.girl));
+        else if (gender.equalsIgnoreCase("m"))
+            fragmentUserAccountBinding.circleImageView.setImageDrawable(getResources().getDrawable(R.drawable.boy));
         fragmentUserAccountBinding.tvUserName.setText(username);
         isLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
         if (isLoggedIn) {

@@ -51,31 +51,15 @@ public class DashboardViewModel extends ViewModel {
             menuItemArrayList = new ArrayList<>();
         PreferenceHandler preferenceHandler = new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN);
         boolean isLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_HOME, context.getResources().getString(R.string.menu_home), true));
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_NOTIFICATION, context.getResources().getString(R.string.menu_notifications), true));
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_FAQ, context.getResources().getString(R.string.faq), true));
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ABOUT_US, context.getResources().getString(R.string.about_us), true));
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PRIVACY_POLICY, context.getResources().getString(R.string.privacy_policy), true));
+        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_CONTACT_US, context.getResources().getString(R.string.contact_us), true));
         if (isLoggedIn) {
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_HOME, context.getResources().getString(R.string.menu_home), true));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), true));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_NOTIFICATION, context.getResources().getString(R.string.menu_notifications), true));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), true));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_FAQ, context.getResources().getString(R.string.faq), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ABOUT_US, context.getResources().getString(R.string.about_us), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PRIVACY_POLICY, context.getResources().getString(R.string.privacy_policy), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_CONTACT_US, context.getResources().getString(R.string.contact_us), true));
             menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_SIGNOUT, context.getResources().getString(R.string.menu_signout), true));
-        } else {
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_HOME, context.getResources().getString(R.string.menu_home), true));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PROFILE, context.getResources().getString(R.string.menu_my_profile), false));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ORDERS, context.getResources().getString(R.string.menu_my_orders), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_NOTIFICATION, context.getResources().getString(R.string.menu_notifications), false));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_WISHLIST, context.getResources().getString(R.string.menu_my_wishlist), false));
-//            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ADDRESS_BOOK, context.getResources().getString(R.string.menu_my_address_book), false));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_FAQ, context.getResources().getString(R.string.faq), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_ABOUT_US, context.getResources().getString(R.string.about_us), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_PRIVACY_POLICY, context.getResources().getString(R.string.privacy_policy), true));
-            menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_CONTACT_US, context.getResources().getString(R.string.contact_us), true));
         }
-
 //        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_BANK_DETAILS, context.getResources().getString(R.string.menu_bank_details)));
 //        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_RESET_PASSWORD, context.getResources().getString(R.string.menu_reset_password)));
 //        menuItemArrayList.add(new NavigationMenuItem(AppConstants.ID_MENU_TRACK_ORDER, context.getResources().getString(R.string.menu_track_your_order)));

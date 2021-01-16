@@ -35,8 +35,7 @@ public class OrderHistoryProductImagesAdapter extends RecyclerView.Adapter<Order
     public void onBindViewHolder(@NonNull OrderHistoryProductImagesAdapter.ViewHolder holder, int position) {
         try {
             Glide.with(context)
-                    .load(orderProductArrayList.get(position).getProductName())
-                    .placeholder(R.drawable.product_5)
+                    .load(orderProductArrayList.get(position).getProductImage())
                     .centerCrop()
                     .into(holder.imageItemBinding.imageViewProduct);
 

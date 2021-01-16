@@ -51,9 +51,13 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 if (currentGridList != null) {
-                    String selectedCategoryId = currentGridList.get(position).getCategoryId();
-                    String selectedCategoryName = currentGridList.get(position).getDescriptions().get(0).getCategoryName();
-                    redirectToProductListing(selectedCategoryId, selectedCategoryName);
+                    try {
+                        String selectedCategoryId = currentGridList.get(position).getCategoryId();
+                        String selectedCategoryName = currentGridList.get(position).getDescriptions().get(0).getCategoryName();
+                        redirectToProductListing(selectedCategoryId, selectedCategoryName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

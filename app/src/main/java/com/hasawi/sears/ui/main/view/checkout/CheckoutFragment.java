@@ -50,6 +50,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     List<ShoppingCartItem> shoppingCartItemList = new ArrayList<>();
     List<ShippingMode> shippingModeList = new ArrayList<>();
     ShippingMode selectedShippingMode;
+    String couponCode = "", shippingId = "";
     private boolean hasCouponApplied = false;
     Bundle analyticsBundle = new Bundle();
 
@@ -78,7 +79,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         } catch (Exception e) {
             e.printStackTrace();
         }
-        callCheckoutApi(userId, cartId, "", sessionToken);
+        callCheckoutApi(userId, cartId, "", sessionToken, shippingId);
         horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setLayoutManager(horizontalLayoutManager);
         horizontalLayoutManagerAddress = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -94,23 +95,31 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 case SUCCESS:
                     try {
                         addressList = getAllAddressResponseResource.data.getData().getAddresses();
-                        shippingAddressAdapter = new ShippingAddressAdapter(getContext(), (ArrayList<Address>) addressList, AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT) {
-                            @Override
-                            public void onEditClicked(Address address) {
-                                dashboardActivity.handleActionMenuBar(true, false, "");
-                                Gson gson = new Gson();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("address", gson.toJson(address));
-                                dashboardActivity.replaceFragment(R.id.fragment_replacer, new AddShippingAddressFragment(), bundle, true, false);
-                            }
+                        if (addressList == null || addressList.size() == 0) {
+                            fragmentCheckoutNewBinding.layoutCheckout.layoutNoAddress.setVisibility(View.VISIBLE);
+                            fragmentCheckoutNewBinding.layoutCheckout.recyclerViewAddress.setVisibility(View.GONE);
+                        } else {
+                            fragmentCheckoutNewBinding.layoutCheckout.layoutNoAddress.setVisibility(View.GONE);
+                            fragmentCheckoutNewBinding.layoutCheckout.recyclerViewAddress.setVisibility(View.VISIBLE);
+                            shippingAddressAdapter = new ShippingAddressAdapter(getContext(), (ArrayList<Address>) addressList, AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT) {
+                                @Override
+                                public void onEditClicked(Address address) {
+                                    dashboardActivity.handleActionMenuBar(true, false, "");
+                                    Gson gson = new Gson();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("address", gson.toJson(address));
+                                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new AddShippingAddressFragment(), bundle, true, false);
+                                }
 
-                            @Override
-                            public void onDeleteClicked(Address address) {
-                                callDeleteAddressApi(address);
-                            }
-                        };
-                        shippingAddressAdapter.setOnItemClickListener(this);
-                        fragmentCheckoutNewBinding.layoutCheckout.recyclerViewAddress.setAdapter(shippingAddressAdapter);
+                                @Override
+                                public void onDeleteClicked(Address address) {
+                                    callDeleteAddressApi(address);
+                                }
+                            };
+                            shippingAddressAdapter.setOnItemClickListener(this);
+                            fragmentCheckoutNewBinding.layoutCheckout.recyclerViewAddress.setAdapter(shippingAddressAdapter);
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -144,9 +153,9 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    public void callCheckoutApi(String userId, String cartId, String couponCode, String sessionToken) {
+    public void callCheckoutApi(String userId, String cartId, String couponCode, String sessionToken, String shippingId) {
         fragmentCheckoutNewBinding.progressBar.setVisibility(View.VISIBLE);
-        checkoutViewModel.checkout(userId, cartId, couponCode, sessionToken).observe(this, checkoutResponseResource -> {
+        checkoutViewModel.checkout(userId, cartId, couponCode, sessionToken, shippingId).observe(this, checkoutResponseResource -> {
             switch (checkoutResponseResource.status) {
                 case SUCCESS:
                     try {
@@ -229,15 +238,16 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case R.id.tvApplyCoupon:
-                String couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
+                couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
                 if (couponCode.equals(""))
                     Toast.makeText(dashboardActivity, "Invalid Coupon code", Toast.LENGTH_SHORT).show();
                 else
-                    callCheckoutApi(userId, cartId, couponCode, sessionToken);
+                    callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
                 break;
             case R.id.tvRemoveCoupon:
+                couponCode = "";
                 dashboardActivity.showMessageToast("Coupon Removed", Toast.LENGTH_SHORT);
-                callCheckoutApi(userId, cartId, "", sessionToken);
+                callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
                 break;
             case R.id.tvMakeYourpayment:
                 logCheckoutEvent();
@@ -301,6 +311,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             case R.id.cv_background_shipping_mode:
                 shippingModeAdapter.selectedItem();
                 selectedShippingMode = shippingModeList.get(position);
+                shippingId = selectedShippingMode.getShippingId();
+                callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
                 break;
             default:
                 break;

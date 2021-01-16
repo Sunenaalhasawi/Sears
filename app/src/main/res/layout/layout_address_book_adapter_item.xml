@@ -10,6 +10,7 @@
         android:id="@+id/cv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
         android:background="@drawable/dim_white_rounded_rectangle_16dp">
 
         <TextView

@@ -15,7 +15,6 @@ import com.hasawi.sears.databinding.LayoutAddressAdapterItemBinding;
 import com.hasawi.sears.databinding.LayoutAddressBookAdapterItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.utils.AppConstants;
-import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.ArrayList;
 
@@ -75,7 +74,7 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 CheckoutAddressViewHolder checkoutAddressViewHolder = (CheckoutAddressViewHolder) holder;
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvLocation.setText(addressItem.getStreet());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvArea.setText(addressItem.getArea());
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN).getData(PreferenceHandler.LOGIN_USERNAME, ""));
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(addressItem.getFirstName() + " " + addressItem.getLastName());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvFlat.setText(addressItem.getFlat() + " " + addressItem.getBlock());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
                 if (sSelected == position) {

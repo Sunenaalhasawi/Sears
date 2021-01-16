@@ -41,9 +41,13 @@ public class AboutUsFragment extends BaseFragment {
                 case SUCCESS:
                     try {
                         fragmentDynamicContentBinding.tvTitle.setText(dynamicContentResponseResource.data.getData().getName());
-                        Glide.with(getContext())
-                                .load(getResources().getDrawable(R.drawable.about_us))
-                                .into(fragmentDynamicContentBinding.imageViewcontent);
+                        try {
+                            Glide.with(getContext())
+                                    .load(dynamicContentResponseResource.data.getData().getIcon())
+                                    .into(fragmentDynamicContentBinding.imageViewcontent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         String htmlContent = dynamicContentResponseResource.data.getData().getFulfilment();
                         final String mimeType = "text/html";
                         final String encoding = "UTF-8";

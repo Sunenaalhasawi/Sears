@@ -130,6 +130,7 @@ public class UserProfileFragment extends BaseFragment {
                         inputParams.put("nationality", selectedNationality);
                         inputParams.put("dob", selectedDob);
                         inputParams.put("mobileNo", mobileNo);
+                        inputParams.put("customerId", customerId);
                         callEditUserProfileApi(customerId, inputParams, sessionToken);
                     }
 
@@ -152,10 +153,14 @@ public class UserProfileFragment extends BaseFragment {
                         if (userProfileResponseResource.data.getData().getUser().getDob() != null)
                             fragmentUserProfileBinding.layoutProfile.edtBirthday.setText(userProfileResponseResource.data.getData().getUser().getDob());
                         if (userProfileResponseResource.data.getData().getUser().getGender() != null) {
-                            if (userProfileResponseResource.data.getData().getUser().getGender().equalsIgnoreCase("f"))
+                            if (userProfileResponseResource.data.getData().getUser().getGender().equalsIgnoreCase("f")) {
+                                fragmentUserProfileBinding.imageViewUser.setImageDrawable(getResources().getDrawable(R.drawable.girl));
                                 selectFemale();
-                            else if (userProfileResponseResource.data.getData().getUser().getGender().equalsIgnoreCase("m"))
+                            } else if (userProfileResponseResource.data.getData().getUser().getGender().equalsIgnoreCase("m")) {
+                                fragmentUserProfileBinding.imageViewUser.setImageDrawable(getResources().getDrawable(R.drawable.boy));
                                 selectMale();
+                            }
+
                         }
                         fragmentUserProfileBinding.tvUsernameTop.setText(userProfileResponseResource.data.getData().getUser().getCustomerFirstName() + " " + userProfileResponseResource.data.getData().getUser().getCustomerLastName());
                         if (userProfileResponseResource.data.getData().getUser().getNationality() != null) {
@@ -195,8 +200,6 @@ public class UserProfileFragment extends BaseFragment {
                         dashboardActivity.getmFirebaseAnalytics().setUserProperty("gender", userProfileResponseResource.data.getData().getUser().getGender());
                         dashboardActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", userProfileResponseResource.data.getData().getUser().getDob());
                         dashboardActivity.getmFirebaseAnalytics().setUserProperty("phone", userProfileResponseResource.data.getData().getUser().getMobileNo());
-
-
                     }
                     break;
                 case LOADING:

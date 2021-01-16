@@ -34,6 +34,7 @@
             android:paddingLeft="24dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -59,7 +60,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_continue_shipping_address"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -195,6 +196,7 @@
                     android:layout_height="1dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:visibility="gone"
                     android:layout_marginEnd="16dp"
                     android:background="@color/light_grey"
                     android:orientation="horizontal"
@@ -208,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:visibility="gone"
                     android:fontFamily="@font/avantgarde_regular"
                     android:text="@string/save_as_def_ship_addr"
                     android:textColor="@color/txt_clr_grey"
@@ -223,6 +226,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/avantgarde_regular"
                     android:text="@string/shipping_options"
+                    android:visibility="gone"
                     android:textColor="@color/txt_clr_blue"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -234,6 +238,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView28">

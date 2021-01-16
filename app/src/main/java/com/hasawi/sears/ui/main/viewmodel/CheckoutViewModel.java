@@ -23,8 +23,8 @@ public class CheckoutViewModel extends ViewModel {
         checkoutRepository = new CheckoutRepository();
     }
 
-    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String couponCode, String sessiontoken) {
-        return checkoutRepository.checkout(userId, cartId, couponCode, sessiontoken);
+    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String couponCode, String sessiontoken, String shippingId) {
+        return checkoutRepository.checkout(userId, cartId, couponCode, sessiontoken, shippingId);
     }
 
     public MutableLiveData<Resource<GetAllAddressResponse>> getAddresses(String userId, String sessiontoken) {

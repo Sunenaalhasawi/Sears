@@ -1,9 +1,6 @@
 package com.hasawi.sears.ui.main.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,19 +41,28 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            Drawable drawable = context.getResources().getDrawable(R.drawable.circle);
-            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
-            if (colorList.get(position).getColorCode() != null)
-                gradientDrawable.setColor(Color.parseColor(colorList.get(position).getColorCode()));
-            gradientDrawable.setStroke(3, context.getResources().getColor(R.color.grey));
+//            Drawable drawable = context.getResources().getDrawable(R.drawable.circle);
+//            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+//            if (colorList.get(position).getColorCode() != null)
+//                gradientDrawable.setColor(Color.parseColor(colorList.get(position).getColorCode()));
+//            gradientDrawable.setStroke(3, context.getResources().getColor(R.color.grey));
 
+//            if (sSelected == position) {
+//                holder.colorVariantAdapterItemBinding.cvColor.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_circle));
+//            } else {
+//                holder.colorVariantAdapterItemBinding.cvColor.setBackground(context.getResources().getDrawable(R.drawable.plane_circle));
+//            }
+//            holder.colorVariantAdapterItemBinding.imageViewColorVariant.setImageDrawable(
+//                    gradientDrawable);
+            if (colorList.get(position).getColor() != null && !colorList.get(position).getColor().equalsIgnoreCase(""))
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setText(colorList.get(position).getColor());
+            else
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setVisibility(View.GONE);
             if (sSelected == position) {
-                holder.colorVariantAdapterItemBinding.cvColor.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_circle));
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle));
             } else {
-                holder.colorVariantAdapterItemBinding.cvColor.setBackground(context.getResources().getDrawable(R.drawable.plane_circle));
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle));
             }
-            holder.colorVariantAdapterItemBinding.imageViewColorVariant.setImageDrawable(
-                    gradientDrawable);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +88,7 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
         public ViewHolder(@NonNull LayoutColorVariantAdapterItemBinding layoutColorVariantAdapterItemBinding) {
             super(layoutColorVariantAdapterItemBinding.getRoot());
             this.colorVariantAdapterItemBinding = layoutColorVariantAdapterItemBinding;
-            colorVariantAdapterItemBinding.imageViewColorVariant.setOnClickListener(this);
+            colorVariantAdapterItemBinding.tvColorVariant.setOnClickListener(this);
         }
 
         @Override

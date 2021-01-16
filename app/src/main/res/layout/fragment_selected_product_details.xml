@@ -135,6 +135,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/white_rounded_rectangle"
                     android:elevation="2dp"
+                    android:paddingBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/cv_product_details"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -204,7 +205,7 @@
                         app:layout_constraintTop_toTopOf="@+id/listview_product_size" />
 
                     <TextView
-                        android:id="@+id/textView43"
+                        android:id="@+id/txtColorVariant"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"

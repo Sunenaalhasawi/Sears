@@ -27,6 +27,15 @@ public class OrderProduct {
     @SerializedName("amount")
     @Expose
     private Double amount;
+    @SerializedName("productImage")
+    @Expose
+    private String productImage;
+    @SerializedName("productSize")
+    @Expose
+    private String productSize;
+    @SerializedName("productColorCode")
+    @Expose
+    private String productColorCode;
 
     public String getOrderProductId() {
         return orderProductId;
@@ -82,5 +91,29 @@ public class OrderProduct {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
+    }
+
+    public String getProductColorCode() {
+        return productColorCode;
+    }
+
+    public void setProductColorCode(String productColorCode) {
+        this.productColorCode = productColorCode;
     }
 }

@@ -229,11 +229,11 @@
     <string name="paypal_caps">PAYPAL</string>
     <string name="select_state">Select State</string>
     <string name="add_a_new_address">Add a new address</string>
-    <string name="street">Street</string>
-    <string name="area">Area</string>
+    <string name="street">Street*</string>
+    <string name="area">Area*</string>
     <string name="flat">Flat</string>
-    <string name="block">Block</string>
-    <string name="country">Country</string>
+    <string name="block">Block*</string>
+    <string name="country">Country*</string>
     <string name="no_internet_error">"No internet "</string>
     <string name="retry">RETRY</string>
     <string name="wake_up_your_connection">Wake up your connection</string>
@@ -314,63 +314,6 @@
     <string name="facebook_app_id">383736032918006</string>
     <string name="fb_login_protocol_scheme">fb383736032918006</string>
     <string name="remove_caps">REMOVE</string>
-
-    <string name="static_content">How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.
-    How to create a nested RecyclerView in Android
-Last Updated: 29-07-2020
-A nested RecyclerView is an implementation of a RecyclerView within a RecyclerView. An example of such a layout can be seen in a variety of apps such as the Play store where the outer (parent) RecyclerView is of Vertical orientation whereas the inner (child) RecyclerViews are of horizontal orientations. A similar layout is developed here.
-
-Approach:
-Step 1:Add the required dependencies
-Add the following dependencies to build.gradle (:app) file.The first dependency corresponding to RecyclerView is mandatory and the second one is for CardView, thus it is optional depending upon the UI requirements. Since here CardView is used in the child RecyclerView layout, so the CardView dependency is added.
-Note: After adding the dependencies, click on Sync now.</string>
     <string name="whats_new">WHAT\'S NEW ?</string>
     <string name="new_product_landed">These products literally just landed</string>
     <string name="shop_all">Shop all</string>
@@ -414,5 +357,9 @@ Note: After adding the dependencies, click on Sync now.</string>
     <string name="area_colon">Area :</string>
     <string name="flat_colon">Flat :</string>
     <string name="country_colon">Country :</string>
+    <string name="address_type">Address Type*</string>
+    <string name="building_no">Building/House/Office Number*</string>
+    <string name="flat_number">Flat Number*</string>
+    <string name="kindly_add_address">Kindly add your address</string>
 
 </resources>

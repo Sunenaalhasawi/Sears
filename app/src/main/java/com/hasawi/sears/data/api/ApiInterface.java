@@ -116,7 +116,7 @@ public interface ApiInterface {
     Call<AddressResponse> addNewAddress(@Path("customer_id") String userId, @Body RequestBody requestBody, @Header("Authorization") String sessionToken);
 
     @GET("order/customers/{customerId}/cart/{cartId}/?")
-    Call<CheckoutResponse> checkout(@Path("customerId") String customerID, @Path("cartId") String cartId, @Query("couponCode") String couponCode, @Header("Authorization") String sessionToken);
+    Call<CheckoutResponse> checkout(@Path("customerId") String customerID, @Path("cartId") String cartId, @Query("couponCode") String couponCode, @Query("shippingId") String shippingId, @Header("Authorization") String sessionToken);
 
     @Headers("Content-Type: application/json")
     @POST("order/customers/{customerId}/address/{addressId}/cart/{cartId}")
@@ -130,7 +130,7 @@ public interface ApiInterface {
     Call<DeleteAddressResponse> deleteAddress(@Path("addressId") String addressId, @Header("Authorization") String sessionToken);
 
     @Headers("Content-Type: application/json")
-    @POST("customers/{customerId}/address/{addressId}")
+    @PUT("customers/{customerId}/address/{addressId}")
     Call<AddressResponse> editAddress(@Path("customerId") String customerId, @Path("addressId") String addressId, @Header("Authorization") String sessionToken, @Body RequestBody requestBody);
 
     @GET("customers/findByEmail?")

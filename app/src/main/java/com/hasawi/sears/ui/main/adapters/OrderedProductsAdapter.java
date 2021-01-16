@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Order;
 import com.hasawi.sears.data.api.model.pojo.OrderProduct;
@@ -48,6 +49,14 @@ public class OrderedProductsAdapter extends RecyclerView.Adapter<OrderedProducts
             else
                 holder.orderItemHistoryDetailBinding.tvAmountPaid.setText("--");
             holder.orderItemHistoryDetailBinding.tvProductName.setText(orderProductItem.getProductName());
+
+            try {
+                Glide.with(context)
+                        .load(orderProductItem.getProductImage())
+                        .centerCrop().into(holder.orderItemHistoryDetailBinding.imageProduct);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             List<OrderTrack> orderTrackList = selectedOrder.getOrderTrackList();
             String currentStatus = "";

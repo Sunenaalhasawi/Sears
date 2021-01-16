@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clipToPadding="false">
+
+
+        <Button
+            android:id="@+id/btn_continue_shipping_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_2_corner_rounded_rectangle_blue"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/add_address_caps"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/txt_clr_blue"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/add_a_new_address"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/btn_continue_shipping_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+                <EditText
+                    android:id="@+id/edt_street"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/street"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_block" />
+
+                <EditText
+                    android:id="@+id/edt_block"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/block"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_street"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/edt_street"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutArea" />
+
+                <EditText
+                    android:id="@+id/edt_first_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                <EditText
+                    android:id="@+id/edt_last_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/last_name"
+                    android:inputType="textPersonName"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_first_name"
+                    app:layout_constraintStart_toStartOf="@+id/edt_first_name"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_first_name" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutNationality"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_last_name">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/country"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                        android:id="@+id/picker_nationality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:ccp_arrowSize="0sp"
+                        app:ccp_defaultNameCode="KW"
+                        app:ccp_hideNameCode="true"
+                        app:ccp_hidePhoneCode="true"
+                        app:ccp_showFlag="true"
+                        app:ccp_showFullName="true"
+                        app:ccp_textFont="@font/avantgarde_bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutAddressType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutNationality">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/address_type"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerAddressType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:prompt="@color/txt_clr_blue"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutArea"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutAddressType">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/area"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:prompt="@color/txt_clr_blue"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_building_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/building_no"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_street" />
+
+                <EditText
+                    android:id="@+id/edt_flat_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/flat_number"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_building_number" />
+
+                <EditText
+                    android:id="@+id/edt_mobile_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:ems="10"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:hint="@string/mobile_number"
+                    android:inputType="text"
+                    android:padding="16dp"
+                    android:textColor="@color/txt_clr_grey"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_flat_number" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/avantgarde_regular"
+                    android:text="@string/shipping_address"
+                    android:textColor="@color/txt_clr_blue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/fragment_dialog_loading_indicator" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
