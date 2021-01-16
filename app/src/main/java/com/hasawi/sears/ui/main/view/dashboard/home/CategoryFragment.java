@@ -116,8 +116,11 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
 //                if(subCategoryArrayList.get(i).getCategoryId()==selectedSubCategoryId){
         currentGridList = (ArrayList<Category>) subCategoryArrayList.get(position).getCategories();
         if (currentGridList == null || currentGridList.size() == 0) {
+            fragmentCategoriesBinding.layoutNoCategories.setVisibility(View.VISIBLE);
             redirectToProductListing(selectedSubCategoryId, selectedSubCategoryName);
+
         } else {
+            fragmentCategoriesBinding.layoutNoCategories.setVisibility(View.GONE);
             categoryGridAdapter = new CategoryGridAdapter(dashboardActivity, currentGridList);
             fragmentCategoriesBinding.gridViewCategories.setAdapter(categoryGridAdapter);
             fragmentCategoriesBinding.progressBar.setVisibility(View.GONE);

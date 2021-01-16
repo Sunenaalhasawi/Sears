@@ -361,5 +361,6 @@
     <string name="building_no">Building/House/Office Number*</string>
     <string name="flat_number">Flat Number*</string>
     <string name="kindly_add_address">Kindly add your address</string>
+    <string name="no_categories">No Categories</string>
 
 </resources>
