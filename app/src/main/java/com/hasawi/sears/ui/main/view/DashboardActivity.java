@@ -40,6 +40,7 @@ import com.hasawi.sears.ui.main.adapters.SearchProductAdapter;
 import com.hasawi.sears.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears.ui.main.view.checkout.CheckoutFragment;
 import com.hasawi.sears.ui.main.view.checkout.MyCartFragment;
+import com.hasawi.sears.ui.main.view.checkout.OrderFragment;
 import com.hasawi.sears.ui.main.view.checkout.PaymentFragment;
 import com.hasawi.sears.ui.main.view.dashboard.home.CategoryFragment;
 import com.hasawi.sears.ui.main.view.dashboard.home.NotificationFragment;
@@ -563,8 +564,14 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             } else if (currentFragment instanceof OrderHistoryDetailFragment) {
                 handleActionMenuBar(true, false, "My Orders");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof OrderFragment) {
+                int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+                for (int i = 0; i < fragmentCount; i++) {
+                    getSupportFragmentManager().popBackStack();
+                }
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+                handleActionMenuBar(false, true, "");
             }
-
 
         }
     }
@@ -717,14 +724,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 "https://searskuwait.com/");
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
-//        Intent myIntent = new Intent(Intent.ACTION_SEND);
-//        myIntent.setType("text/plain");
-//        String shareBody = "Install Sears Outlet App to shop world's most famous brands at great prices!\n" +
-//                "https://searskuwait.com/";
-////        String shareSub = "";
-////        myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-//        myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-//        startActivity(Intent.createChooser(myIntent, "Share using"));
     }
 
     public void handleActionBarIcons(boolean showActionBaritems) {

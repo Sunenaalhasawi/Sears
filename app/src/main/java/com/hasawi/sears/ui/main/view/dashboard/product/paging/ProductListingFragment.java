@@ -32,6 +32,7 @@ import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductListingFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -43,6 +44,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     JSONArray selectedFilterData;
     String selectedSortString;
     JSONArray filterArray;
+    String attributeIds = null;
     List<String> sortStrings = new ArrayList<>();
     DialogGeneral noInternetDialog;
     String sessionToken;
@@ -77,6 +79,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             Bundle bundle = getArguments();
             currentSelectedCategory = bundle.getString("category_id");
             String currentCategoryName = bundle.getString("category_name");
+            attributeIds = bundle.getString("attribute_ids");
             fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
 //            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
 //            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory);
@@ -88,6 +91,15 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         if (!Connectivity.isConnected(dashboardActivity)) {
             showNoInternetDialog();
         } else {
+            if (attributeIds == null)
+                selectedFilterData = null;
+            else {
+                List<String> attributeList = Arrays.asList(attributeIds);
+                selectedFilterData = new JSONArray();
+                for (int i = 0; i < attributeList.size(); i++) {
+                    selectedFilterData.put(attributeList.get(i));
+                }
+            }
             setupProductRecyclerview();
             getSortStrings();
             loadFilterData(filterArray);
@@ -194,7 +206,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     private void setupProductRecyclerview() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         fragmentProductListingBinding.recyclerviewProducts.setLayoutManager(gridLayoutManager);
-        loadProductsFromApi(currentSelectedCategory, null, currentPage, "");
+        loadProductsFromApi(currentSelectedCategory, selectedFilterData, currentPage, "");
     }
 
     private void loadProductsFromApi(String category, JSONArray jsonArray, int page, String selectedSortString) {

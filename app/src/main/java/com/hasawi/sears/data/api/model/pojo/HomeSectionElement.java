@@ -13,6 +13,9 @@ public class HomeSectionElement {
     @SerializedName("callBack")
     @Expose
     private String callBack;
+    @SerializedName("attributeIds")
+    @Expose
+    private String attributeIds;
     @SerializedName("name")
     @Expose
     private String name;
@@ -58,5 +61,13 @@ public class HomeSectionElement {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAttributeIds() {
+        return attributeIds;
+    }
+
+    public void setAttributeIds(String attributeIds) {
+        this.attributeIds = attributeIds;
     }
 }

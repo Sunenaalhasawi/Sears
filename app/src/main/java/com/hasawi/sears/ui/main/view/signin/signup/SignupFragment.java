@@ -114,6 +114,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_USERNAME, signupResponse.data.getData().getuser().getCustomerFirstName());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_EMAIL, signupResponse.data.getData().getuser().getEmailId());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_PASSWORD, signupResponse.data.getData().getuser().getPassword());
+                                    preferenceHandler.saveData(PreferenceHandler.LOGIN_GENDER, signupResponse.data.getData().getuser().getGender());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, signupResponse.data.getData().getuser().getConfirmPassword());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, signupResponse.data.getData().getuser().getMobileNo());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, true);

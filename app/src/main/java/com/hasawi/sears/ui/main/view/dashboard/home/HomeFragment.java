@@ -69,6 +69,7 @@ public class HomeFragment extends BaseFragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("category_id", callback);
                         bundle.putString("category_name", bannerList.get(position).getCategory());
+                        bundle.putString("attribute_ids", null);
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new ProductListingFragment(), bundle, true, false);
 
                     } else if (type.equalsIgnoreCase("P")) {
@@ -133,10 +134,14 @@ public class HomeFragment extends BaseFragment {
                 public void onGridClicked(HomeSectionElement homeSectionElement) {
                     String type = homeSectionElement.getType();
                     String callback = homeSectionElement.getCallBack();
+                    String attributeIds = homeSectionElement.getAttributeIds();
                     if (type.equalsIgnoreCase("C")) {
                         Bundle bundle = new Bundle();
                         bundle.putString("category_id", callback);
 //                    bundle.putString("category_name",callback);
+                        bundle.putString("attribute_ids", attributeIds);
+//                        ga0RGNYHvNM5d0SLGQfpQWAPGJ8=
+//                                2jmj7l5rSw0yVb/vlWAYkK/YBwk=
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new ProductListingFragment(), bundle, true, false);
 
                     } else if (type.equalsIgnoreCase("P")) {

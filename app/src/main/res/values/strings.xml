@@ -311,8 +311,8 @@
     <string name="product_delivered">PRODUCT DELIVERED</string>
     <string name="track_order_caps">TRACK ORDER</string>
 
-    <string name="facebook_app_id">383736032918006</string>
-    <string name="fb_login_protocol_scheme">fb383736032918006</string>
+    <string name="facebook_app_id">2817391048579267</string>
+    <!--    <string name="fb_login_protocol_scheme">fb383736032918006</string>-->
     <string name="remove_caps">REMOVE</string>
     <string name="whats_new">WHAT\'S NEW ?</string>
     <string name="new_product_landed">These products literally just landed</string>
