@@ -57,18 +57,19 @@ public class DynamicUiResponse {
 
     public class UiData {
 
-        @SerializedName("categoryName")
-        @Expose
-        String categoryName;
-        @SerializedName("categoryId")
-        @Expose
-        String categoryId;
         @SerializedName("banner")
         @Expose
         private List<Banner> bannerList;
         @SerializedName("section")
         @Expose
         private List<Section> section = null;
+        @SerializedName("categoryName")
+        @Expose
+        String categoryName;
+        @SerializedName("categoryId")
+        @Expose
+        String categoryId;
+
 
         public List<Section> getSection() {
             return section;

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.appevents.AppEventsLogger;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.FragmentSignupBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
@@ -33,6 +34,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     String selectedDate = "";
     private String selectedGender = "M";
     private DatePickerDialog datePickerDialog;
+    AppEventsLogger logger;
 
     @Override
     protected int getLayoutResId() {
@@ -43,6 +45,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     protected void setup() {
         fragmentSignupBinding = (FragmentSignupBinding) viewDataBinding;
         signinActivity = (SigninActivity) getActivity();
+        logger = AppEventsLogger.newLogger(signinActivity);
         signupViewModel = new ViewModelProvider(getActivity()).get(SignupViewModel.class);
         fragmentSignupBinding.layoutSignup.btnSignup.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.edtBirthday.setOnClickListener(this);
@@ -118,29 +121,31 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_CONFIRM_PASSWORD, signupResponse.data.getData().getuser().getConfirmPassword());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_PHONENUMBER, signupResponse.data.getData().getuser().getMobileNo());
                                     preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, true);
-                                    signinActivity.getmFirebaseAnalytics().setUserProperty("email", signupResponse.data.getData().getuser().getEmailId());
-                                    signinActivity.getmFirebaseAnalytics().setUserProperty("country", signupResponse.data.getData().getuser().getNationality());
-                                    signinActivity.getmFirebaseAnalytics().setUserProperty("gender", signupResponse.data.getData().getuser().getGender());
-                                    signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob());
-                                    signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
+                                    if (signupResponse.data.getData().getuser() != null) {
+                                        signinActivity.getmFirebaseAnalytics().setUserProperty("email", signupResponse.data.getData().getuser().getEmailId());
+                                        signinActivity.getmFirebaseAnalytics().setUserProperty("country", signupResponse.data.getData().getuser().getNationality());
+                                        signinActivity.getmFirebaseAnalytics().setUserProperty("gender", signupResponse.data.getData().getuser().getGender());
+                                        signinActivity.getmFirebaseAnalytics().setUserProperty("date_of_birth", signupResponse.data.getData().getuser().getDob());
+                                        signinActivity.getmFirebaseAnalytics().setUserProperty("phone", signupResponse.data.getData().getuser().getMobileNo());
+                                    }
                                 }
 
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
-                            Bundle regSuccessAnalyticsBundle = new Bundle();
+
                             try {
-                                regSuccessAnalyticsBundle.putString("registration_date", DateTimeUtils.getCurrentStringDateTime());
+                                String date = DateTimeUtils.getCurrentStringDateTime();
+                                String country = "", gender = "";
+                                if (signupResponse.data.getData().getuser() != null) {
+                                    country = signupResponse.data.getData().getuser().getNationality();
+                                    gender = signupResponse.data.getData().getuser().getGender();
+                                }
+                                logREGISTRATION_SUCCESSEvent(date, country, gender);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            if (signupResponse.data.getData().getuser() != null) {
-                                regSuccessAnalyticsBundle.putString("country", signupResponse.data.getData().getuser().getNationality());
-                                regSuccessAnalyticsBundle.putString("gender", signupResponse.data.getData().getuser().getGender());
-                            }
-
-                            signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_SUCCESS", regSuccessAnalyticsBundle);
 
                             Intent intent = new Intent(signinActivity, DashboardActivity.class);
                             startActivity(intent);
@@ -149,15 +154,15 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                         case LOADING:
                             break;
                         case ERROR:
-                            Bundle regFailedAnalyticsBundle = new Bundle();
-                            regFailedAnalyticsBundle.putString("error", signupResponse.message);
-                            regFailedAnalyticsBundle.putString("error_code", signupResponse.data.getStatusCode() + "");
+                            String error = signupResponse.message;
+                            String errorcode = signupResponse.data.getStatusCode() + "";
+                            String date = "";
                             try {
-                                regFailedAnalyticsBundle.putString("registration_date", DateTimeUtils.getCurrentStringDateTime());
+                                date = DateTimeUtils.getCurrentStringDateTime();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_FAILED", regFailedAnalyticsBundle);
+                            logREGISTRATION_FAILEDEvent(error, errorcode, date);
                             Toast.makeText(signinActivity, signupResponse.message, Toast.LENGTH_SHORT).show();
                             break;
                     }
@@ -168,6 +173,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
             }
 
     }
+
 
     private void selectMale() {
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.bronze_gradient_rounded_rectangle_12dp));
@@ -244,5 +250,31 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
             default:
                 break;
         }
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logREGISTRATION_SUCCESSEvent(String registration_date, String country, String gender) {
+        Bundle params = new Bundle();
+        params.putString("registration_date", registration_date);
+        params.putString("country", country);
+        params.putString("gender", gender);
+        logger.logEvent("REGISTRATION_SUCCESS", params);
+        signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_SUCCESS", params);
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logREGISTRATION_FAILEDEvent(String error, String error_code, String registration_date) {
+        Bundle params = new Bundle();
+        params.putString("error", error);
+        params.putString("error_code", error_code);
+        params.putString("registration_date", registration_date);
+        logger.logEvent("REGISTRATION_FAILED", params);
+        signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_FAILED", params);
     }
 }

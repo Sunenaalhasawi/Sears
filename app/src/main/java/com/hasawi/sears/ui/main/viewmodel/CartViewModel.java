@@ -40,6 +40,11 @@ public class CartViewModel extends ViewModel {
         return productRepository.addToCart(userID, jsonParams, sessionToken);
     }
 
+    public MutableLiveData<Resource<CartResponse>> updateCartItems(String userID, String jsonParams, String sessionToken) {
+        return productRepository.updateCartItems(userID, jsonParams, sessionToken);
+    }
+
+
 //    public MutableLiveData<Resource<CheckoutResponse>> checkout(String userId, String cartId, String sessiontoken) {
 //        return checkoutRepository.checkout(userId, cartId, sessiontoken);
 //    }

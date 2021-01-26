@@ -30,9 +30,16 @@ public class ShoppingCartItem {
     @SerializedName("quantity")
     @Expose
     private Integer quantity;
+    @SerializedName("amount")
+    @Expose
+    private Integer amount;
+
     @SerializedName("product")
     @Expose
     private Product product;
+    @SerializedName("productConfigurable")
+    @Expose
+    private ProductConfigurable productConfigurable;
 
     private boolean isOutOfStock;
 
@@ -114,5 +121,21 @@ public class ShoppingCartItem {
 
     public void setOutOfStock(boolean outOfStock) {
         isOutOfStock = outOfStock;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public ProductConfigurable getProductConfigurable() {
+        return productConfigurable;
+    }
+
+    public void setProductConfigurable(ProductConfigurable productConfigurable) {
+        this.productConfigurable = productConfigurable;
     }
 }

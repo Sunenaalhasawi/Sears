@@ -86,6 +86,7 @@ public class SortFragment extends BaseFragment implements RecyclerviewSingleChoi
         Bundle bundle = new Bundle();
         bundle.putString("sort_value", selectedSort);
         dashboardActivity.getmFirebaseAnalytics().logEvent("SORT_BY", bundle);
+        dashboardActivity.getFacebookEventsLogger().logEvent("SORT_BY", bundle);
         returnSortValues();
     }
 }

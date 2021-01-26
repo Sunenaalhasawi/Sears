@@ -32,5 +32,11 @@ public class AppConstants {
     public static final String PRIVATE_POLICY = "Privacy Policy";
     public static final String FAQ = "FAQ's";
 
+    public static final String SEARS_INSTAGRAM = "https://www.instagram.com/searsoutletkw/";
+    public static final String SEARS_FACEBOOK = "https://www.facebook.com/searsoutletkw";
+    public static final String SEARS_SNAPCHAT = "https://www.snapchat.com/add/searsoutletkw";
+    public static final String SEARS_TIKTOK = "https://vm.tiktok.com/ZSwGxK9m/";
+    public static final String SEARS_YOUTUBE = "https://www.youtube.com/channel/UCQ1eElLOTH-6D_fco5zKqXA";
+
 
 }

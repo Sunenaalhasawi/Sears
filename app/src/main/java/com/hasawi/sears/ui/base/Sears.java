@@ -1,30 +1,39 @@
 package com.hasawi.sears.ui.base;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.hasawi.sears.BuildConfig;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.utils.AppConstants;
+import com.hasawi.sears.utils.DateTimeUtils;
 
-public class Sears extends Application {
+public class Sears extends Application implements LifecycleObserver {
 
     private RetrofitApiClient retrofitApiClient;
     public static final String TAG = "Sears";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AppEventsLogger facebookEventLogger;
     InstallReferrerClient referrerClient;
 
     public RetrofitApiClient getRetrofitApiClient() {
@@ -38,6 +47,8 @@ public class Sears extends Application {
         FirebaseApp.initializeApp(this);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        facebookEventLogger = AppEventsLogger.newLogger(this);
+        AppEventsLogger.activateApp(this);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -100,6 +111,59 @@ public class Sears extends Application {
         mFirebaseAnalytics.setUserProperty("device", deviceName);
         mFirebaseAnalytics.setUserProperty("os", os);
         mFirebaseAnalytics.setUserProperty("language", AppLang);
+        appGetFirstTimeRun();
 
     }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    protected void onAppBackgrounded() {
+        Log.d("SEARS", "App in background");
+        logLastSessionEvent();
+    }
+
+    private void logLastSessionEvent() {
+        Bundle bundle = new Bundle();
+        bundle.putString("time_stamp", DateTimeUtils.getCurrentStringDateTime());
+        mFirebaseAnalytics.logEvent("LAST_SESSION", bundle);
+        facebookEventLogger.logEvent("LAST_SESSION", bundle);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    protected void onAppForegrounded() {
+        Log.d("SEARS", "App in foreground");
+    }
+
+    private int appGetFirstTimeRun() {
+        //Check if App Start First Time
+        SharedPreferences appPreferences = getSharedPreferences("SEARS", 0);
+        int appCurrentBuildVersion = BuildConfig.VERSION_CODE;
+        int appLastBuildVersion = appPreferences.getInt("app_first_time", 0);
+
+        //Log.d("appPreferences", "app_first_time = " + appLastBuildVersion);
+
+        if (appLastBuildVersion == appCurrentBuildVersion) {
+            // Logging facebook event first_open
+            logFirstAppOpenEvent();
+            return 1; // first time
+        } else {
+            appPreferences.edit().putInt("app_first_time",
+                    appCurrentBuildVersion).apply();
+            if (appLastBuildVersion == 0) {
+                return 0; //already started before
+            } else {
+                return 2; //It has started once, but not that version , ie it is an update.
+            }
+        }
+    }
+
+    private void logFirstAppOpenEvent() {
+        Bundle params = new Bundle();
+        try {
+            params.putString("date", DateTimeUtils.getCurrentStringDateTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        facebookEventLogger.logEvent("APP_FIRST_OPEN", params);
+    }
+
 }

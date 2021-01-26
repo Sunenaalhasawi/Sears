@@ -8,6 +8,7 @@ import android.webkit.WebViewClient;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
@@ -86,28 +87,19 @@ public class PaymentFragment extends BaseFragment implements PaymentSuccessListe
             public void onPageFinished(WebView view, String url) {
                 fragmentPaymentNewBinding.progressBar.setVisibility(View.GONE);
                 try {
-                    Bundle analyticsBundle = new Bundle();
-                    analyticsBundle.putString(FirebaseAnalytics.Param.PAYMENT_TYPE, selectedPaymentMode.getName());
-                    try {
-                        analyticsBundle.putString(FirebaseAnalytics.Param.END_DATE, DateTimeUtils.getCurrentStringDateTime());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
                     if (url.contains(selectedPaymentMode.getFailedUrl())) {
                         failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
-                        analyticsBundle.putLong(FirebaseAnalytics.Param.SUCCESS, 0);
-                        analyticsBundle.putString("payment_status", "failed");
-                        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, analyticsBundle);
+                        logAddPaymentInfoEvent(selectedPaymentMode, false);
+                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, false);
                     } else if (url.contains(selectedPaymentMode.getSuccessUrl())) {
                         fragmentPaymentNewBinding.webviewPayment.stopLoading();
 //                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 
 //                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:HtmlViewer.showHTML" +
 //                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-                        analyticsBundle.putLong(FirebaseAnalytics.Param.SUCCESS, 1);
-                        analyticsBundle.putString("payment_status", "success");
-                        analyticsBundle.putString("payment_method", selectedPaymentMode.getName());
-                        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, analyticsBundle);
+                        logAddPaymentInfoEvent(selectedPaymentMode, true);
+                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, true);
 
                         Bundle paymentBundle = new Bundle();
                         Gson gson = new Gson();
@@ -179,5 +171,31 @@ public class PaymentFragment extends BaseFragment implements PaymentSuccessListe
 
     }
 
+    public void logAddPaymentInfoFirebaseEvent(PaymentMode selectedPaymentMode, boolean paymentSuccess) {
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(FirebaseAnalytics.Param.PAYMENT_TYPE, selectedPaymentMode.getName());
+        try {
+            analyticsBundle.putString(FirebaseAnalytics.Param.END_DATE, DateTimeUtils.getCurrentStringDateTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        analyticsBundle.putInt(FirebaseAnalytics.Param.SUCCESS, paymentSuccess ? 1 : 0);
+        analyticsBundle.putString("payment_status", paymentSuccess ? "success" : "failed");
+        analyticsBundle.putString("payment_method", selectedPaymentMode.getName());
+        analyticsBundle.putString("payment_date", DateTimeUtils.getCurrentStringDateTime());
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO, analyticsBundle);
+    }
 
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logAddPaymentInfoEvent(PaymentMode selectedPaymentMode, boolean success) {
+        Bundle params = new Bundle();
+        params.putInt(AppEventsConstants.EVENT_PARAM_SUCCESS, success ? 1 : 0);
+        params.putString("payment_status", success ? "success" : "failed");
+        params.putString("payment_method", selectedPaymentMode.getName());
+        params.putString("payment_date", DateTimeUtils.getCurrentStringDateTime());
+        dashboardActivity.getFacebookEventsLogger().logEvent(AppEventsConstants.EVENT_NAME_ADDED_PAYMENT_INFO, params);
+    }
 }

@@ -1,6 +1,7 @@
 package com.hasawi.sears.ui.main.view.dashboard.user_account;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 
 import com.hasawi.sears.R;
@@ -11,6 +12,7 @@ import com.hasawi.sears.ui.main.view.dashboard.user_account.address_book.Address
 import com.hasawi.sears.ui.main.view.dashboard.user_account.order_history.OrderHistoryFragment;
 import com.hasawi.sears.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
+import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.PreferenceHandler;
 import com.hasawi.sears.utils.dialogs.LoginSignupDialog;
 
@@ -37,6 +39,11 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
         fragmentUserAccountBinding.constrainLayoutWishlist.setOnClickListener(this);
         fragmentUserAccountBinding.constrainLayoutAddressBook.setOnClickListener(this);
         fragmentUserAccountBinding.btnLoginSignup.setOnClickListener(this);
+        fragmentUserAccountBinding.imageViewFacebook.setOnClickListener(this);
+        fragmentUserAccountBinding.imageViewInstagram.setOnClickListener(this);
+        fragmentUserAccountBinding.imageViewSnapChat.setOnClickListener(this);
+        fragmentUserAccountBinding.imageViewTiktok.setOnClickListener(this);
+        fragmentUserAccountBinding.imageViewYoutube.setOnClickListener(this);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String username = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
         String gender = preferenceHandler.getData(PreferenceHandler.LOGIN_GENDER, "");
@@ -108,8 +115,28 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
                 startActivity(intent);
                 dashboardActivity.finish();
                 break;
+            case R.id.imageViewFacebook:
+                launchBrowser(AppConstants.SEARS_FACEBOOK);
+                break;
+            case R.id.imageViewInstagram:
+                launchBrowser(AppConstants.SEARS_INSTAGRAM);
+                break;
+            case R.id.imageViewYoutube:
+                launchBrowser(AppConstants.SEARS_YOUTUBE);
+                break;
+            case R.id.imageViewSnapChat:
+                launchBrowser(AppConstants.SEARS_SNAPCHAT);
+                break;
+            case R.id.imageViewTiktok:
+                launchBrowser(AppConstants.SEARS_TIKTOK);
+                break;
             default:
                 break;
         }
+    }
+
+    private void launchBrowser(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 }

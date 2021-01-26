@@ -3,6 +3,8 @@ package com.hasawi.sears.data.api.model.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ProductConfigurable {
 
     @SerializedName("productConfigurableId")
@@ -32,6 +34,9 @@ public class ProductConfigurable {
     @SerializedName("enable")
     @Expose
     private Boolean enable;
+    @SerializedName("productImages")
+    @Expose
+    private List<ProductImage> productImages = null;
     @SerializedName("genericSize")
     @Expose
     private String genericSize;
@@ -116,4 +121,11 @@ public class ProductConfigurable {
         this.genericSize = genericSize;
     }
 
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
+    }
 }

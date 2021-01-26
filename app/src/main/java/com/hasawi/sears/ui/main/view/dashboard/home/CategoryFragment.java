@@ -109,6 +109,7 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
         try {
             selectedSubCategoryId = subCategoryArrayList.get(position).getCategoryId();
             selectedSubCategoryName = subCategoryArrayList.get(position).getDescriptions().get(0).getCategoryName();
+            logOUTFIT_TYPE_SELECTEDEvent(selectedSubCategoryId, selectedSubCategoryName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,6 +136,18 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
         bundle.putString("category_name", categoryName);
         dashboardActivity.replaceFragment(R.id.fragment_replacer, new ProductListingFragment(), bundle, true, false);
 
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logOUTFIT_TYPE_SELECTEDEvent(String category_id, String category_name) {
+        Bundle params = new Bundle();
+        params.putString("category_id", category_id);
+        params.putString("category_name", category_name);
+        dashboardActivity.getFacebookEventsLogger().logEvent("OUTFIT_TYPE_SELECTED", params);
+        dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_TYPE_SELECTED", params);
     }
 
 }

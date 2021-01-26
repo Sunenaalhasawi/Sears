@@ -105,6 +105,10 @@ public interface ApiInterface {
     @POST("cart/customers/{customer_id}")
     Call<CartResponse> addToCart(@Path("customer_id") String userId, @Body RequestBody requestBody, @Header("Authorization") String sessionToken);
 
+    @Headers("Content-Type: application/json")
+    @POST("cart/customers/update/{customer_id}")
+    Call<CartResponse> updateCartItems(@Path("customer_id") String userId, @Body RequestBody requestBody, @Header("Authorization") String sessionToken);
+
     @GET("cart/customers/{customer_id}/cartItem/{cart_item_id}")
     Call<CartResponse> removeFromCart(@Path("customer_id") String userId, @Path("cart_item_id") String cartItemId, @Header("Authorization") String sessionToken);
 

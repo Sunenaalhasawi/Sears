@@ -46,7 +46,8 @@ public abstract class NavigationDrawerAdapter extends ArrayAdapter<NavigationMen
             navigationDrawerItemBinding.imageView3.setVisibility(View.GONE);
             navigationDrawerItemBinding.swOnOff.setVisibility(View.VISIBLE);
         }
-
+        navigationDrawerItemBinding.imageView.setImageDrawable(menuItemList.get(position).getDrawable()
+        );
         navigationDrawerItemBinding.swOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

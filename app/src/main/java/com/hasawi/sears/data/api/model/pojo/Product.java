@@ -43,9 +43,6 @@ public class Product {
     @SerializedName("productGroup")
     @Expose
     private Object productGroup;
-    @SerializedName("productImages")
-    @Expose
-    private List<ProductImage> productImages = null;
     @SerializedName("productAttributes")
     @Expose
     private List<ProductAttribute> productAttributes = null;
@@ -78,7 +75,7 @@ public class Product {
     private boolean discount;
     @SerializedName("manufature")
     @Expose
-    private String manufature;
+    private Manufacture manufature;
 
     public String getProductId() {
         return productId;
@@ -126,14 +123,6 @@ public class Product {
 
     public void setProductGroup(Object productGroup) {
         this.productGroup = productGroup;
-    }
-
-    public List<ProductImage> getProductImages() {
-        return productImages;
-    }
-
-    public void setProductImages(List<ProductImage> productImages) {
-        this.productImages = productImages;
     }
 
     public List<ProductAttribute> getProductAttributes() {
@@ -192,11 +181,11 @@ public class Product {
         this.productConfigurables = productConfigurables;
     }
 
-    public String getManufature() {
+    public Manufacture getManufature() {
         return manufature;
     }
 
-    public void setManufature(String manufature) {
+    public void setManufature(Manufacture manufature) {
         this.manufature = manufature;
     }
 
@@ -235,4 +224,6 @@ public class Product {
     public void setDiscount(boolean discount) {
         this.discount = discount;
     }
+
+
 }

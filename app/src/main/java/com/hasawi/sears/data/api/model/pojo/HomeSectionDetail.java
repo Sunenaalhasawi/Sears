@@ -15,6 +15,12 @@ public class HomeSectionDetail {
     @SerializedName("grid")
     @Expose
     private Integer grid;
+    @SerializedName("containerHeight")
+    @Expose
+    private Double containerHeight;
+    @SerializedName("sortOrder")
+    @Expose
+    private Integer sortOrder;
     @SerializedName("homeSectionElements")
     @Expose
     private List<HomeSectionElement> homeSectionElements = null;
@@ -49,5 +55,21 @@ public class HomeSectionDetail {
 
     public void setHomeSectionElements(List<HomeSectionElement> homeSectionElements) {
         this.homeSectionElements = homeSectionElements;
+    }
+
+    public Double getContainerHeight() {
+        return containerHeight;
+    }
+
+    public void setContainerHeight(Double containerHeight) {
+        this.containerHeight = containerHeight;
+    }
+
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

@@ -218,7 +218,6 @@ public class UserProfileFragment extends BaseFragment {
         int month = cldr.get(Calendar.MONTH);
         int year = cldr.get(Calendar.YEAR);
 
-
         // date picker dialog
         datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
@@ -228,6 +227,7 @@ public class UserProfileFragment extends BaseFragment {
                         selectedDob = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                     }
                 }, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate((long) (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 365.25 * 16)));
         datePickerDialog.show();
     }
 

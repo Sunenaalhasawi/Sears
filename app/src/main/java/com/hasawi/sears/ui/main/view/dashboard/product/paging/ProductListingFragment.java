@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
@@ -30,9 +29,10 @@ import com.hasawi.sears.utils.dialogs.DialogGeneral;
 import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ProductListingFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -41,7 +41,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     //    CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
     DashboardActivity dashboardActivity;
     String currentSelectedCategory = "";
-    JSONArray selectedFilterData;
+    JSONArray selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData;
     String selectedSortString;
     JSONArray filterArray;
     String attributeIds = null;
@@ -50,13 +50,16 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     String sessionToken;
     boolean shouldRefreshTheList = false;
     boolean isUserLoggedIn = false;
+    String userId = "";
     ProgressBarDialog progressBarDialog;
     private ProductPagedListAdapter productPagedListAdapter;
     private ProductListingViewModel productListingViewModel;
     private FragmentProductListingBinding fragmentProductListingBinding;
     private List<Category> categoryArrayList = new ArrayList<>();
     private int currentPage = 0;
+    JSONObject productPayload = null;
     private LoadingIndicator loadingIndicator;
+    PreferenceHandler preferenceHandler;
 
     @Override
     protected int getLayoutResId() {
@@ -70,6 +73,10 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         dashboardActivity.handleActionBarIcons(true);
         productListingViewModel = new ViewModelProvider(getBaseActivity()).get(ProductListingViewModel.class);
         fetchDataFromSharedPref();
+        preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+        sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
+        isUserLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
 //        fragmentProductListingBinding.swipeRefreshProducts.setOnRefreshListener(this);
         fragmentProductListingBinding.lvSort.setOnClickListener(this);
         fragmentProductListingBinding.lvFilter.setOnClickListener(this);
@@ -91,28 +98,33 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         if (!Connectivity.isConnected(dashboardActivity)) {
             showNoInternetDialog();
         } else {
-            if (attributeIds == null)
-                selectedFilterData = null;
-            else {
-                List<String> attributeList = Arrays.asList(attributeIds);
-                selectedFilterData = new JSONArray();
-                for (int i = 0; i < attributeList.size(); i++) {
-                    selectedFilterData.put(attributeList.get(i));
+            if (attributeIds == null || attributeIds.equalsIgnoreCase("")) {
+//                selectedFilterData = null;
+                productPayload = null;
+            } else {
+//                List<String> attributeList = Arrays.asList(attributeIds);
+//                selectedFilterData = new JSONArray();
+//                for (int i = 0; i < attributeList.size(); i++) {
+//                    selectedFilterData.put(attributeList.get(i));
+//                }
+                try {
+                    productPayload = new JSONObject(attributeIds);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
             setupProductRecyclerview();
-            getSortStrings();
-            loadFilterData(filterArray);
+            productListingViewModel.getSortStrings().observe(this, strings -> {
+                sortStrings = strings;
+            });
+//            getSortStrings();
+//            loadFilterData(filterArray);
         }
 
         handleWishlistCartApiBeforeLoggedIn();
     }
 
     private void handleWishlistCartApiBeforeLoggedIn() {
-        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-        sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
-        isUserLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
-
         if (!preferenceHandler.getData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, "").equalsIgnoreCase("") && isUserLoggedIn) {
             dashboardActivity.runOnUiThread(new Runnable() {
                 @Override
@@ -158,61 +170,61 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         }
     }
 
-    private void getSortStrings() {
-        showProgressBarDialog(true);
-//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-//        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
-//        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-//        categoryRecyclerviewAdapter.setOnItemClickListener(this);
-//        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
-        productListingViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
-            switch (productResponseResource.status) {
-                case SUCCESS:
-//                    categoryArrayList = productResponseResource.data.getData().getCategories();
-                    sortStrings = productResponseResource.data.getData().getSortStrings();
-//                    categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-//                    fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
-                    break;
-                case LOADING:
-                    break;
-                case ERROR:
-                    Toast.makeText(dashboardActivity, productResponseResource.message, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            showProgressBarDialog(false);
-        });
+//    private void getSortStrings() {
+//        showProgressBarDialog(true);
+////        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+////        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
+////        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
+////        categoryRecyclerviewAdapter.setOnItemClickListener(this);
+////        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+//        productListingViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
+//            switch (productResponseResource.status) {
+//                case SUCCESS:
+////                    categoryArrayList = productResponseResource.data.getData().getCategories();
+//                    sortStrings = productResponseResource.data.getData().getSortStrings();
+////                    categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
+////                    fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+//                    break;
+//                case LOADING:
+//                    break;
+//                case ERROR:
+//                    Toast.makeText(dashboardActivity, productResponseResource.message, Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//            showProgressBarDialog(false);
+//        });
+//
+//    }
 
-    }
-
-    public void loadFilterData(JSONArray filterArray) {
-        showProgressBarDialog(true);
-        productListingViewModel.getProductsInfo(currentSelectedCategory, "0" +
-                "", filterArray).observe(dashboardActivity, productResponse -> {
-            switch (productResponse.status) {
-                case SUCCESS:
-                    productListingViewModel.setFilterData(productResponse.data.getData().getFilterAttributes());
-                    break;
-                case LOADING:
-                    break;
-                case ERROR:
-                    Toast.makeText(dashboardActivity, productResponse.message, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
-            showProgressBarDialog(false);
-        });
-    }
+//    public void loadFilterData(JSONArray filterArray) {
+//        showProgressBarDialog(true);
+//        productListingViewModel.getProductsInfo(currentSelectedCategory, "0" +
+//                "", filterArray).observe(dashboardActivity, productResponse -> {
+//            switch (productResponse.status) {
+//                case SUCCESS:
+//                    productListingViewModel.setFilterData(productResponse.data.getData().getFilterAttributes());
+//                    break;
+//                case LOADING:
+//                    break;
+//                case ERROR:
+//                    Toast.makeText(dashboardActivity, productResponse.message, Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//
+//            showProgressBarDialog(false);
+//        });
+//    }
 
     private void setupProductRecyclerview() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         fragmentProductListingBinding.recyclerviewProducts.setLayoutManager(gridLayoutManager);
-        loadProductsFromApi(currentSelectedCategory, selectedFilterData, currentPage, "");
+        loadProductsFromApi(currentSelectedCategory, selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData, currentPage, "", productPayload);
     }
 
-    private void loadProductsFromApi(String category, JSONArray jsonArray, int page, String selectedSortString) {
+    private void loadProductsFromApi(String category, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, int page, String selectedSortString, JSONObject productPayload) {
         showProgressBarDialog(true);
         initializeProductAdapter();
-        productListingViewModel.fetchProductData(category, jsonArray, page + "", selectedSortString);
+        productListingViewModel.fetchProductData(category, filterArray, brandArray, colorArray, sizeArray, page + "", selectedSortString, userId, productPayload);
         productListingViewModel.getProductPaginationLiveData().observe(this, pagedList -> {
             fragmentProductListingBinding.lvNoProductsFound.setVisibility(View.GONE);
             productPagedListAdapter.submitList(pagedList);
@@ -275,6 +287,7 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             @Override
             public void onItemCountChanged(int itemCount) {
                 if (itemCount == 0) {
+                    fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
                     fragmentProductListingBinding.lvNoProductsFound.setVisibility(View.VISIBLE);
                 } else {
                     fragmentProductListingBinding.lvNoProductsFound.setVisibility(View.GONE);
@@ -285,22 +298,29 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     }
 
     private void callWishlistApi(String productId, Product product, boolean isWishlisted) {
-        logAddToWishlistEvent(product);
+
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         productListingViewModel.addToWishlist(productId, userID, sessionToken).observe(getActivity(), wishlistResponse -> {
             switch (wishlistResponse.status) {
                 case SUCCESS:
-                    if (product != null)
-                        if (isWishlisted)
-                            product.setWishlist(true);
-                        else
-                            product.setWishlist(false);
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, "");
-                    if (shouldRefreshTheList)
-                        refreshProductList(currentSelectedCategory, filterArray, selectedSortString);
-                    dashboardActivity.showCustomWislistToast(isWishlisted);
-
+                    try {
+                        if (product != null)
+                            if (isWishlisted)
+                                product.setWishlist(true);
+                            else
+                                product.setWishlist(false);
+                        preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, "");
+                        if (shouldRefreshTheList)
+                            refreshProductList(currentSelectedCategory, filterArray, selectedBrandData, selectedColorData, selectedSizeData, selectedSortString);
+                        dashboardActivity.showCustomWislistToast(isWishlisted);
+                        if (isWishlisted) {
+                            dashboardActivity.logAddToWishlistFirebaseEvent(product);
+                            dashboardActivity.logAddToWishlistEvent(product);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case LOADING:
                     break;
@@ -311,28 +331,28 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         });
     }
 
-    public void callAddToCartApi(String jsonParamString) {
-        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-        String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-        fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
-
-//        productListingViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
-//            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
-//            switch (addToCartResponse.status) {
-//                case SUCCESS:
-//                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
-//                    CartDialog cartDialog = new CartDialog(dashboardActivity);
-//                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
-//                    break;
-//                case LOADING:
-//                    break;
-//                case ERROR:
-//                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        });
-
-    }
+//    public void callAddToCartApi(String jsonParamString) {
+//        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
+//        String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
+//        fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
+//
+////        productListingViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+////            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
+////            switch (addToCartResponse.status) {
+////                case SUCCESS:
+////                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
+////                    CartDialog cartDialog = new CartDialog(dashboardActivity);
+////                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
+////                    break;
+////                case LOADING:
+////                    break;
+////                case ERROR:
+////                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
+////                    break;
+////            }
+////        });
+//
+//    }
 
     private void launchSortFragment() {
         SortFragment sortFragment = new SortFragment();
@@ -396,32 +416,35 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 //        currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
 //        refreshProductList(currentSelectedCategory, null, "");
 //        loadFilterData(filterArray);
-        try {
-            Bundle analyticsBundle = new Bundle();
-            analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
-            analyticsBundle.putString("category_name", categoryArrayList.get(position).getDescriptions().get(0).getCategoryName());
-            analyticsBundle.putString("category_code", categoryArrayList.get(position).getCategoryCode());
-            analyticsBundle.putString("parent_category_id", categoryArrayList.get(position).getParentId());
-            dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_SELECTED", analyticsBundle);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Bundle analyticsBundle = new Bundle();
+//            analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
+//            analyticsBundle.putString("category_name", categoryArrayList.get(position).getDescriptions().get(0).getCategoryName());
+//            analyticsBundle.putString("category_code", categoryArrayList.get(position).getCategoryCode());
+//            analyticsBundle.putString("parent_category_id", categoryArrayList.get(position).getParentId());
+//            dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_SELECTED", analyticsBundle);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    private void refreshProductList(String currentSelectedCategory, JSONArray filterArray, String sort) {
+    private void refreshProductList(String currentSelectedCategory, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, String sort) {
         productListingViewModel.invalidateProductLiveData();
-        loadProductsFromApi(currentSelectedCategory, filterArray, 0, sort);
+        loadProductsFromApi(currentSelectedCategory, filterArray, brandArray, colorArray, sizeArray, 0, sort, productPayload);
     }
 
-    public void setFilterData(JSONArray filterArray) {
+    public void setFilterData(JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray) {
         this.selectedFilterData = filterArray;
-        refreshProductList(currentSelectedCategory, selectedFilterData, selectedSortString);
-        loadFilterData(filterArray);
+        this.selectedBrandData = brandArray;
+        this.selectedColorData = colorArray;
+        this.selectedSizeData = sizeArray;
+        refreshProductList(currentSelectedCategory, selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData, selectedSortString);
+//        loadFilterData(filterArray);
     }
 
     public void setSortData(String sort) {
         this.selectedSortString = sort;
-        refreshProductList(currentSelectedCategory, selectedFilterData, selectedSortString);
+        refreshProductList(currentSelectedCategory, selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData, selectedSortString);
     }
 
     public void showNoInternetDialog() {
@@ -430,9 +453,9 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         noInternetDialog.setClickListener(new DialogGeneral.DialogGeneralInterface() {
             @Override
             public void positiveClick() {
-                loadProductsFromApi(currentSelectedCategory, null, currentPage, "");
+                loadProductsFromApi(currentSelectedCategory, selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData, currentPage, "", productPayload);
 //                setupCategories();
-                loadFilterData(filterArray);
+//                loadFilterData(filterArray);
 
             }
 
@@ -450,28 +473,6 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         else
             fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
 
-    }
-
-    private void logAddToWishlistEvent(Product product) {
-        Bundle analyticsBundle = new Bundle();
-        try {
-            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, product.getOriginalPrice());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Bundle itemBundle = new Bundle();
-        try {
-            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
-            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
-            itemBundle.putString("product_id", product.getProductId());
-            ArrayList<Bundle> parcelabeList = new ArrayList<>();
-            parcelabeList.add(itemBundle);
-            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, parcelabeList);
-            dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
 

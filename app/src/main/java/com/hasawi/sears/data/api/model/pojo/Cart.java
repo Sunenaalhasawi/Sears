@@ -37,6 +37,15 @@ public class Cart {
     @SerializedName("discounted")
     @Expose
     private Double discountedAmount;
+    @SerializedName("shipping")
+    @Expose
+    private Object shipping;
+    @SerializedName("shippingId")
+    @Expose
+    private String shippingId;
+    @SerializedName("shippingCharges")
+    @Expose
+    private Integer shippingCharges;
     @SerializedName("shoppingCartItems")
     @Expose
     private List<ShoppingCartItem> shoppingCartItems = null;
@@ -152,4 +161,27 @@ public class Cart {
         this.outOfStock = outOfStock;
     }
 
+    public Object getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(Object shipping) {
+        this.shipping = shipping;
+    }
+
+    public String getShippingId() {
+        return shippingId;
+    }
+
+    public void setShippingId(String shippingId) {
+        this.shippingId = shippingId;
+    }
+
+    public Integer getShippingCharges() {
+        return shippingCharges;
+    }
+
+    public void setShippingCharges(Integer shippingCharges) {
+        this.shippingCharges = shippingCharges;
+    }
 }

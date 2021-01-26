@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
@@ -26,6 +27,7 @@ import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.CheckoutViewModel;
 import com.hasawi.sears.utils.AppConstants;
+import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.ArrayList;
@@ -174,7 +176,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
                         }
                         fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.clearFocus();
-
                         shoppingCartItemList = checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems();
                         paymentModeList = new ArrayList<>();
                         paymentModeList = checkoutResponseResource.data.getCheckoutData().getPaymentModes();
@@ -190,6 +191,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                         checkoutProductListAdapter = new CheckoutProductListAdapter((ArrayList<ShoppingCartItem>) checkoutResponseResource.data.getCheckoutData().getShoppingCart().getShoppingCartItems(), getContext());
                         fragmentCheckoutNewBinding.layoutCheckout.recyclerViewProducts.setAdapter(checkoutProductListAdapter);
 
+                        logCheckoutEvent(checkoutResponseResource.data.getCheckoutData().getOrderId(), checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal(),
+                                checkoutResponseResource.data.getCheckoutData().getShoppingCart().getAvailable().size());
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -206,12 +209,20 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void logCouponAppliedEvent(Resource<CheckoutResponse> checkoutResponseResource) {
-        analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
-        analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
-        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
         Bundle couponBundle = new Bundle();
+        String date = "";
+        try {
+            date = DateTimeUtils.getCurrentStringDateTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        couponBundle.putString("date", date);
         couponBundle.putString(FirebaseAnalytics.Param.COUPON, checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
-        dashboardActivity.getmFirebaseAnalytics().logEvent("COUPON_APPLIED", analyticsBundle);
+        dashboardActivity.getmFirebaseAnalytics().logEvent("COUPON_APPLIED", couponBundle);
+        Bundle params = new Bundle();
+        params.putString("date", date);
+        params.putString("coupon", checkoutResponseResource.data.getCheckoutData().getShoppingCart().getCouponCode());
+        dashboardActivity.getFacebookEventsLogger().logEvent("COUPON_APPLIED", params);
     }
 
     private void setShippingModeAdapter(List<ShippingMode> shippingModeList) {
@@ -250,7 +261,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
                 break;
             case R.id.tvMakeYourpayment:
-                logCheckoutEvent();
                 if (selectedPaymentMode == null || selectedAddress == null || selectedShippingMode == null) {
                     if (selectedPaymentMode == null)
                         Toast.makeText(dashboardActivity, "Please select any payment mode to proceed.", Toast.LENGTH_SHORT).show();
@@ -280,21 +290,48 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private void logCheckoutEvent() {
-        ArrayList<Bundle> itemBundles = new ArrayList<>();
-        for (int i = 0; i < shoppingCartItemList.size(); i++) {
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
-            try {
-                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            itemBundles.add(bundle);
+    private void logCheckoutEvent(String orderId, double price, int productQuantity) {
+        try {
+            ArrayList<Bundle> itemBundles = new ArrayList<>();
+            for (int i = 0; i < shoppingCartItemList.size(); i++) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, shoppingCartItemList.get(i).getProduct().getDescriptions().get(0).getProductName());
+                try {
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, shoppingCartItemList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                itemBundles.add(bundle);
 
+            }
+            analyticsBundle.putString("order_id", orderId);
+            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, price);
+            analyticsBundle.putInt(FirebaseAnalytics.Param.QUANTITY, productQuantity);
+            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemBundles);
+            dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, analyticsBundle);
+            logInitiateCheckoutEvent(orderId, price, productQuantity, true, itemBundles);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemBundles);
-        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, analyticsBundle);
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logInitiateCheckoutEvent(String orderId, double price, int numItems, boolean paymentInfoAvailable, ArrayList<Bundle> itemBundle) {
+        try {
+            Bundle params = new Bundle();
+            params.putParcelableArrayList(AppEventsConstants.EVENT_PARAM_CONTENT, itemBundle);
+            params.putString(AppEventsConstants.EVENT_PARAM_ORDER_ID, orderId);
+            params.putInt(AppEventsConstants.EVENT_PARAM_NUM_ITEMS, numItems);
+            params.putInt(AppEventsConstants.EVENT_PARAM_PAYMENT_INFO_AVAILABLE, paymentInfoAvailable ? 1 : 0);
+            params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "KWD");
+            dashboardActivity.getFacebookEventsLogger().logEvent(AppEventsConstants.EVENT_NAME_INITIATED_CHECKOUT, price, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

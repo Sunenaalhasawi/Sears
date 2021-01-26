@@ -132,7 +132,7 @@ public abstract class ProductPaginationRecyclerAdapter extends RecyclerView.Adap
                 Product productContent = productList.get(position);
                 productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
                 Glide.with(context)
-                        .load(productContent.getProductImages().get(0).getImageUrl())
+                        .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                         .centerCrop()
                         .into(productItemBinding.imageViewProductImage);
                 productItemBinding.radioButtonWishlist.setChecked(false);

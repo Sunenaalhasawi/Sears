@@ -20,7 +20,7 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
     ArrayList<ProductConfigurable> colorList;
     Context context;
     private static RecyclerviewSingleChoiceClickListener sClickListener;
-    private static int sSelected = -1;
+    private static int sSelected = 0;
 
     public ProductColorAdapter(Context context, ArrayList<ProductConfigurable> colorList) {
         this.context = context;

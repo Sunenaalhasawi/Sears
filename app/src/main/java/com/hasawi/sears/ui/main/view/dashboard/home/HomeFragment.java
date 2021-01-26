@@ -123,12 +123,12 @@ public class HomeFragment extends BaseFragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.handleActionBarIcons(true);
-        fragmentHomeBinding.carouselViewBanners.setImageListener(imageListener);
+//        fragmentHomeBinding.carouselViewBanners.setImageListener(imageListener);
         try {
-            if (bannerList != null)
-                fragmentHomeBinding.carouselViewBanners.setPageCount(bannerList.size());
-            else
-                fragmentHomeBinding.carouselViewBanners.setPageCount(0);
+//            if (bannerList != null)
+//                fragmentHomeBinding.carouselViewBanners.setPageCount(bannerList.size());
+//            else
+//                fragmentHomeBinding.carouselViewBanners.setPageCount(0);
             homeDynamicUiAdapter = new HomeDynamicUiAdapter(sectionList, getContext()) {
                 @Override
                 public void onGridClicked(HomeSectionElement homeSectionElement) {
@@ -140,6 +140,7 @@ public class HomeFragment extends BaseFragment {
                         bundle.putString("category_id", callback);
 //                    bundle.putString("category_name",callback);
                         bundle.putString("attribute_ids", attributeIds);
+
 //                        ga0RGNYHvNM5d0SLGQfpQWAPGJ8=
 //                                2jmj7l5rSw0yVb/vlWAYkK/YBwk=
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new ProductListingFragment(), bundle, true, false);

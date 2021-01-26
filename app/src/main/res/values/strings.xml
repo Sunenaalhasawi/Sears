@@ -312,7 +312,7 @@
     <string name="track_order_caps">TRACK ORDER</string>
 
     <string name="facebook_app_id">2817391048579267</string>
-    <!--    <string name="fb_login_protocol_scheme">fb383736032918006</string>-->
+    <string name="fb_login_protocol_scheme">fb2817391048579267</string>
     <string name="remove_caps">REMOVE</string>
     <string name="whats_new">WHAT\'S NEW ?</string>
     <string name="new_product_landed">These products literally just landed</string>
@@ -362,5 +362,9 @@
     <string name="flat_number">Flat Number*</string>
     <string name="kindly_add_address">Kindly add your address</string>
     <string name="no_categories">No Categories</string>
+    <string name="address_type_colon">Address Type :</string>
+    <string name="mobile_number_colon">Mobile :</string>
+
+    <string name="freshchat_file_provider_authority">com.hasawi.sears.provider</string>
 
 </resources>

@@ -98,7 +98,7 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
 
             holder.cartRecyclerItemBinding.tvAmountToPay.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
             Glide.with(dashboardActivity)
-                    .load(shoppingCartItem.getProduct().getProductImages().get(0).getImageUrl())
+                    .load(shoppingCartItem.getProduct().getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.cartRecyclerItemBinding.imageProduct);
 
@@ -121,8 +121,9 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
             holder.cartRecyclerItemBinding.imageAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (cartCount >= 0)
-                        cartCount++;
+                    if (shoppingCartItem.getProductConfigurable().getQuantity() >= 1)
+                        if (cartCount >= 0)
+                            cartCount++;
                     holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
                     cartItemsUpdated(shoppingCartItem, cartCount, true);
                 }
@@ -130,10 +131,11 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
             holder.cartRecyclerItemBinding.imageSubtract.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (cartCount > 1)
+                    if (cartCount > 1) {
                         cartCount--;
-                    holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
-                    cartItemsUpdated(shoppingCartItem, cartCount, false);
+                        holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
+                        cartItemsUpdated(shoppingCartItem, cartCount, false);
+                    }
                 }
             });
         } catch (Exception e) {

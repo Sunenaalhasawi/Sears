@@ -62,102 +62,115 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp">
 
-                <EditText
-                    android:id="@+id/edt_street"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
-                    android:elevation="2dp"
-                    android:ems="10"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/street"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_block" />
+                    android:text="@string/shipping_address"
+                    android:textColor="@color/txt_clr_blue"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/edt_block"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
-                    android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/block"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="@+id/edt_street"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/edt_street"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutArea" />
-
-                <EditText
-                    android:id="@+id/edt_first_name"
+                <LinearLayout
+                    android:id="@+id/linearLayoutFirstName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/first_name"
-                    android:inputType="textPersonName"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView26">
 
-                <EditText
-                    android:id="@+id/edt_last_name"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/first_name"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/first_name"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutLastName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
                     android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/last_name"
-                    android:inputType="textPersonName"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="@+id/edt_first_name"
-                    app:layout_constraintStart_toStartOf="@+id/edt_first_name"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_first_name" />
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutFirstName">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/last_name"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/last_name"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayoutNationality"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
                     android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
-                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_last_name">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastName">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -185,14 +198,14 @@
                     android:id="@+id/linearLayoutAddressType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayoutNationality"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayoutNationality"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutNationality">
 
                     <TextView
@@ -217,14 +230,16 @@
                     android:id="@+id/linearLayoutArea"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
                     android:background="@drawable/white_rounded_rectangle_16dp"
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edt_last_name"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/edt_last_name"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutAddressType">
 
                     <TextView
@@ -244,79 +259,192 @@
                         android:spinnerMode="dropdown" />
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/edt_building_number"
+                <LinearLayout
+                    android:id="@+id/linearLayoutBlock"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
-                    android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/building_no"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_street" />
-
-                <EditText
-                    android:id="@+id/edt_flat_number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
-                    android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/flat_number"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_building_number" />
-
-                <EditText
-                    android:id="@+id/edt_mobile_number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/white_rounded_rectangle_16dp"
-                    android:elevation="2dp"
-                    android:ems="10"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:hint="@string/mobile_number"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:textColor="@color/txt_clr_grey"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView26"
-                    app:layout_constraintTop_toBottomOf="@+id/edt_flat_number" />
-
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/avantgarde_regular"
-                    android:text="@string/shipping_address"
-                    android:textColor="@color/txt_clr_blue"
-                    android:textSize="16sp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutArea">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/block"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/block"
+                        android:inputType="text"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutstreet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutBlock">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/street"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/street"
+                        android:inputType="text"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutBuildingNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutstreet">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/building_no"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_building_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/building_no"
+                        android:inputType="text"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutFlatNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutBuildingNumber">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/flat_number"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_flat_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/flat_number"
+                        android:inputType="text"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutmobileNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/white_rounded_rectangle_16dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutFlatNumber">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/mobile_number"
+                        android:textColor="@color/txt_clr_grey"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_mobile_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:ems="10"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:hint="@string/mobile_number"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

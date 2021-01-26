@@ -21,13 +21,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.appevents.AppEventsConstants;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.Category;
+import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.model.pojo.ProductSearch;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.databinding.ActivityDashboardBinding;
@@ -68,16 +72,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     // tags used to attach the fragments
     private static final String TAG_DASHBOARD = "dashboard";
-    private static final String TAG_PROFILE = "profile";
-    private static final String TAG_ORDERS = "orders";
-    // index to identify current nav menu item
-    public static int navItemIndex = 0;
-    public static String CURRENT_TAG = TAG_DASHBOARD;
     ActivityDashboardBinding activityDashboardBinding;
     ArrayList<NavigationMenuItem> menuItemArrayList = new ArrayList<>();
     ActionBarDrawerToggle actionBarDrawerToggle;
     Bundle dataBundle = new Bundle();
-    int cartCount = 0;
     SearchView searchView;
     MenuItem searchItem, notificationItem, shareItem;
     // toolbar titles respected to selected nav menu item
@@ -86,11 +84,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private CharSequence mTitle;
     private List<ProductSearch> productSearchList = new ArrayList<>();
     private SearchProductAdapter searchProductAdapter;
+    AppEventsLogger facebookEventsLogger;
     ActionBar actionBar;
     private FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Category> mainCategoryList = new ArrayList<>();
     private HashMap<String, DynamicUiResponse.UiData> dynamicUiDataHashmap = new HashMap<>();
     private List<Category> allCategoryList = new ArrayList<>();
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         activityDashboardBinding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        facebookEventsLogger = AppEventsLogger.newLogger(this);
         setSupportActionBar(activityDashboardBinding.appBarMain.toolbar);
         try {
             dataBundle = getIntent().getExtras();
@@ -147,28 +148,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 closeDrawer();
                 break;
-//            case AppConstants.ID_MENU_PROFILE:
-//                if (menuItem.isEnabled()) {
-//                    UserProfileFragment profileFragment = new UserProfileFragment();
-//                    replaceFragment(R.id.fragment_replacer, profileFragment, null, true, false);
-//                    handleActionMenuBar(true, false, "My Profile");
-//                }
-//                closeDrawer();
-//                break;
-//            case AppConstants.ID_MENU_ORDERS:
-//                replaceFragment(R.id.fragment_replacer, new OrderHistoryFragment(), null, true, false);
-//                setTitle("My Orders");
-//                handleActionMenuBar(true, false, "My Orders");
-//                closeDrawer();
-//                break;
-//            case AppConstants.ID_MENU_WISHLIST:
-//                if (menuItem.isEnabled()) {
-//                    WishListFragment wishListFragment = new WishListFragment();
-//                    replaceFragment(R.id.fragment_replacer, wishListFragment, null, true, false);
-//                    handleActionMenuBar(true, true, "Wishlist");
-//                }
-//                closeDrawer();
-//                break;
             case AppConstants.ID_MENU_CONTACT_US:
                 replaceFragment(R.id.fragment_replacer, new ContactUsFragment(), null, true, false);
                 closeDrawer();
@@ -236,7 +215,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
      * name, website, notifications action view (dot)
      */
     private void loadNavHeader() {
-        activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText("John Smith");
+//        activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText("");
 
         // loading header background image
 //        Glide.with(this).load(urlNavHeaderBg)
@@ -323,6 +302,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     }
                     activityDashboardBinding.appBarMain.fragmentReplaceSearchView.setVisibility(View.GONE);
                     ProductSearch selectedProduct = productSearchList.get(position);
+                    logSearchEvent(selectedProduct.getObjectID(), selectedProduct.getNameEn(), true);
                     Bundle bundle = new Bundle();
                     bundle.putString("product_object_id", selectedProduct.getObjectID());
                     handleActionMenuBar(true, false, selectedProduct.getNameEn());
@@ -344,6 +324,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchQuery = query;
                 Bundle analyticsBundle = new Bundle();
                 analyticsBundle.putString(FirebaseAnalytics.Param.SEARCH_TERM, query);
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, analyticsBundle);
@@ -608,6 +589,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         return mFirebaseAnalytics;
     }
 
+    public AppEventsLogger getFacebookEventsLogger() {
+        return facebookEventsLogger;
+    }
+
     private void getMainCategories() {
         dashboardViewModel.getMainCateogries().observe(this, mainCategoryResponseResource -> {
             switch (mainCategoryResponseResource.status) {
@@ -742,4 +727,53 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }
     }
 
+    public void logAddToWishlistFirebaseEvent(Product product) {
+        Bundle analyticsBundle = new Bundle();
+        try {
+            analyticsBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
+            analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, product.getOriginalPrice());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Bundle itemBundle = new Bundle();
+        try {
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, product.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString("product_id", product.getProductId());
+            ArrayList<Bundle> parcelabeList = new ArrayList<>();
+            parcelabeList.add(itemBundle);
+            analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, parcelabeList);
+            getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ADD_TO_CART, analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logAddToWishlistEvent(Product currentSelectedProduct) {
+        Bundle params = new Bundle();
+        Gson gson = new Gson();
+        String product = gson.toJson(currentSelectedProduct);
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, currentSelectedProduct.getCategories().get(0).getDescriptions().get(0).getCategoryName());
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, product);
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, currentSelectedProduct.getProductId());
+        params.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "KWD");
+        getFacebookEventsLogger().logEvent(AppEventsConstants.EVENT_NAME_ADDED_TO_WISHLIST, currentSelectedProduct.getOriginalPrice(), params);
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logSearchEvent(String productID, String productName, boolean success) {
+        Bundle params = new Bundle();
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, productName);
+        params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, productID);
+        params.putString(AppEventsConstants.EVENT_PARAM_SEARCH_STRING, searchQuery);
+        params.putInt(AppEventsConstants.EVENT_PARAM_SUCCESS, success ? 1 : 0);
+        getFacebookEventsLogger().logEvent(AppEventsConstants.EVENT_NAME_SEARCHED, params);
+    }
 }

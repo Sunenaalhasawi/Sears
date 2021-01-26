@@ -11,20 +11,27 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears.R;
+import com.hasawi.sears.data.api.model.pojo.ProductConfigurable;
 import com.hasawi.sears.databinding.LayoutProductSizeAdapterItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.ViewHolder> {
 
     private static RecyclerviewSingleChoiceClickListener sClickListener;
     public static int sSelected = 0;
-    ArrayList<String> sizeList;
+    //    ArrayList<String> sizeList;
+    List<ProductConfigurable> sizeList;
     Context context;
 
 
-    public ProductSizeAdapter(Context context, ArrayList<String> sizeList) {
+//    public ProductSizeAdapter(Context context, ArrayList<String> sizeList) {
+//        this.context = context;
+//        this.sizeList = sizeList;
+//    }
+
+    public ProductSizeAdapter(Context context, List<ProductConfigurable> sizeList) {
         this.context = context;
         this.sizeList = sizeList;
     }
@@ -43,7 +50,8 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.productSizeAdapterItemBinding.tvSize.setText(sizeList.get(position));
+//        holder.productSizeAdapterItemBinding.tvSize.setText(sizeList.get(position));
+        holder.productSizeAdapterItemBinding.tvSize.setText(sizeList.get(position).getSize());
         if (sSelected == position) {
             holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle));
             holder.productSizeAdapterItemBinding.tvSize.setTextColor(R.color.txt_clr_blue);

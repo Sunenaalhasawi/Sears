@@ -52,7 +52,7 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
             else
                 holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
             Glide.with(context)
-                    .load(productContent.getProductImages().get(0).getImageUrl())
+                    .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.productItemBinding.imageViewProductImage);
             try {

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
@@ -22,6 +23,7 @@ import com.hasawi.sears.ui.main.viewmodel.OrderViewModel;
 import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.PreferenceHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -110,8 +112,9 @@ public class OrderFragment extends BaseFragment {
     }
 
 
-    private void logPurchaseEvent() {
+    private void logPurchaseEvent() throws JSONException {
         ArrayList<Bundle> itemParcelableList = new ArrayList<>();
+        JSONArray productJsonArray = new JSONArray();
         List<OrderProduct> orderProductList = orderConfirmedResponse.getOrderData().getOrderProducts();
         for (int i = 0; i < orderProductList.size(); i++) {
             Bundle itemBundle = new Bundle();
@@ -120,6 +123,13 @@ public class OrderFragment extends BaseFragment {
             itemBundle.putDouble(FirebaseAnalytics.Param.VALUE, orderProductList.get(i).getOneTimePrice());
             itemBundle.putString(FirebaseAnalytics.Param.CURRENCY, "KWD");
             itemParcelableList.add(itemBundle);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("product_name", orderProductList.get(i).getProductName());
+            jsonObject.put("product_quantity", orderProductList.get(i).getQuantity());
+            jsonObject.put("product_id", orderProductList.get(i).getOrderProductId());
+            jsonObject.put("product_price", orderProductList.get(i).getAmount());
+            productJsonArray.put(jsonObject);
+
         }
 
         Bundle analyticsBundle = new Bundle();
@@ -128,7 +138,23 @@ public class OrderFragment extends BaseFragment {
         analyticsBundle.putString(FirebaseAnalytics.Param.COUPON, orderConfirmedResponse.getOrderData().getCouponCode());
         analyticsBundle.putString(FirebaseAnalytics.Param.SHIPPING, orderConfirmedResponse.getOrderData().getShippingId());
         analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
+        analyticsBundle.putString("date_of_purchase", orderConfirmedResponse.getOrderData().getDateOfPurchase());
+        analyticsBundle.putString("order_id", orderConfirmedResponse.getOrderData().getOrderId());
         dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.PURCHASE, analyticsBundle);
+
+        // Logging events to facebook analytics
+        Gson gson = new Gson();
+        String productString = gson.toJson(productJsonArray);
+        Bundle facebookParams = new Bundle();
+        facebookParams.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "product");
+        facebookParams.putString(AppEventsConstants.EVENT_PARAM_CONTENT_ID, orderConfirmedResponse.getOrderData().getOrderId());
+        facebookParams.putString(AppEventsConstants.EVENT_PARAM_CONTENT, productString);
+        facebookParams.putString("coupon", orderConfirmedResponse.getOrderData().getCouponCode());
+        facebookParams.putString("shipping", orderConfirmedResponse.getOrderData().getShippingId());
+        facebookParams.putString(AppEventsConstants.EVENT_PARAM_CURRENCY, "KWD");
+        facebookParams.putDouble("purchase_amount", orderConfirmedResponse.getOrderData().getTotal());
+        facebookParams.putString("date_of_purchase", orderConfirmedResponse.getOrderData().getDateOfPurchase());
+        dashboardActivity.getFacebookEventsLogger().logEvent("PURCHASE", facebookParams);
     }
 
     private void callPaymentSuccessApi(String url) {

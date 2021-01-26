@@ -204,6 +204,30 @@ public class ProductRepository {
         return addToCartResponseMutableLiveData;
     }
 
+    public MutableLiveData<Resource<CartResponse>> updateCartItems(String userID, String jsonParams, String sessionToken) {
+        MutableLiveData<Resource<CartResponse>> updateCartResponseMutableLiveData = new MutableLiveData<>();
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonParams);
+
+        Call<CartResponse> updateCartResponseCall = RetrofitApiClient.getInstance().getApiInterface().updateCartItems(userID, requestBody, "Bearer " + sessionToken);
+        updateCartResponseCall.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                if (response.code() != 200) {
+                    updateCartResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                } else if (response.body() != null) {
+                    updateCartResponseMutableLiveData.setValue(Resource.success(response.body()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                updateCartResponseMutableLiveData.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return updateCartResponseMutableLiveData;
+    }
+
     public MutableLiveData<Resource<CartResponse>> removeFromCart(String userID, String shoppingCartItemId, String sessionToken) {
         MutableLiveData<Resource<CartResponse>> addToCartResponseMutableLiveData = new MutableLiveData<>();
         Call<CartResponse> addToCartResponseCall = RetrofitApiClient.getInstance().getApiInterface().removeFromCart(userID, shoppingCartItemId, "Bearer " + sessionToken);

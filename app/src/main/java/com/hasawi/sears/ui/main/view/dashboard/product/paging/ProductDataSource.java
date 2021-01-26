@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
 
 import com.hasawi.sears.data.api.RetrofitApiClient;
+import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
 import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.response.ProductResponse;
 import com.hasawi.sears.utils.NetworkState;
@@ -15,6 +16,7 @@ import com.hasawi.sears.utils.NetworkState;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -32,18 +34,29 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
      * are for updating the UI when data is being fetched
      * by displaying a progress bar
      */
-    JSONArray filterArray;
+    JSONArray filterArray, brandArray, colorArray, sizeArray;
     private MutableLiveData networkState;
     private MutableLiveData initialLoading;
-    private String categoryId = "", page_no = "", sort = "";
+    private MutableLiveData<Map<String, List<FilterAttributeValues>>> filterAttributeMap;
+    private MutableLiveData<List<String>> sortStrings;
+    private String categoryId = "", page_no = "", sort = "", userId = "";
+    private boolean loadedInitial = false;
+    private JSONObject productPayload = null;
 
-    public ProductDataSource(String categoryId, JSONArray filterArray, String page_no, String sort) {
+    public ProductDataSource(String categoryId, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, String page_no, String sort, String userId, JSONObject productPayload) {
         this.categoryId = categoryId;
         this.filterArray = filterArray;
+        this.brandArray = brandArray;
+        this.colorArray = colorArray;
+        this.sizeArray = sizeArray;
         this.page_no = page_no;
         this.sort = sort;
+        this.userId = userId;
+        this.productPayload = productPayload;
         networkState = new MutableLiveData();
         initialLoading = new MutableLiveData();
+        filterAttributeMap = new MutableLiveData<>();
+        sortStrings = new MutableLiveData<>();
     }
 
     public MutableLiveData getNetworkState() {
@@ -54,6 +67,13 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
         return initialLoading;
     }
 
+    public MutableLiveData<Map<String, List<FilterAttributeValues>>> getFilterAttributeMap() {
+        return filterAttributeMap;
+    }
+
+    public MutableLiveData<List<String>> getSortStrings() {
+        return sortStrings;
+    }
 
     /*
      * Step 2: This method is responsible to load the data initially
@@ -68,14 +88,25 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
         initialLoading.postValue(NetworkState.LOADING);
         networkState.postValue(NetworkState.LOADING);
 
-        RequestBody body = addInputParams(categoryId, filterArray, sort);
+        RequestBody body = addInputParams(categoryId, filterArray, brandArray, colorArray, sizeArray, sort, userId, productPayload);
 
         Call<ProductResponse> productsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getProductsList(body, page_no);
         productsResponseCall.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 try {
+                    loadedInitial = true;
                     if (response.isSuccessful()) {
+                        if (response.body().getData().getFilterAttributes() != null) {
+                            filterAttributeMap.postValue(response.body().getData().getFilterAttributes());
+                        } else {
+                            filterAttributeMap.postValue(null);
+                        }
+                        if (response.body().getData().getSortStrings() != null) {
+                            sortStrings.postValue(response.body().getData().getSortStrings());
+                        } else {
+                            sortStrings.postValue(null);
+                        }
                         if (response.body().getData().getProductList() == null) {
                             initialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
                             networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
@@ -123,8 +154,9 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
                           @NonNull LoadCallback<Long, Product> callback) {
 
         Log.i(TAG, "Loading Rang " + params.key + " Count " + params.requestedLoadSize);
-        networkState.postValue(NetworkState.LOADING);
-        RequestBody body = addInputParams(categoryId, filterArray, sort);
+        if (loadedInitial)
+            networkState.postValue(NetworkState.LOADING);
+        RequestBody body = addInputParams(categoryId, filterArray, brandArray, colorArray, sizeArray, sort, userId, productPayload);
         Call<ProductResponse> productsResponseCall = RetrofitApiClient.getInstance().getApiInterface().getProductsList(body, params.key + "");
         productsResponseCall.enqueue(new Callback<ProductResponse>() {
             @Override
@@ -139,6 +171,16 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
 //                    long nextKey = (params.key == response.body().getData().getProducts().getPageable().getPageNumber()) ? -1 : params.key + 1;
                     callback.onResult(response.body().getData().getProductList().getProducts(), nextKey);
                     networkState.postValue(NetworkState.LOADED);
+                    if (response.body().getData().getFilterAttributes() != null) {
+                        filterAttributeMap.postValue(response.body().getData().getFilterAttributes());
+                    } else {
+                        filterAttributeMap.postValue(null);
+                    }
+                    if (response.body().getData().getSortStrings() != null) {
+                        sortStrings.postValue(response.body().getData().getSortStrings());
+                    } else {
+                        sortStrings.postValue(null);
+                    }
 
                 } else
                     networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
@@ -153,37 +195,64 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
 
     }
 
-    private RequestBody addInputParams(String categoryId, JSONArray filterArray, String sort) {
+    private RequestBody addInputParams(String categoryId, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, String sort, String userId, JSONObject productPayload) {
         JSONArray categoryIds = new JSONArray();
         categoryIds.put(categoryId);
-        JSONArray attributeIds;
+        JSONArray attributeIds, productIds;
+        productIds = new JSONArray();
         if (filterArray == null)
             attributeIds = new JSONArray();
         else
             attributeIds = filterArray;
-        JSONArray brandIds = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        try {
+        JSONArray brandIds, colorIds, sizeIds;
+        if (brandArray == null)
+            brandIds = new JSONArray();
+        else
+            brandIds = brandArray;
 
-            jsonObject.put("categoryIds", categoryIds);
-            jsonObject.put("attributeIds", attributeIds);
-            jsonObject.put("brandIds", brandIds);
+        if (colorArray == null)
+            colorIds = new JSONArray();
+        else
+            colorIds = colorArray;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (sizeArray == null)
+            sizeIds = new JSONArray();
+        else
+            sizeIds = sizeArray;
 
-
-        String jsonString = jsonObject.toString();
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//
+//            jsonObject.put("categoryIds", categoryIds);
+//            jsonObject.put("attributeIds", attributeIds);
+//            jsonObject.put("brandIds", brandIds);
+//            jsonObject.put("productIds",productIds);
+//            jsonObject.put("sorting",sort);
+//            jsonObject.put("customerId",userId);
+//            jsonObject.put("sizes",sizeIds);
+//            jsonObject.put("colors",colorIds);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        String jsonString = jsonObject.toString();
 
         Map<String, Object> jsonParams = new ArrayMap<>();
 //put something inside the map, could be null
         jsonParams.put("categoryIds", categoryIds);
         jsonParams.put("attributeIds", attributeIds);
         jsonParams.put("brandIds", brandIds);
+        jsonParams.put("productIds", productIds);
         jsonParams.put("sorting", sort);
+        jsonParams.put("customerId", userId);
+        jsonParams.put("sizes", sizeIds);
+        jsonParams.put("colors", colorIds);
 
-
-        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+        if (productPayload == null)
+            return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+        else
+            return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), productPayload.toString());
     }
 }

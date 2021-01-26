@@ -26,6 +26,9 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
     List<String> productAttributeList;
     Map<String, List<FilterAttributeValues>> filterOptionValueMap;
     List<FilterAttributeValues> selectedFilterData = new ArrayList<>();
+    List<FilterAttributeValues> selectedBrands = new ArrayList<>();
+    List<FilterAttributeValues> selectedColors = new ArrayList<>();
+    List<FilterAttributeValues> selectedSizes = new ArrayList<>();
     RecyclerView filterValueRecycler;
 
     public FilterOptionAdapter(Context context, RecyclerView filterValueRecycler) {
@@ -34,7 +37,7 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
         this.filterValueRecycler = filterValueRecycler;
     }
 
-    public abstract void onFilterSelected(List<FilterAttributeValues> filterAttributeValues);
+    public abstract void onFilterSelected(List<FilterAttributeValues> filterAttributeValues, List<FilterAttributeValues> selectedBrands, List<FilterAttributeValues> selectedColors, List<FilterAttributeValues> selectedSizes);
 
     @NonNull
     @Override
@@ -46,13 +49,21 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.filterOptionBinding.tvFilterValue.setText(productAttributeList.get(position));
+        String filterOption = productAttributeList.get(position);
+        holder.filterOptionBinding.tvFilterValue.setText(filterOption);
         if (sSelected == position) {
             filterValueRecycler.setAdapter(new FilterValueAdapter(context, filterOptionValueMap.get(productAttributeList.get(position))) {
                 @Override
                 public void onFilterSelected(List<FilterAttributeValues> selectedFilterAttributeValues) {
-                    selectedFilterData.addAll(selectedFilterAttributeValues);
-                    FilterOptionAdapter.this.onFilterSelected(selectedFilterData);
+                    if (filterOption.equalsIgnoreCase("brands"))
+                        selectedBrands = selectedFilterAttributeValues;
+                    else if (filterOption.equalsIgnoreCase("colors"))
+                        selectedColors = selectedFilterAttributeValues;
+                    else if (filterOption.equalsIgnoreCase("sizes"))
+                        selectedSizes = selectedFilterAttributeValues;
+                    else
+                        selectedFilterData.addAll(selectedFilterAttributeValues);
+                    FilterOptionAdapter.this.onFilterSelected(selectedFilterData, selectedBrands, selectedColors, selectedSizes);
                 }
             });
             holder.filterOptionBinding.tvFilterValue.setTextColor(context.getResources().getColor(R.color.txt_clr_blue));
@@ -69,6 +80,11 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
         if (optionList.size() > 0 && optionList != null) {
             productAttributeList.addAll(optionList);
         }
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        productAttributeList.clear();
         notifyDataSetChanged();
     }
 

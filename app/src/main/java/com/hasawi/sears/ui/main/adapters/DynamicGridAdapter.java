@@ -48,6 +48,7 @@ public abstract class DynamicGridAdapter extends RecyclerView.Adapter<DynamicGri
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        int marginLeft = 0, marginRight = 0, marginTop = 0, marginBottom = 0;
         if (homeSectionDetailArrayList.size() > 0) {
             try {
                 HomeSectionDetail homeSectionDetail = homeSectionDetailArrayList.get(position);
@@ -63,12 +64,19 @@ public abstract class DynamicGridAdapter extends RecyclerView.Adapter<DynamicGri
                     DisplayMetrics outMetrics = new DisplayMetrics();
                     display.getRealMetrics(outMetrics);
                     float scWidth = outMetrics.widthPixels;
+
                     imageWidth = (int) scWidth;
                     imageHeight = (int) (scWidth * 0.4f);
                     if (homeSectionDetail.getGrid() == 1) {
                         imageHeight = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    } else
+                    } else {
                         imageWidth = imageWidth / homeSectionDetail.getGrid();
+                        marginLeft = 16;
+                        marginRight = 16;
+                        marginTop = 16;
+                        marginBottom = 16;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +85,7 @@ public abstract class DynamicGridAdapter extends RecyclerView.Adapter<DynamicGri
                 List<HomeSectionElement> sectionElementArrayList = (ArrayList<HomeSectionElement>) homeSectionDetail.getHomeSectionElements();
                 for (int i = 0; i < sectionElementArrayList.size(); i++) {
                     HomeSectionElement sectionElement = sectionElementArrayList.get(i);
-                    holder.dynamicGridItemBinding.imageSlider.addView(getImageView(sectionElement, sectionElement.getImageUrl(), sectionElement.getName(), imageWidth, imageHeight));
+                    holder.dynamicGridItemBinding.imageSlider.addView(getImageView(sectionElement, sectionElement.getImageUrl(), sectionElement.getName(), imageWidth, imageHeight, marginLeft, marginRight, marginTop, marginBottom));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,7 +98,7 @@ public abstract class DynamicGridAdapter extends RecyclerView.Adapter<DynamicGri
         return homeSectionDetailArrayList.size();
     }
 
-    private View getImageView(HomeSectionElement homeSectionElement, String imageUrl, String title, int imageWidth, int imageHeight) {
+    private View getImageView(HomeSectionElement homeSectionElement, String imageUrl, String title, int imageWidth, int imageHeight, int marginLeft, int marginRight, int marginTop, int marginBottom) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         LayoutCarouselItemBinding carouselItemBinding = DataBindingUtil.
@@ -98,12 +106,15 @@ public abstract class DynamicGridAdapter extends RecyclerView.Adapter<DynamicGri
         carouselItemBinding.tvTitle.setText(title);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(imageWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        lp.setMargins(0, 0, 16, 0);
+        lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         Glide.with(context)
                 .load(imageUrl)
                 .override(imageWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
                 .into(carouselItemBinding.imageItemCarousel);
         carouselItemBinding.getRoot().setLayoutParams(lp);
+//        LinearLayout.LayoutParams newlp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
+//        carouselItemBinding.cvBackground.setLayoutParams(newlp);
         if (homeSectionElement.getName().equals(""))
             carouselItemBinding.tvTitle.setVisibility(View.GONE);
         else

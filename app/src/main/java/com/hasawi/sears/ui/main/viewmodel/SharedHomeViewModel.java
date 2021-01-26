@@ -21,6 +21,7 @@ import com.hasawi.sears.ui.main.view.dashboard.product.paging.ProductDataFactory
 import com.hasawi.sears.utils.NetworkState;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +72,11 @@ public class SharedHomeViewModel extends ViewModel {
         return productRepository.getProductDetails(productName);
     }
 
-    public void fetchProductData(String categoryId, JSONArray filterArray, String pageNo, String sortString) {
+    public void fetchProductData(String categoryId, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, String pageNo, String sortString, String userId, JSONObject productPayload) {
         if (executor == null)
             executor = Executors.newFixedThreadPool(5);
 
-        ProductDataFactory productDataFactory = new ProductDataFactory(categoryId, filterArray, pageNo, sortString);
+        ProductDataFactory productDataFactory = new ProductDataFactory(categoryId, filterArray, brandArray, colorArray, sizeArray, pageNo, sortString, userId, productPayload);
         networkState = Transformations.switchMap(productDataFactory.getMutableLiveData(),
                 dataSource -> dataSource.getNetworkState());
 

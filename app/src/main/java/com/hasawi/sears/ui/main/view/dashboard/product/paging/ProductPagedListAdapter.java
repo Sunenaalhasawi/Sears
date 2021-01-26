@@ -60,7 +60,7 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Product, 
         } else {
             ((NetworkStateItemViewHolder) holder).bindView(networkState);
         }
-        if (position == 2)
+        if (position == 0)
             onLoadedProducts();
     }
 
@@ -122,7 +122,7 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Product, 
             } else
                 productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "%");
             Glide.with(context)
-                    .load(productContent.getProductImages().get(0).getImageUrl())
+                    .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(productItemBinding.imageViewProductImage);
             Glide.with(context)

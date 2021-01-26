@@ -26,6 +26,9 @@ public class Category {
     @SerializedName("lineAge")
     @Expose
     private String lineAge;
+    @SerializedName("sortOrder")
+    @Expose
+    private String sortOrder;
     @SerializedName("categories")
     @Expose
     private List<Category> categories = null;
@@ -48,13 +51,14 @@ public class Category {
      * @param categoryId
      * @param parentId
      */
-    public Category(String categoryId, String categoryCode, int depth, boolean active, String parentId, List<Category> categories, List<Description> descriptions) {
+    public Category(String categoryId, String categoryCode, int depth, boolean active, String parentId, String sortOrder, List<Category> categories, List<Description> descriptions) {
         super();
         this.categoryId = categoryId;
         this.categoryCode = categoryCode;
         this.depth = depth;
         this.active = active;
         this.parentId = parentId;
+        this.sortOrder = sortOrder;
         this.categories = categories;
         this.descriptions = descriptions;
     }
@@ -159,4 +163,11 @@ public class Category {
         return this;
     }
 
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 }

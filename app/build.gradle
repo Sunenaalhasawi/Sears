@@ -78,11 +78,14 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-dynamic-links'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
     implementation 'com.google.android.gms:play-services-basement:17.5.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display'
+
+    implementation 'com.github.freshworks:freshchat-android:4.2.0'
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

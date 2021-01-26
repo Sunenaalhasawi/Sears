@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
 
 public class MyCartFragment extends BaseFragment implements View.OnClickListener {
     FragmentCartBinding fragmentCartBinding;
@@ -65,7 +68,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 
             @Override
             public void cartItemsUpdated(ShoppingCartItem cartItem, int quantity, boolean isIncreased) {
-                updateCartItemsApi(cartItem.getProductId(), cartItem.getRefSku(), quantity + "");
+                updateCartItemsApi(cartItem.getProductId(), cartItem.getProductConfigurable().getRefSku(), quantity + "");
                 isQuantityIncreased = isIncreased;
             }
 
@@ -150,7 +153,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             cartId = cartResponse.data.getCartData().getShoppingCartId();
                             PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
                             preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_CART_ID, cartId);
-                            totalPrice = cartResponse.data.getCartData().getSubTotal() + "";
+                            totalPrice = cartResponse.data.getCartData().getTotal() + "";
                             cartCount = cartResponse.data.getCartData().getShoppingCartItems().size();
                             cartAdapter.addAll(cartItemsList);
                             setUiValues();
@@ -210,11 +213,11 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         jsonParams.put("quantity", quantity);
 
         String jsonParamString = (new JSONObject(jsonParams)).toString();
-        cartViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+        cartViewModel.updateCartItems(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
             fragmentCartBinding.progressBar.setVisibility(View.GONE);
             switch (addToCartResponse.status) {
                 case SUCCESS:
-                    totalPrice = addToCartResponse.data.getCartData().getSubTotal() + "";
+                    totalPrice = addToCartResponse.data.getCartData().getTotal() + "";
                     cartCount = addToCartResponse.data.getCartData().getShoppingCartItems().size();
                     setUiValues();
                     Toast.makeText(dashboardActivity, "Cart Updated Successfully", Toast.LENGTH_SHORT).show();
@@ -222,6 +225,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 case LOADING:
                     break;
                 case ERROR:
+                    cartAdapter.addAll(cartItemsList);
                     Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -242,9 +246,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             Bundle itemBundle = new Bundle();
             itemBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, cartItemsList.get(i).getProduct().getDescriptions().get(0).getProductName());
             itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, cartItemsList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
-            itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, cartItemsList.get(i).getProduct().getManufature());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, cartItemsList.get(i).getProduct().getManufature().getManufactureDescriptions().get(0).getName());
             itemBundle.putString("category_id", cartItemsList.get(i).getProduct().getCategories().get(0).getCategoryId());
-            itemBundle.putString("product_id", cartItemsList.get(i).getProduct().getProductId());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_ID, cartItemsList.get(i).getProduct().getProductId());
             itemParcelableList.add(itemBundle);
         }
 
@@ -254,6 +258,28 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, cartValue);
         analyticsBundle.putLong("item_count", cartCount);
         analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
-        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, analyticsBundle);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_CART, analyticsBundle);
+    }
+
+    private void logViewCartFacebookEvent(ArrayList<ShoppingCartItem> cartItemsList, Double cartValue) {
+        ArrayList<Bundle> itemParcelableList = new ArrayList<>();
+        int cartCount = cartItemsList.size();
+        for (int i = 0; i < cartItemsList.size(); i++) {
+            Bundle itemBundle = new Bundle();
+            itemBundle.putString(AppEventsConstants.EVENT_PARAM_CONTENT, cartItemsList.get(i).getProduct().getDescriptions().get(0).getProductName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, cartItemsList.get(i).getProduct().getCategories().get(0).getDescriptions().get(0).getCategoryName());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_BRAND, cartItemsList.get(i).getProduct().getManufature().getManufactureDescriptions().get(0).getName());
+            itemBundle.putString("category_id", cartItemsList.get(i).getProduct().getCategories().get(0).getCategoryId());
+            itemBundle.putString(FirebaseAnalytics.Param.ITEM_ID, cartItemsList.get(i).getProduct().getProductId());
+            itemParcelableList.add(itemBundle);
+        }
+
+
+        Bundle analyticsBundle = new Bundle();
+        analyticsBundle.putString(EVENT_PARAM_CURRENCY, "KWD");
+        analyticsBundle.putDouble(FirebaseAnalytics.Param.VALUE, cartValue);
+        analyticsBundle.putLong("item_count", cartCount);
+        analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
+        dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_CART, analyticsBundle);
     }
 }

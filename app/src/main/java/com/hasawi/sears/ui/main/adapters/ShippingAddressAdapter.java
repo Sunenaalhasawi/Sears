@@ -63,6 +63,7 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 addressbookViewHolder.addressBookAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
                 String address = addressItem.getFlat() + " " + addressItem.getBlock() + ", " + addressItem.getStreet() + " " + addressItem.getArea();
                 addressbookViewHolder.addressBookAdapterItemBinding.tvAddress.setText(address);
+                addressbookViewHolder.addressBookAdapterItemBinding.tvName.setText(addressItem.getFirstName() + " " + addressItem.getLastName());
                 addressbookViewHolder.addressBookAdapterItemBinding.tvEditAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -72,7 +73,7 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 break;
             case AppConstants.ADDRESS_VIEW_TYPE_CHECKOUT:
                 CheckoutAddressViewHolder checkoutAddressViewHolder = (CheckoutAddressViewHolder) holder;
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvLocation.setText(addressItem.getStreet());
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvStreet.setText(addressItem.getStreet());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvArea.setText(addressItem.getArea());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(addressItem.getFirstName() + " " + addressItem.getLastName());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvFlat.setText(addressItem.getFlat() + " " + addressItem.getBlock());

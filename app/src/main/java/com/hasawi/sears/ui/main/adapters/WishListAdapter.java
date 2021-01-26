@@ -49,7 +49,7 @@ public abstract class WishListAdapter extends RecyclerView.Adapter<WishListAdapt
             holder.wishlistAdapterItemBinding.tvOffer.setText(wishlistedProduct.getDiscountPercentage() + "%");
             holder.wishlistAdapterItemBinding.tvProductPrice.setText("KWD " + wishlistedProduct.getOriginalPrice());
             Glide.with(context)
-                    .load(wishlistedProduct.getProductImages().get(0).getImageUrl())
+                    .load(wishlistedProduct.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.wishlistAdapterItemBinding.imageViewProductImage);
         } catch (Exception e) {

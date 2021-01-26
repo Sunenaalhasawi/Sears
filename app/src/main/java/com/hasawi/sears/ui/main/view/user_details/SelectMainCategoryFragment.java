@@ -1,9 +1,12 @@
 package com.hasawi.sears.ui.main.view.user_details;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.databinding.FragmentSelectMainCategoryBinding;
@@ -21,7 +24,9 @@ public class SelectMainCategoryFragment extends BaseFragment {
     UserPreferenceViewModel userPreferenceViewModel;
     //    MainCategoryAdapter mainCategoryAdapter;
     Category currentSelectedCategory;
+    FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Category> categoryList = new ArrayList<>();
+    private AppEventsLogger logger;
 
     @Override
     protected int getLayoutResId() {
@@ -32,6 +37,8 @@ public class SelectMainCategoryFragment extends BaseFragment {
     protected void setup() {
         selectMainCategoryBinding = (FragmentSelectMainCategoryBinding) viewDataBinding;
         userPreferenceActivity = (UserPreferenceActivity) getActivity();
+        logger = AppEventsLogger.newLogger(userPreferenceActivity);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(userPreferenceActivity);
         userPreferenceViewModel = userPreferenceActivity.getUserPreferenceViewModel();
 //        selectMainCategoryBinding.recyclerViewMainCategories.setLayoutManager(new LinearLayoutManager(getActivity()));
         userPreferenceActivity.showProgressBar(true);
@@ -88,12 +95,24 @@ public class SelectMainCategoryFragment extends BaseFragment {
             preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory.getCategoryId());
             preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentSelectedCategory.getDescriptions().get(0).getCategoryName());
             preferenceHandler.saveData(PreferenceHandler.HAS_CATEGORY_PAGE_SHOWN, true);
-
+            logCATEGORY_SELECTEDEvent(currentSelectedCategory.getCategoryId(), currentSelectedCategory.getDescriptions().get(0).getCategoryName());
             Intent intent = new Intent(userPreferenceActivity, DashboardActivity.class);
             startActivity(intent);
             userPreferenceActivity.finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This function assumes logger is an instance of AppEventsLogger and has been
+     * created using AppEventsLogger.newLogger() call.
+     */
+    public void logCATEGORY_SELECTEDEvent(String category_id, String category_name) {
+        Bundle params = new Bundle();
+        params.putString("category_id", category_id);
+        params.putString("category_name", category_name);
+        logger.logEvent("CATEGORY_SELECTED", params);
+        mFirebaseAnalytics.logEvent("CATEGORY_SELECTED", params);
     }
 }
