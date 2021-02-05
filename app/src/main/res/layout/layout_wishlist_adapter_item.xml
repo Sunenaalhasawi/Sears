@@ -110,7 +110,7 @@
         <!--            app:layout_constraintEnd_toEndOf="parent"-->
         <!--            tools:layout_editor_absoluteY="270dp" />-->
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/checkboxWishlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

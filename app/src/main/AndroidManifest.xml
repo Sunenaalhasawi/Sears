@@ -20,11 +20,11 @@
         android:theme="@style/SearsAppTheme"
         tools:replace="android:allowBackup">
         <activity android:name=".ui.main.view.splash.SplashActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.view.signin.SigninActivity"
@@ -37,12 +37,12 @@
             android:hardwareAccelerated="true"
             android:theme="@style/SearsAppTheme">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
 
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

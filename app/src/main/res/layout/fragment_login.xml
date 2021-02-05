@@ -69,7 +69,7 @@
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
                     <!--                    android:text="test125"-->
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                         android:textColor="@color/app_blue"
                         android:textSize="16sp" />
                     <!--                    android:text="sunenaks2021@gmail.com"-->
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,33 +165,33 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btn_login"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="48dp"
-                    android:background="@drawable/green_gradient_rounded_rectangle"
-                    android:fontFamily="@font/avantgarde_bold"
-                    android:padding="8dp"
-                    android:text="@string/login"
-                    android:textColor="@android:color/white"
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_login"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="48dp"
+                        android:background="@drawable/green_gradient_rounded_rectangle"
+                        android:fontFamily="@font/avantgarde_bold"
+                        android:padding="8dp"
+                        android:text="@string/login"
+                        android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btn_signup"
                     app:layout_constraintTop_toTopOf="@+id/btn_signup" />
 
-                <Button
-                    android:id="@+id/btn_signup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bronze_gradient_rounded_rectangle"
-                    android:fontFamily="@font/avantgarde_bold"
-                    android:padding="8dp"
-                    android:text="@string/signup"
-                    android:textColor="@android:color/white"
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_signup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bronze_gradient_rounded_rectangle"
+                        android:fontFamily="@font/avantgarde_bold"
+                        android:padding="8dp"
+                        android:text="@string/signup"
+                        android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/btn_login"
                     app:layout_constraintStart_toStartOf="@+id/linearLayout2"

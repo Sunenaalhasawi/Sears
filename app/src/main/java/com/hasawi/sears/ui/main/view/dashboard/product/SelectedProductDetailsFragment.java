@@ -679,12 +679,12 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     }
 
-    public void createDynamicLink() {
+    public void createDynamicLink(String productId) {
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.example.com/"))
+                .setLink(Uri.parse("http://searskuwait.com/api/v0/products/search/" + productId))
                 .setDomainUriPrefix("https://alhasawi.page.link")
                 // Open links with this app on Android
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.hasawi.sears").setMinimumVersion(1).build())
                 // Open links with com.example.ios on iOS
                 .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
                 .buildDynamicLink();

@@ -7,10 +7,10 @@
     <!--        <item name="colorAccent">@color/colorAccent</item>-->
     <!--    </style>-->
 
-    <style name="SearsAppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="SearsAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/app_blue</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorPrimaryDark">@color/app_blue</item>
+        <item name="colorAccent">@color/app_blue</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -96,6 +96,7 @@
     <style name="CalenderViewCustom" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/app_blue</item>
         <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/app_blue</item>
     </style>
 
 </resources>
