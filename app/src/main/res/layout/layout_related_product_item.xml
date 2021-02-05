@@ -201,8 +201,7 @@
             android:layout_height="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewProductImage"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewProductImage"
-            app:srcCompat="@drawable/ic_sears" />
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProductImage" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

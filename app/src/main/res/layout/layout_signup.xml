@@ -68,7 +68,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/email"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_email"
@@ -79,7 +79,7 @@
                 android:fontFamily="@font/avantgarde_regular"
                 android:hint="@string/email"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,7 +102,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/mobile_number"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_mobile"
@@ -115,7 +115,7 @@
                 android:fontFamily="@font/avantgarde_regular"
                 android:hint="@string/mobile_number"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -137,7 +137,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/nationality"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <!--            <EditText-->
             <!--                android:id="@+id/edt_nationality"-->
@@ -183,7 +183,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/confirm_password"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_confirm_password"
@@ -196,7 +196,7 @@
                 android:enabled="true"
                 android:inputType="textPassword"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <TextView
@@ -208,7 +208,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/password_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayout2"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
@@ -222,7 +222,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/confirm_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutConfirmPassword"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutConfirmPassword" />
@@ -247,7 +247,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/password"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_password"
@@ -259,7 +259,7 @@
                 android:hint="******"
                 android:inputType="textPassword"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
 
@@ -282,7 +282,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/dob"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_birthday"
@@ -293,10 +293,10 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/birthday"
+                android:hint="@string/dob"
                 android:inputType="none"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -320,7 +320,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/first_name"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_firstname"
@@ -332,7 +332,7 @@
                 android:hint="@string/first_name"
                 android:inputType="text"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -354,7 +354,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/last_name"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_lastname"
@@ -366,7 +366,7 @@
                 android:hint="@string/last_name"
                 android:inputType="text"
                 android:textColor="@color/app_blue"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -401,8 +401,8 @@
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/male"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView9"
@@ -443,7 +443,7 @@
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/female"
                 android:textColor="@color/txt_clr_blue"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView10"
@@ -462,7 +462,7 @@
             android:padding="8dp"
             android:text="@string/signup"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -477,7 +477,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/firstname_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutName" />
@@ -491,7 +491,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/lasttname_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutLastName"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastName" />
@@ -505,7 +505,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/email_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayout"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -519,7 +519,7 @@
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/mobile_required"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutCountryCode"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutMobile" />
@@ -531,8 +531,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="8dp"
             android:text="@string/fill_dob"
-            android:textColor="@color/dark_grey_txt"
-            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/linearLayoutDob"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutDob"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDob" />
@@ -544,8 +544,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="8dp"
             android:text="@string/fill_nationality"
-            android:textColor="@color/dark_grey_txt"
-            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/linearLayoutNationality"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutNationality"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutNationality" />

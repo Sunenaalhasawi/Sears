@@ -39,7 +39,7 @@ public class SelectUserLanguageAdapter extends RecyclerView.Adapter<SelectUserLa
     public void onBindViewHolder(@NonNull SelectUserLanguageAdapter.ViewHolder holder, int position) {
         Language adapterItem = languageList.get(position);
         holder.selectUserDetailAdapterItemUnselectedBinding.tvItemName.setText(adapterItem.getName());
-        holder.selectUserDetailAdapterItemUnselectedBinding.imageViewItem.setImageDrawable(context.getResources().getDrawable(R.drawable.language));
+//        holder.selectUserDetailAdapterItemUnselectedBinding.imageViewItem.setImageDrawable(context.getResources().getDrawable(R.drawable.language));
         if (sSelected == position) {
             selectItem(holder, adapterItem);
         } else {

@@ -19,7 +19,11 @@
     <string name="sports">Sports</string>
     <string name="accessories">Accessories</string>
     <string name="fitness">Fitness</string>
-    <string name="home">Home</string>
+    <string name="home">HOME</string>
+    <string name="wishlist_caps">WISHLIST</string>
+    <string name="category_caps">CATEGORY</string>
+    <string name="profile_caps">PROFILE</string>
+    <string name="cart_caps">CART</string>
     <string name="continue_caps">CONTINUE</string>
     <string name="click_here_to_continue_category">Click Here To Continue Category of Products</string>
     <string name="click_here_to_continue_gender">Click Here To Continue Gender</string>
@@ -366,5 +370,16 @@
     <string name="mobile_number_colon">Mobile :</string>
 
     <string name="freshchat_file_provider_authority">com.hasawi.sears.provider</string>
+    <string name="you_may_also_like">YOU MAY ALSO LIKE</string>
+    <string name="save_address_caps">SAVE ADDRESS</string>
+    <string name="phone">Phone</string>
+    <string name="_email">Email</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="customer_service_available">Customer Service available all days</string>
+    <string name="customer_care_timing">9am-9pm</string>
+    <string name="from_colon">from:
+    </string>
+    <string name="chat">Chat</string>
+    <string name="bag_caps">BAG</string>
 
 </resources>

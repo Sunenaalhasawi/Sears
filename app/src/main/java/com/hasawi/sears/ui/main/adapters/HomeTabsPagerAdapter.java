@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.ui.main.view.dashboard.home.HomeFragment;
-import com.hasawi.sears.utils.PreferenceHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +35,13 @@ public class HomeTabsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        try {
-            PreferenceHandler preferenceHandler = new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN);
-            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, mainCategoryList.get(position).getCategoryId());
-            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, mainCategoryList.get(position).getDescriptions().get(0).getCategoryName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            PreferenceHandler preferenceHandler = new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN);
+//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, mainCategoryList.get(position).getCategoryId());
+//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, mainCategoryList.get(position).getDescriptions().get(0).getCategoryName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return HomeFragment.newInstance(position, mainCategoryList.get(position).getDescriptions().get(0).getCategoryName(), dynamicDataHashMap.get(mainCategoryList.get(position).getCategoryId() + ""));
     }
 

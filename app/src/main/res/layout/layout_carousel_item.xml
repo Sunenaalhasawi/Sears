@@ -34,6 +34,7 @@
             android:fontFamily="@font/avantgarde_bold"
             android:gravity="center_horizontal"
             android:text="Title"
+            android:visibility="gone"
             android:textColor="@color/txt_clr_blue"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

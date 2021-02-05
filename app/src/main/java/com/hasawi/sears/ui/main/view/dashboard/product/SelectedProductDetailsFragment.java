@@ -1,6 +1,8 @@
 package com.hasawi.sears.ui.main.view.dashboard.product;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,6 +58,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.hasawi.sears.utils.AppConstants.CALL_PHONE_REQUEST_CODE;
+
 public class SelectedProductDetailsFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener {
 
     ProductDetailViewModel productDetailViewModel;
@@ -92,6 +98,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         dashboardActivity.hideSearchPage();
         dashboardActivity.handleActionBarIcons(false);
         dashboardActivity.handleSocialShare(true);
+        dashboardActivity.handleBag(true);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         sessionToken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
@@ -189,6 +196,19 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     addingProductToCart();
                     isbuyNow = true;
                 }
+            }
+        });
+
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermission(Manifest.permission.CALL_PHONE, CALL_PHONE_REQUEST_CODE);
+            }
+        });
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashboardActivity.sendEmailToCustomerCare();
             }
         });
     }
@@ -324,6 +344,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     public void onPause() {
         super.onPause();
         dashboardActivity.handleSocialShare(false);
+        dashboardActivity.handleBag(false);
     }
 
     public void setUpProductDescriptionRecyclerview() {
@@ -533,6 +554,12 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                         CartDialog cartDialog = new CartDialog(dashboardActivity);
                         cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
                     }
+                    try {
+                        int cartCount = addToCartResponse.data.getCartData().getItemCount();
+                        dashboardActivity.setCartBadgeNumber(cartCount);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     logAddToCartEvent(addToCartResponse);
                     logAddToCartFacebookEvent(addToCartResponse);
@@ -716,5 +743,39 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         }
     }
 
+
+    // Function to check and request permission
+    public void checkPermission(String permission, int requestCode) {
+        // Checking if permission is not granted
+        if (ContextCompat.checkSelfPermission(
+                dashboardActivity,
+                permission)
+                == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
+                    CALL_PHONE_REQUEST_CODE);
+        } else {
+            dashboardActivity.callSearsCustomerCare();
+        }
+    }
+
+    // This function is called when user accept or decline the permission.
+// Request Code is used to check which permission called this function.
+// This request code is provided when user is prompt for permission.
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CALL_PHONE_REQUEST_CODE) {
+            // Checking whether user granted the permission or not.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dashboardActivity.callSearsCustomerCare();
+            } else {
+                Toast.makeText(dashboardActivity, "Call Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 }

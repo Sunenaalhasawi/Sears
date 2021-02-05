@@ -21,6 +21,9 @@ public class ShoppingCartItem {
     @SerializedName("productId")
     @Expose
     private String productId;
+    @SerializedName("sku")
+    @Expose
+    private String sku;
     @SerializedName("refSku")
     @Expose
     private String refSku;
@@ -32,7 +35,7 @@ public class ShoppingCartItem {
     private Integer quantity;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
 
     @SerializedName("product")
     @Expose
@@ -123,11 +126,11 @@ public class ShoppingCartItem {
         isOutOfStock = outOfStock;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -137,5 +140,13 @@ public class ShoppingCartItem {
 
     public void setProductConfigurable(ProductConfigurable productConfigurable) {
         this.productConfigurable = productConfigurable;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 }

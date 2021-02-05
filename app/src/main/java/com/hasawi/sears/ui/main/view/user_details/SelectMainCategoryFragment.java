@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.databinding.FragmentSelectMainCategoryBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
+import com.hasawi.sears.ui.main.adapters.MainCategoryAdapter;
+import com.hasawi.sears.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.UserPreferenceViewModel;
 import com.hasawi.sears.utils.PreferenceHandler;
@@ -22,7 +26,7 @@ public class SelectMainCategoryFragment extends BaseFragment {
     FragmentSelectMainCategoryBinding selectMainCategoryBinding;
     UserPreferenceActivity userPreferenceActivity;
     UserPreferenceViewModel userPreferenceViewModel;
-    //    MainCategoryAdapter mainCategoryAdapter;
+    MainCategoryAdapter mainCategoryAdapter;
     Category currentSelectedCategory;
     FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Category> categoryList = new ArrayList<>();
@@ -40,18 +44,22 @@ public class SelectMainCategoryFragment extends BaseFragment {
         logger = AppEventsLogger.newLogger(userPreferenceActivity);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(userPreferenceActivity);
         userPreferenceViewModel = userPreferenceActivity.getUserPreferenceViewModel();
-//        selectMainCategoryBinding.recyclerViewMainCategories.setLayoutManager(new LinearLayoutManager(getActivity()));
+        selectMainCategoryBinding.recyclerviewMainCategories.setLayoutManager(new LinearLayoutManager(getActivity()));
         userPreferenceActivity.showProgressBar(true);
         userPreferenceViewModel.getMainCateogries().observe(getActivity(), mainCategoryResponseResource -> {
             switch (mainCategoryResponseResource.status) {
                 case SUCCESS:
                     List<Category> allCategoryList = mainCategoryResponseResource.data.getMainCategories();
                     for (int i = 0; i < allCategoryList.size(); i++) {
-                        if (allCategoryList.get(i).getParentId() == null)
+                        if (allCategoryList.get(i).getParentId() == null) {
+
                             categoryList.add(allCategoryList.get(i));
+
+                        }
+
                     }
-//                    mainCategoryAdapter = new MainCategoryAdapter(getContext(), categoryList);
-//                    selectMainCategoryBinding.recyclerViewMainCategories.setAdapter(mainCategoryAdapter);
+                    mainCategoryAdapter = new MainCategoryAdapter(categoryList);
+                    selectMainCategoryBinding.recyclerviewMainCategories.setAdapter(mainCategoryAdapter);
                     break;
                 case LOADING:
                     break;
@@ -62,30 +70,12 @@ public class SelectMainCategoryFragment extends BaseFragment {
             userPreferenceActivity.showProgressBar(false);
         });
 
-//        selectMainCategoryBinding.recyclerViewMainCategories.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-////                redirectToHomePage(position);
-//            }
-//        }));
-        selectMainCategoryBinding.btnSelectWomen.setOnClickListener(new View.OnClickListener() {
+        selectMainCategoryBinding.recyclerviewMainCategories.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                redirectToHomePage(0);
+            public void onItemClick(View view, int position) {
+                redirectToHomePage(position);
             }
-        });
-        selectMainCategoryBinding.btnSelectMen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectToHomePage(1);
-            }
-        });
-        selectMainCategoryBinding.btnSelectKids.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectToHomePage(2);
-            }
-        });
+        }));
     }
 
     private void redirectToHomePage(int position) {

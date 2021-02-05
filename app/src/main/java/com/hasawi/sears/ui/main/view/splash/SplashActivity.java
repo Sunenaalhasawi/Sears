@@ -62,6 +62,7 @@ public class SplashActivity extends BaseActivity {
         PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
         boolean isCategoryAlreadyShown = preferenceHandler.getData(PreferenceHandler.HAS_CATEGORY_PAGE_SHOWN, false);
         if (isCategoryAlreadyShown) {
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
             Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
             startActivity(intent);
             finish();

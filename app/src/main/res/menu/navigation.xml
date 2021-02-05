@@ -14,15 +14,15 @@
         android:enabled="true"
         android:icon="@drawable/category_selector"
         android:iconTint="@color/white"
-        android:title="Category" />
+        android:title="@string/category_caps" />
 
     <item
         android:id="@+id/navigation_wishlist"
         android:checked="false"
         android:enabled="true"
-        android:icon="@drawable/wishlist_selector"
+        android:icon="@drawable/wishlist_header"
         android:iconTint="@color/white"
-        android:title="Wishlist" />
+        android:title="@string/wishlist_caps" />
 
 
     <item
@@ -31,12 +31,12 @@
         android:enabled="true"
         android:icon="@drawable/cart_selector"
         android:iconTint="@color/white"
-        android:title="Cart" />
+        android:title="@string/bag_caps" />
 
     <item
         android:id="@+id/navigation_profile"
         android:enabled="true"
         android:icon="@drawable/account_selector"
         android:iconTint="@color/white"
-        android:title="Profile" />
+        android:title="@string/profile_caps" />
 </menu>

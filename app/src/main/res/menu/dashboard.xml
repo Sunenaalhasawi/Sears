@@ -8,11 +8,22 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
     <item
+        android:id="@+id/action_wishlist"
+        android:icon="@drawable/wishlist_header"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_notifications"
         android:icon="@drawable/ic_action_notification"
         android:title=""
         app:showAsAction="always" />
-
+    <item
+        android:id="@+id/action_bag"
+        android:icon="@drawable/shopping_bag_beige"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"

@@ -16,6 +16,12 @@ public class Manufacture {
     @SerializedName("active")
     @Expose
     private Boolean active;
+    @SerializedName("sortOrder")
+    @Expose
+    private Object sortOrder;
+    @SerializedName("categoryDisplay")
+    @Expose
+    private Object categoryDisplay;
     @SerializedName("manufactureDescriptions")
     @Expose
     private List<ManufactureDescription> manufactureDescriptions = null;
@@ -52,4 +58,19 @@ public class Manufacture {
         this.manufactureDescriptions = manufactureDescriptions;
     }
 
+    public Object getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Object sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public Object getCategoryDisplay() {
+        return categoryDisplay;
+    }
+
+    public void setCategoryDisplay(Object categoryDisplay) {
+        this.categoryDisplay = categoryDisplay;
+    }
 }

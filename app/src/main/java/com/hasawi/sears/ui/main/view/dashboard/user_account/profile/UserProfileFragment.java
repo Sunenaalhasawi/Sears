@@ -219,7 +219,7 @@ public class UserProfileFragment extends BaseFragment {
         int year = cldr.get(Calendar.YEAR);
 
         // date picker dialog
-        datePickerDialog = new DatePickerDialog(getActivity(),
+        datePickerDialog = new DatePickerDialog(getActivity(), R.style.CalenderViewCustom,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

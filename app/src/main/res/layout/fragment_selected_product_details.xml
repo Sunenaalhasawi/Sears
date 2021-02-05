@@ -34,7 +34,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:button="@drawable/custom_radio_button_wishlist"
                         android:elevation="2dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -92,8 +92,7 @@
                         android:layout_height="30dp"
                         android:layout_marginEnd="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/imageViewSelected"
-                        app:srcCompat="@drawable/ic_sears_logo" />
+                        app:layout_constraintEnd_toEndOf="@+id/imageViewSelected" />
 
                     <TextView
                         android:id="@+id/tvOutOfStock"
@@ -175,7 +174,7 @@
                         android:fontFamily="@font/avantgarde_regular"
                         android:text="--"
                         android:textColor="@color/grey"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tv_product_name"
                         app:layout_constraintTop_toBottomOf="@+id/textView40" />
@@ -353,7 +352,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/avantgarde_bold"
-                    android:text="@string/recommended_products"
+                    android:text="@string/you_may_also_like"
                     android:textColor="@color/txt_clr_blue"
                     android:textSize="16sp" />
 
@@ -364,6 +363,17 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:id="@+id/lv_contact_customer_care"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:id="@+id/layout_share"
+                        layout="@layout/layout_share" />
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

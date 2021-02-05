@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/top_2_corner_rounded_rectangle_blue"
             android:fontFamily="@font/avantgarde_bold"
-            android:text="@string/add_address_caps"
+            android:text="@string/save_address_caps"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -53,11 +53,11 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.
 //        holder.productSizeAdapterItemBinding.tvSize.setText(sizeList.get(position));
         holder.productSizeAdapterItemBinding.tvSize.setText(sizeList.get(position).getSize());
         if (sSelected == position) {
-            holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle));
-            holder.productSizeAdapterItemBinding.tvSize.setTextColor(R.color.txt_clr_blue);
+            holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.green_rounded_rectangle_8dp));
+            holder.productSizeAdapterItemBinding.tvSize.setTextColor(context.getResources().getColor(R.color.white));
         } else {
             holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle));
-            holder.productSizeAdapterItemBinding.tvSize.setTextColor(R.color.text_grey);
+            holder.productSizeAdapterItemBinding.tvSize.setTextColor(context.getResources().getColor(R.color.text_grey));
         }
 
     }

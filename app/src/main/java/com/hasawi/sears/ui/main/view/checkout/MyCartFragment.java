@@ -157,6 +157,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                             cartCount = cartResponse.data.getCartData().getShoppingCartItems().size();
                             cartAdapter.addAll(cartItemsList);
                             setUiValues();
+                            dashboardActivity.setCartBadgeNumber(cartCount);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

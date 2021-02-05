@@ -59,9 +59,11 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
             else
                 holder.colorVariantAdapterItemBinding.tvColorVariant.setVisibility(View.GONE);
             if (sSelected == position) {
-                holder.colorVariantAdapterItemBinding.tvColorVariant.setBackground(context.getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle));
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setBackground(context.getResources().getDrawable(R.drawable.green_rounded_rectangle_8dp));
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setTextColor(context.getResources().getColor(R.color.white));
             } else {
                 holder.colorVariantAdapterItemBinding.tvColorVariant.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle));
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setTextColor(context.getResources().getColor(R.color.text_grey));
             }
         } catch (Exception e) {
             e.printStackTrace();

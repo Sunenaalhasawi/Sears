@@ -79,11 +79,19 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
                             break;
                         }
                     }
+                    for (int i = 0; i < subCategoryArrayList.size(); i++) {
+                        if (!subCategoryArrayList.get(i).isActive())
+                            subCategoryArrayList.remove(i);
+                    }
                     subCategoryAdapter = new SubCategoryAdapter(getActivity(), subCategoryArrayList);
                     subCategoryAdapter.setOnItemClickListener(this);
                     fragmentCategoriesBinding.recyclerViewSubCategories.setAdapter(subCategoryAdapter);
                     if (subCategoryArrayList.size() > 0) {
                         currentGridList = (ArrayList<Category>) subCategoryArrayList.get(0).getCategories();
+                        for (int i = 0; i < currentGridList.size(); i++) {
+                            if (!currentGridList.get(i).isActive())
+                                currentGridList.remove(i);
+                        }
                         categoryGridAdapter = new CategoryGridAdapter(dashboardActivity, currentGridList);
                         fragmentCategoriesBinding.gridViewCategories.setAdapter(categoryGridAdapter);
                     }

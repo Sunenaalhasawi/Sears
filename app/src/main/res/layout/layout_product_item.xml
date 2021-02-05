@@ -148,7 +148,7 @@
             android:paddingBottom="2dp"
             android:text="30% OFF"
             android:textColor="@color/white"
-            android:textSize="8sp"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -198,8 +198,7 @@
             android:layout_height="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewProductImage"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewProductImage"
-            app:srcCompat="@drawable/ic_sears" />
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProductImage" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

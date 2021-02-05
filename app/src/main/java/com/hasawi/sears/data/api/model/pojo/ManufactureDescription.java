@@ -16,7 +16,7 @@ public class ManufactureDescription {
     private Object slug;
     @SerializedName("brandImageUrl")
     @Expose
-    private Object brandImageUrl;
+    private String brandImageUrl;
     @SerializedName("language")
     @Expose
     private Language language;
@@ -45,11 +45,11 @@ public class ManufactureDescription {
         this.slug = slug;
     }
 
-    public Object getBrandImageUrl() {
+    public String getBrandImageUrl() {
         return brandImageUrl;
     }
 
-    public void setBrandImageUrl(Object brandImageUrl) {
+    public void setBrandImageUrl(String brandImageUrl) {
         this.brandImageUrl = brandImageUrl;
     }
 

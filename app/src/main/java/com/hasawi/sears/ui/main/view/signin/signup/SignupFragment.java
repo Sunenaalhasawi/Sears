@@ -206,6 +206,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                         fragmentSignupBinding.layoutSignup.edtBirthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate((long) (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 365.25 * 16)));
         datePickerDialog.show();
     }
 

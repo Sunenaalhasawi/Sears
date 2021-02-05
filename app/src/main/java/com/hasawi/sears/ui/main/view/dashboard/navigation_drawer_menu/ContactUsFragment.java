@@ -1,9 +1,7 @@
 package com.hasawi.sears.ui.main.view.dashboard.navigation_drawer_menu;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,10 +13,10 @@ import com.hasawi.sears.databinding.FragmentContactUsBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
 
+import static com.hasawi.sears.utils.AppConstants.CALL_PHONE_REQUEST_CODE;
+
 public class ContactUsFragment extends BaseFragment {
-    public static final String SEARS_PHONE = "+965 22212227";
-    public static final String SEARS_EMAIL = "wecare@searskuwait.com";
-    private static final int CALL_PHONE_REQUEST_CODE = 1000;
+
     FragmentContactUsBinding fragmentContactUsBinding;
     DashboardActivity dashboardActivity;
 
@@ -46,31 +44,14 @@ public class ContactUsFragment extends BaseFragment {
         fragmentContactUsBinding.tvSearsEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmailToCustomerCare();
+                dashboardActivity.sendEmailToCustomerCare();
             }
         });
 
 
     }
 
-    private void sendEmailToCustomerCare() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{SEARS_EMAIL});
-//        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-//        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(dashboardActivity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    private void callSearsCustomerCare() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + SEARS_PHONE));
-        startActivity(callIntent);
-    }
 
     // Function to check and request permission
     public void checkPermission(String permission, int requestCode) {
@@ -82,7 +63,7 @@ public class ContactUsFragment extends BaseFragment {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
                     CALL_PHONE_REQUEST_CODE);
         } else {
-            callSearsCustomerCare();
+            dashboardActivity.callSearsCustomerCare();
         }
     }
 
@@ -99,7 +80,7 @@ public class ContactUsFragment extends BaseFragment {
             // Checking whether user granted the permission or not.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                callSearsCustomerCare();
+                dashboardActivity.callSearsCustomerCare();
             } else {
                 Toast.makeText(dashboardActivity, "Call Permission Denied", Toast.LENGTH_SHORT).show();
             }

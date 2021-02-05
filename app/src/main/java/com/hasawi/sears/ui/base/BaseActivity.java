@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -19,6 +20,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +38,9 @@ import com.hasawi.sears.utils.LoadingIndicator;
 import com.hasawi.sears.utils.dialogs.ProgressBarDialog;
 
 import java.util.ArrayList;
+
+import static com.hasawi.sears.utils.AppConstants.SEARS_EMAIL;
+import static com.hasawi.sears.utils.AppConstants.SEARS_PHONE;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -274,7 +279,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            progressBarDialog.show(getSupportFragmentManager(), "progress");
 //    }
 
-//    public void hideProgressBarDialog() {
+    //    public void hideProgressBarDialog() {
 //        try {
 ////            loadingIndicator.hideDialog();
 //            Fragment prev = getSupportFragmentManager().findFragmentByTag("progress");
@@ -285,5 +290,22 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    public void sendEmailToCustomerCare() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{SEARS_EMAIL});
+//        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+//        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    public void callSearsCustomerCare() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + SEARS_PHONE));
+        startActivity(callIntent);
+    }
 }

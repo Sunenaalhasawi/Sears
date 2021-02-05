@@ -11,6 +11,7 @@ import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.data.api.model.NavigationMenuItem;
 import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.model.pojo.SearchProductListResponse;
+import com.hasawi.sears.data.api.response.CartResponse;
 import com.hasawi.sears.data.api.response.DynamicUiResponse;
 import com.hasawi.sears.data.api.response.MainCategoryResponse;
 import com.hasawi.sears.data.api.response.ProductResponse;
@@ -67,24 +68,6 @@ public class DashboardViewModel extends ViewModel {
         return menuItemArrayList;
     }
 
-    public MutableLiveData<List<Product>> getWishListedProducts() {
-        return wishListedProducts;
-    }
-
-    public void setWishListedProducts(Product product) {
-        wishlistItems.add(product);
-        wishListedProducts.setValue(wishlistItems);
-    }
-
-    public MutableLiveData<List<Product>> getCartedProducts() {
-        return cartedProducts;
-    }
-
-    public void setCartedItems(Product product) {
-        cartedItems.add(product);
-        cartedProducts.setValue(cartedItems);
-    }
-
     public MutableLiveData<Resource<ProductResponse>> callProductDataApi(String categoryId, String page_no) {
 
         RequestBody body = ProductRepository.addInputParams(categoryId, null);
@@ -119,5 +102,9 @@ public class DashboardViewModel extends ViewModel {
         return dynamicDataRepository.getDynamicUiDataHome();
     }
 
+
+    public MutableLiveData<Resource<CartResponse>> getCartItems(String userID, String sessiontoken) {
+        return productRepository.getCartItems(userID, sessiontoken);
+    }
 
 }

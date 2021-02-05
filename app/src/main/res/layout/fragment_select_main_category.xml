@@ -30,53 +30,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnSelectKids"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:fontFamily="@font/futura_medium"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:text="@string/shop_kids"
-            android:textColor="@color/txt_clr_blue"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnSelectWomen"
-            app:layout_constraintStart_toStartOf="@+id/btnSelectWomen" />
-
-        <Button
-            android:id="@+id/btnSelectMen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:fontFamily="@font/futura_medium"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:text="@string/shop_men"
-            android:textColor="@color/txt_clr_blue"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnSelectKids"
-            app:layout_constraintEnd_toEndOf="@+id/btnSelectWomen"
-            app:layout_constraintHorizontal_bias="0.46"
-            app:layout_constraintStart_toStartOf="@+id/btnSelectWomen" />
-
-        <Button
-            android:id="@+id/btnSelectWomen"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewMainCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:fontFamily="@font/futura_medium"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:text="@string/shop_women"
-            android:textColor="@color/txt_clr_blue"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnSelectMen"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

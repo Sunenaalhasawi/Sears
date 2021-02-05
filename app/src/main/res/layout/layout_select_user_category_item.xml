@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tvItemName"
             app:layout_constraintEnd_toEndOf="@+id/tvItemName"
             app:layout_constraintStart_toStartOf="@+id/tvItemName"
-            app:srcCompat="@drawable/home_fashion" />
+            />
 
         <TextView
             android:id="@+id/tvItemName"

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -77,7 +79,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     ActionBarDrawerToggle actionBarDrawerToggle;
     Bundle dataBundle = new Bundle();
     SearchView searchView;
-    MenuItem searchItem, notificationItem, shareItem;
+    MenuItem searchItem, notificationItem, shareItem, bagItem;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
     private DashboardViewModel dashboardViewModel;
@@ -91,6 +93,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private HashMap<String, DynamicUiResponse.UiData> dynamicUiDataHashmap = new HashMap<>();
     private List<Category> allCategoryList = new ArrayList<>();
     private String searchQuery = "";
+    private BadgeDrawable bottomBarBadgeDrawable, appBarBadgeDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 // Todo upload customer image
             }
         });
+
 
     }
 
@@ -316,7 +320,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         searchItem = menu.findItem(R.id.action_search);
         notificationItem = menu.findItem(R.id.action_notifications);
         shareItem = menu.findItem(R.id.action_share);
+        bagItem = menu.findItem(R.id.action_bag);
         shareItem.setVisible(false);
+        bagItem.setVisible(false);
         searchItem.setVisible(true);
         notificationItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
@@ -371,7 +377,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 return true;
             }
         });
-
+        setCartBadges();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -414,13 +420,17 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 return true;
             case R.id.navigation_categories:
-                int count = getSupportFragmentManager().getBackStackEntryCount();
-                for (int i = 0; i < count; i++) {
-                    getSupportFragmentManager().popBackStackImmediate();
+                if (currentFragment instanceof CategoryFragment) {
+
+                } else {
+                    int count = getSupportFragmentManager().getBackStackEntryCount();
+                    for (int i = 0; i < count; i++) {
+                        getSupportFragmentManager().popBackStackImmediate();
+                    }
+                    handleActionMenuBar(false, true, "");
+                    activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
+                    replaceFragment(R.id.framelayout_categories, new CategoryFragment(), null, true, false);
                 }
-                handleActionMenuBar(false, true, "");
-                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
-                replaceFragment(R.id.framelayout_categories, new CategoryFragment(), null, true, false);
                 return true;
             case R.id.navigation_cart:
                 if (currentFragment instanceof MyCartFragment) {
@@ -623,6 +633,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         } else {
             activityDashboardBinding.appBarMain.tabLayoutCategories.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
+        PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
+        String selectedMainCategory = preferenceHandler.getData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
+        for (int i = 0; i < mainCategoryList.size(); i++) {
+            if (selectedMainCategory.equalsIgnoreCase(mainCategoryList.get(i).getCategoryId()))
+                activityDashboardBinding.appBarMain.viewPagerHomeTabs.setCurrentItem(i);
+//            TabLayout.Tab tab=activityDashboardBinding.appBarMain.
+        }
         activityDashboardBinding.appBarMain.viewPagerHomeTabs.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -646,9 +663,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         activityDashboardBinding.appBarMain.tabLayoutCategories.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                PreferenceHandler preferenceHandler = new PreferenceHandler(getBaseContext(), PreferenceHandler.TOKEN_LOGIN);
                 activityDashboardBinding.appBarMain.viewPagerHomeTabs.setCurrentItem(tab.getPosition());
                 Category selectedCategory = mainCategoryList.get(tab.getPosition());
-                PreferenceHandler preferenceHandler = new PreferenceHandler(getBaseContext(), PreferenceHandler.TOKEN_LOGIN);
+
                 preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, selectedCategory.getCategoryId());
                 preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, selectedCategory.getDescriptions().get(0).getCategoryName());
                 BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
@@ -669,6 +687,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         });
 
         activityDashboardBinding.appBarMain.tabLayoutCategories.setupWithViewPager(activityDashboardBinding.appBarMain.viewPagerHomeTabs);
+
+
     }
 
     private void callDynamicUiApi() {
@@ -702,6 +722,16 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }
     }
 
+    public void handleBag(boolean shouldShow) {
+        if (bagItem != null) {
+            if (shouldShow)
+                bagItem.setVisible(true);
+            else
+                bagItem.setVisible(false);
+        }
+    }
+
+
     public void shareProduct() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -714,6 +744,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     public void handleActionBarIcons(boolean showActionBaritems) {
         if (shareItem != null)
             shareItem.setVisible(false);
+        if (bagItem != null)
+            bagItem.setVisible(false);
         if (showActionBaritems) {
             if (searchItem != null)
                 searchItem.setVisible(true);
@@ -775,5 +807,74 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         params.putString(AppEventsConstants.EVENT_PARAM_SEARCH_STRING, searchQuery);
         params.putInt(AppEventsConstants.EVENT_PARAM_SUCCESS, success ? 1 : 0);
         getFacebookEventsLogger().logEvent(AppEventsConstants.EVENT_NAME_SEARCHED, params);
+    }
+
+    private void setAppBarBadge(int cartCount) {
+        if (bagItem != null) {
+            bagItem.setActionView(R.layout.layout_cart_badge);
+            TextView textCartItemCount = (TextView) bagItem.getActionView().findViewById(R.id.cart_badge);
+            if (textCartItemCount != null) {
+                if (cartCount == 0) {
+                    if (textCartItemCount.getVisibility() != View.GONE) {
+                        textCartItemCount.setVisibility(View.GONE);
+                    }
+                } else {
+                    textCartItemCount.setText(String.valueOf(Math.min(cartCount, 99)));
+                    if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                        textCartItemCount.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private void setCartBadges() {
+        Menu menu = activityDashboardBinding.appBarMain.bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.navigation_cart);
+        bottomBarBadgeDrawable = activityDashboardBinding.appBarMain.bottomNavigationView.getOrCreateBadge(menuItem.getItemId());
+        bottomBarBadgeDrawable.setBackgroundColor(getResources().getColor(R.color.bronze));
+        bottomBarBadgeDrawable.setBadgeTextColor(getResources().getColor(R.color.white));
+        bottomBarBadgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
+        setCartBadgeNumber(0);
+    }
+
+    public void setCartBadgeNumber(int cartCount) {
+        if (cartCount == 0) {
+            bottomBarBadgeDrawable.clearNumber();
+            bottomBarBadgeDrawable.setVisible(false);
+        } else {
+            bottomBarBadgeDrawable.setNumber(cartCount);
+            bottomBarBadgeDrawable.setVisible(true);
+        }
+        setAppBarBadge(cartCount);
+        callMyCartApi();
+
+    }
+
+    public void callMyCartApi() {
+        PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
+        String userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
+        String sessiontoken = preferenceHandler.getData(PreferenceHandler.LOGIN_TOKEN, "");
+        activityDashboardBinding.appBarMain.progressBar.setVisibility(View.VISIBLE);
+        dashboardViewModel.getCartItems(userId, sessiontoken).observe(this, cartResponse -> {
+            switch (cartResponse.status) {
+                case SUCCESS:
+                    try {
+                        int cartCount = cartResponse.data.getCartData().getItemCount();
+                        setCartBadgeNumber(cartCount);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    Toast.makeText(this, cartResponse.message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            activityDashboardBinding.appBarMain.progressBar.setVisibility(View.GONE);
+        });
     }
 }
