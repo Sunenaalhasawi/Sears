@@ -28,6 +28,7 @@ public class FAQFragment extends BaseFragment {
         fragmentDynamicContentBinding = (FragmentDynamicContentBinding) viewDataBinding;
         dynamicContentViewModel = new ViewModelProvider(this).get(DynamicContentViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionMenuBar(false, false, "");
         fragmentDynamicContentBinding.tvTitle.setText("FAQ");
         fragmentDynamicContentBinding.imageViewcontent.setImageDrawable(getResources().getDrawable(R.drawable.faq));
         getContent();
@@ -64,5 +65,12 @@ public class FAQFragment extends BaseFragment {
             }
             fragmentDynamicContentBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dashboardActivity.handleActionMenuBar(false, true, "");
     }
 }

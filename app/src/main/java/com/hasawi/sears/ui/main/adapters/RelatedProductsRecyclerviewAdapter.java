@@ -49,8 +49,11 @@ public abstract class RelatedProductsRecyclerviewAdapter extends RecyclerView.Ad
             holder.productItemBinding.tvProductName.setText(productContent.getDescriptions().get(0).getProductName());
             if (productContent.getDiscountPercentage() == null || productContent.getDiscountPercentage() == 0)
                 holder.productItemBinding.tvOfferPercent.setVisibility(View.GONE);
-            else
+            else {
                 holder.productItemBinding.tvOfferPercent.setText(productContent.getDiscountPercentage() + "% OFF");
+                holder.productItemBinding.tvOfferPercent.setVisibility(View.VISIBLE);
+            }
+
             Glide.with(context)
                     .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()

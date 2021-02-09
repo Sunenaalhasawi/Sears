@@ -31,26 +31,11 @@
             android:hardwareAccelerated="true" />
         <activity
             android:name=".ui.main.view.user_details.UserPreferenceActivity" />
-        <activity android:name=".ui.main.view.signin.login.TestActivity"></activity>
         <activity
             android:name=".ui.main.view.DashboardActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/SearsAppTheme">
 
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
-            android:name=".ui.main.view.dashboard.product.SelectedProductDetailsFragment$ProductImageActivity"
-            android:theme="@style/SearsAppTheme">
-            <tools:validation testUrl="https://alhasawi.page.link/products" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -58,10 +43,28 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="alhasawi.page.link"
-                    android:pathPrefix="/products"
+                    android:host="searsoutlet.page.link"
                     android:scheme="https" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".ui.main.view.dashboard.product.SelectedProductDetailsFragment$ProductImageActivity"
+            android:theme="@style/SearsAppTheme">
+            <!--            <tools:validation testUrl="https://alhasawi.page.link/products" />-->
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
+
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+            <!--                <data-->
+            <!--                    android:host="alhasawi.page.link"-->
+            <!--                    android:pathPrefix="/products"-->
+            <!--                    android:scheme="https" />-->
+            <!--            </intent-filter>-->
         </activity>
 
         <service

@@ -28,6 +28,7 @@ public class AboutUsFragment extends BaseFragment {
         fragmentDynamicContentBinding = (FragmentDynamicContentBinding) viewDataBinding;
         dynamicContentViewModel = new ViewModelProvider(this).get(DynamicContentViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionMenuBar(false, false, "");
         fragmentDynamicContentBinding.tvTitle.setText("ABOUT US");
         fragmentDynamicContentBinding.imageViewcontent.setImageDrawable(getResources().getDrawable(R.drawable.about_us));
         getAboutUsContent();
@@ -64,5 +65,12 @@ public class AboutUsFragment extends BaseFragment {
             }
             fragmentDynamicContentBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dashboardActivity.handleActionMenuBar(false, true, "");
     }
 }

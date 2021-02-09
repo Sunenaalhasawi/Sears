@@ -2,10 +2,11 @@ package com.hasawi.sears.ui.main.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,22 +60,40 @@ public abstract class FilterValueAdapter extends RecyclerView.Adapter<FilterValu
 //            }
 //        });
 
-        holder.filterValueBinding.checkBoxFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.filterValueBinding.checkBoxFilter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View view) {
+                if (((AppCompatCheckBox) view).isChecked()) {
+                    System.out.println("Checked");
                     filterAttributeValues.setChecked(true);
                     if (!selectedFiltersList.contains(filterAttributeValues))
                         selectedFiltersList.add(filterAttributeValues);
                 } else {
+                    System.out.println("Un-Checked");
                     filterAttributeValues.setChecked(false);
                     if (selectedFiltersList.contains(filterAttributeValues))
                         selectedFiltersList.remove(filterAttributeValues);
                 }
-
                 onFilterSelected(selectedFiltersList);
             }
         });
+
+//        holder.filterValueBinding.checkBoxFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    filterAttributeValues.setChecked(true);
+//                    if (!selectedFiltersList.contains(filterAttributeValues))
+//                        selectedFiltersList.add(filterAttributeValues);
+//                } else {
+//                    filterAttributeValues.setChecked(false);
+//                    if (selectedFiltersList.contains(filterAttributeValues))
+//                        selectedFiltersList.remove(filterAttributeValues);
+//                }
+//
+//                onFilterSelected(selectedFiltersList);
+//            }
+//        });
     }
 
     public void addAll(List<FilterAttributeValues> valueList) {

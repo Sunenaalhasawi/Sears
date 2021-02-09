@@ -111,7 +111,7 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
                             initialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
                             networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
                         } else {
-                            callback.onResult(response.body().getData().getProductList().getProducts(), null, 2l);
+                            callback.onResult(response.body().getData().getProductList().getProducts(), null, 1l);
                             initialLoading.postValue(NetworkState.LOADED);
                             networkState.postValue(NetworkState.LOADED);
 

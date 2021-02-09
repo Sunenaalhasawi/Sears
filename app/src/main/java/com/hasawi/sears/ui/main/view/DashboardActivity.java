@@ -1,6 +1,7 @@
 package com.hasawi.sears.ui.main.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,10 +25,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
@@ -93,6 +99,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private HashMap<String, DynamicUiResponse.UiData> dynamicUiDataHashmap = new HashMap<>();
     private List<Category> allCategoryList = new ArrayList<>();
     private String searchQuery = "";
+    private String currentlyShowingProductId = "";
     private BadgeDrawable bottomBarBadgeDrawable, appBarBadgeDrawable;
 
     @Override
@@ -138,7 +145,33 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
         });
 
+        retrieveFirebaseDynamicLinks();
+    }
 
+    private void retrieveFirebaseDynamicLinks() {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            String productId = deepLink.getQueryParameter("productId");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("product_object_id", productId);
+                            handleActionMenuBar(true, false, "");
+                            replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
     }
 
     private void loadMenuFragments(int position) {
@@ -389,7 +422,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 replaceFragment(R.id.fragment_replacer, new NotificationFragment(), null, true, false);
                 return true;
             case R.id.action_share:
-                shareProduct();
+                shareProduct(currentlyShowingProductId);
                 return true;
             default:
                 super.onOptionsItemSelected(item);
@@ -399,7 +432,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
+        BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
         switch (item.getItemId()) {
 
             case R.id.navigation_home:
@@ -420,15 +453,17 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 return true;
             case R.id.navigation_categories:
-                if (currentFragment instanceof CategoryFragment) {
+                handleActionMenuBar(false, true, "");
+
+                int count = getSupportFragmentManager().getBackStackEntryCount();
+                for (int i = 0; i < count; i++) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
+                BaseFragment showingFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
+                if (showingFragment instanceof CategoryFragment) {
 
                 } else {
-                    int count = getSupportFragmentManager().getBackStackEntryCount();
-                    for (int i = 0; i < count; i++) {
-                        getSupportFragmentManager().popBackStackImmediate();
-                    }
-                    handleActionMenuBar(false, true, "");
-                    activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
                     replaceFragment(R.id.framelayout_categories, new CategoryFragment(), null, true, false);
                 }
                 return true;
@@ -732,11 +767,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     }
 
 
-    public void shareProduct() {
+    public void shareProduct(String productId) {
+        handleSocialShare(true);
+        String url = createDynamicLink(productId);
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Install Sears Outlet App to shop world's most famous brands at great prices!\n" +
-                "https://searskuwait.com/");
+                url);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
@@ -838,6 +875,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         bottomBarBadgeDrawable.setBadgeTextColor(getResources().getColor(R.color.white));
         bottomBarBadgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
         setCartBadgeNumber(0);
+        callMyCartApi();
     }
 
     public void setCartBadgeNumber(int cartCount) {
@@ -849,7 +887,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             bottomBarBadgeDrawable.setVisible(true);
         }
         setAppBarBadge(cartCount);
-        callMyCartApi();
+
 
     }
 
@@ -876,5 +914,25 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             }
             activityDashboardBinding.appBarMain.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    public String getCurrentlyShowingProductId() {
+        return currentlyShowingProductId;
+    }
+
+    public void setCurrentlyShowingProductId(String currentlyShowingProductId) {
+        this.currentlyShowingProductId = currentlyShowingProductId;
+    }
+
+    public String createDynamicLink(String productId) {
+        String url = "https://searskuwait.com/products/?productId=" + productId;
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(url))
+                .setDomainUriPrefix("https://searsoutlet.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.hasawi.sears").build())
+                .buildDynamicLink();
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        return dynamicLinkUri.toString();
     }
 }

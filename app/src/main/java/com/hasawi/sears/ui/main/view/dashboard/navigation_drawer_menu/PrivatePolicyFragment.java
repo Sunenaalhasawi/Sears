@@ -29,6 +29,7 @@ public class PrivatePolicyFragment extends BaseFragment {
         dynamicContentViewModel = new ViewModelProvider(this).get(DynamicContentViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
         fragmentDynamicContentBinding.tvTitle.setText("PRIVATE POLICY");
+        dashboardActivity.handleActionMenuBar(false, false, "");
         fragmentDynamicContentBinding.imageViewcontent.setImageDrawable(getResources().getDrawable(R.drawable.privacy_policy));
         getContent();
 
@@ -64,5 +65,11 @@ public class PrivatePolicyFragment extends BaseFragment {
             }
             fragmentDynamicContentBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dashboardActivity.handleActionMenuBar(false, true, "");
     }
 }

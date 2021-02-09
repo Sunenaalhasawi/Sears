@@ -22,8 +22,6 @@ import com.bumptech.glide.Glide;
 import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.Resource;
@@ -128,13 +126,34 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 case SUCCESS:
                     try {
                         currentSelectedProduct = searchedProductDetailsResponse.data.getData().getProduct();
+                        dashboardActivity.setCurrentlyShowingProductId(currentSelectedProduct.getProductId());
                         if (currentSelectedProduct.getDescriptions() != null)
                             dashboardActivity.handleActionMenuBar(true, false, currentSelectedProduct.getDescriptions().get(0).getProductName());
                         recommendedProductList = (ArrayList<Product>) searchedProductDetailsResponse.data.getData().getRecommendedProductList();
                         setRelatedProducts();
                         setUIValues(currentSelectedProduct);
-                        setProductSizeRecyclerview(currentSelectedProduct.getProductConfigurables());
-                        setColorSizeAdapterList(currentSelectedProduct.getProductConfigurables());
+                        try {
+                            List<ProductConfigurable> productConfigurableList = new ArrayList<>();
+                            for (int i = 0; i < currentSelectedProduct.getProductConfigurables().size(); i++) {
+                                if (productConfigurableList.size() == 0)
+                                    productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
+
+                                for (int j = 0; j < productConfigurableList.size(); j++) {
+                                    if (currentSelectedProduct.getProductConfigurables().get(i).getSize().equalsIgnoreCase(productConfigurableList.get(j).getSize())) {
+                                        // do not add
+
+                                    } else {
+                                        productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
+                                        break;
+                                    }
+
+                                }
+                            }
+                            setProductSizeRecyclerview(productConfigurableList);
+                            setColorSizeAdapterList(productConfigurableList);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         logProductViewEvent(currentSelectedProduct);
                         logViewContentEvent(currentSelectedProduct);
                     } catch (Exception e) {
@@ -322,8 +341,11 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             }
             if (currentSelectedProduct.getDiscountPercentage() == null || currentSelectedProduct.getDiscountPercentage() == 0)
                 fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
-            else
+            else {
                 fragmentSelectedProductDetailsBinding.tvOfferPercent.setText(currentSelectedProduct.getDiscountPercentage() + "% OFF");
+                fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.VISIBLE);
+            }
+
             fragmentSelectedProductDetailsBinding.tvOriginalPrice.setPaintFlags(fragmentSelectedProductDetailsBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             productAttributeArrayList = (ArrayList<ProductAttribute>) currentSelectedProduct.getProductAttributes();
@@ -346,6 +368,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         dashboardActivity.handleSocialShare(false);
         dashboardActivity.handleBag(false);
     }
+
 
     public void setUpProductDescriptionRecyclerview() {
         productAttributesAdapter = new ProductAttributesAdapter(getContext(), productAttributeArrayList);
@@ -530,6 +553,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     public void onResume() {
         super.onResume();
         try {
+            dashboardActivity.handleActionMenuBar(true, false, dashboardActivity.getTitle().toString());
             dashboardActivity.hideSearchPage();
         } catch (Exception e) {
             e.printStackTrace();
@@ -679,18 +703,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     }
 
-    public void createDynamicLink(String productId) {
-        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("http://searskuwait.com/api/v0/products/search/" + productId))
-                .setDomainUriPrefix("https://alhasawi.page.link")
-                // Open links with this app on Android
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.hasawi.sears").setMinimumVersion(1).build())
-                // Open links with com.example.ios on iOS
-                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-                .buildDynamicLink();
-
-        Uri dynamicLinkUri = dynamicLink.getUri();
-    }
 
     public static class ProductImageActivity extends BaseActivity {
 

@@ -43,6 +43,7 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
         fragmentCategoriesBinding = (FragmentCategoriesBinding) viewDataBinding;
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
+        dashboardActivity.handleActionMenuBar(false, true, "");
         dashboardActivity.handleActionBarIcons(true);
         PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
         selectedMainCategoryId = preferenceHandler.getData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
