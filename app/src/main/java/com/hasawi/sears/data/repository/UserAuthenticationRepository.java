@@ -26,11 +26,11 @@ public class UserAuthenticationRepository {
         signupResponseCall.enqueue(new Callback<SignupResponse>() {
             @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
-                if (response.code() == 400)
+                if (response.body().getStatusCode() == 400)
                     signupResponseMutableLiveData.setValue(Resource.error("Email ID Already Exists", null));
-                else if (response.code() != 200) {
+                else if (response.body().getStatusCode() != 200) {
                     signupResponseMutableLiveData.setValue(Resource.error("Something went wrong. Please try again!", null));
-                } else if (response.body() != null)
+                } else if (response.body().getData() != null)
                     signupResponseMutableLiveData.setValue(Resource.success(response.body()));
 
             }

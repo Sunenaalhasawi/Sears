@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
 
 import com.hasawi.sears.data.api.RetrofitApiClient;
+import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
 import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.response.ProductResponse;
@@ -39,6 +40,7 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
     private MutableLiveData initialLoading;
     private MutableLiveData<Map<String, List<FilterAttributeValues>>> filterAttributeMap;
     private MutableLiveData<List<String>> sortStrings;
+    private MutableLiveData<List<Category>> categoryList;
     private String categoryId = "", page_no = "", sort = "", userId = "";
     private boolean loadedInitial = false;
     private JSONObject productPayload = null;
@@ -57,6 +59,7 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
         initialLoading = new MutableLiveData();
         filterAttributeMap = new MutableLiveData<>();
         sortStrings = new MutableLiveData<>();
+        categoryList = new MutableLiveData<>();
     }
 
     public MutableLiveData getNetworkState() {
@@ -73,6 +76,10 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
 
     public MutableLiveData<List<String>> getSortStrings() {
         return sortStrings;
+    }
+
+    public MutableLiveData<List<Category>> getCategoryList() {
+        return categoryList;
     }
 
     /*
@@ -106,6 +113,11 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
                             sortStrings.postValue(response.body().getData().getSortStrings());
                         } else {
                             sortStrings.postValue(null);
+                        }
+                        if (response.body().getData().getCategories() != null) {
+                            categoryList.postValue(response.body().getData().getCategories());
+                        } else {
+                            categoryList.postValue(null);
                         }
                         if (response.body().getData().getProductList() == null) {
                             initialLoading.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
@@ -238,6 +250,7 @@ public class ProductDataSource extends PageKeyedDataSource<Long, Product> {
 //
 //
 //        String jsonString = jsonObject.toString();
+
 
         Map<String, Object> jsonParams = new ArrayMap<>();
 //put something inside the map, could be null

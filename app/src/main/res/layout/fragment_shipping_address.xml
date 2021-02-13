@@ -221,7 +221,7 @@
                     app:layout_constraintStart_toStartOf="@+id/edt_country"
                     app:layout_constraintTop_toBottomOf="@+id/edt_country">
 
-                    <Spinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/spinnerState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lv_dropdown_state"></View>
 
-                <CheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkbox_set_as_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -281,7 +281,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView28">
 
-                    <RadioButton
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/radio_btn_working_days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -290,7 +290,7 @@
                         android:textColor="@color/txt_clr_grey"
                         android:textSize="14sp" />
 
-                    <RadioButton
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/radio_btn_24_by_7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

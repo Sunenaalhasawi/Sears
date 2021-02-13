@@ -73,7 +73,7 @@ public class Product {
     @SerializedName("discount")
     @Expose
     private boolean discount;
-    @SerializedName("manufature")
+    @SerializedName("manufacture")
     @Expose
     private Manufacture manufature;
 

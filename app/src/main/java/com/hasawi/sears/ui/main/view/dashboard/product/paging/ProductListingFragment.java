@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
@@ -38,11 +39,11 @@ import java.util.List;
 public class ProductListingFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final int SET_SORT_REQUEST_CODE = 200;
     private static final int SET_FILTER_REQUEST_CODE = 201;
-    //    CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
+    CategoryRecyclerviewAdapter categoryRecyclerviewAdapter;
     DashboardActivity dashboardActivity;
     String currentSelectedCategory = "";
     JSONArray selectedFilterData, selectedBrandData, selectedColorData, selectedSizeData;
-    String selectedSortString;
+    String selectedSortString = "";
     JSONArray filterArray;
     String attributeIds = null;
     List<String> sortStrings = new ArrayList<>();
@@ -88,10 +89,6 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             String currentCategoryName = bundle.getString("category_name");
             attributeIds = bundle.getString("attribute_ids");
             fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
-//            PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory);
-//            preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentCategoryName);
-            fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,14 +96,8 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             showNoInternetDialog();
         } else {
             if (attributeIds == null || attributeIds.equalsIgnoreCase("")) {
-//                selectedFilterData = null;
                 productPayload = null;
             } else {
-//                List<String> attributeList = Arrays.asList(attributeIds);
-//                selectedFilterData = new JSONArray();
-//                for (int i = 0; i < attributeList.size(); i++) {
-//                    selectedFilterData.put(attributeList.get(i));
-//                }
                 try {
                     productPayload = new JSONObject(attributeIds);
                 } catch (JSONException e) {
@@ -117,11 +108,19 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             productListingViewModel.getSortStrings().observe(this, strings -> {
                 sortStrings = strings;
             });
-//            getSortStrings();
-//            loadFilterData(filterArray);
         }
 
         handleWishlistCartApiBeforeLoggedIn();
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
+        productListingViewModel.getCategoryList().observe(this, categories -> {
+            categoryArrayList = categories;
+            if (categories != null && categories.size() > 0) {
+                categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), categoryArrayList);
+                categoryRecyclerviewAdapter.setOnItemClickListener(this);
+                fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+            }
+        });
     }
 
     private void handleWishlistCartApiBeforeLoggedIn() {
@@ -172,11 +171,8 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
 
 //    private void getSortStrings() {
 //        showProgressBarDialog(true);
-////        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-////        fragmentProductListingBinding.recyclerViewCategories.setLayoutManager(horizontalLayoutManager);
-////        categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-////        categoryRecyclerviewAdapter.setOnItemClickListener(this);
-////        fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
+
+
 //        productListingViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
 //            switch (productResponseResource.status) {
 //                case SUCCESS:
@@ -331,29 +327,6 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         });
     }
 
-//    public void callAddToCartApi(String jsonParamString) {
-//        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-//        String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
-//        fragmentProductListingBinding.progressBar.setVisibility(View.VISIBLE);
-//
-////        productListingViewModel.addToCart(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
-////            fragmentProductListingBinding.progressBar.setVisibility(View.GONE);
-////            switch (addToCartResponse.status) {
-////                case SUCCESS:
-////                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, "");
-////                    CartDialog cartDialog = new CartDialog(dashboardActivity);
-////                    cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
-////                    break;
-////                case LOADING:
-////                    break;
-////                case ERROR:
-////                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
-////                    break;
-////            }
-////        });
-//
-//    }
-
     private void launchSortFragment() {
         SortFragment sortFragment = new SortFragment();
         sortFragment.setTargetFragment(this, SET_SORT_REQUEST_CODE);
@@ -412,20 +385,19 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
     @Override
     public void onItemClickListener(int position, View view) {
 
-//        categoryRecyclerviewAdapter.selectedItem();
-//        currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
-//        refreshProductList(currentSelectedCategory, null, "");
-//        loadFilterData(filterArray);
-//        try {
-//            Bundle analyticsBundle = new Bundle();
-//            analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
-//            analyticsBundle.putString("category_name", categoryArrayList.get(position).getDescriptions().get(0).getCategoryName());
-//            analyticsBundle.putString("category_code", categoryArrayList.get(position).getCategoryCode());
-//            analyticsBundle.putString("parent_category_id", categoryArrayList.get(position).getParentId());
-//            dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_SELECTED", analyticsBundle);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        categoryRecyclerviewAdapter.selectedItem();
+        currentSelectedCategory = categoryArrayList.get(position).getCategoryId();
+        refreshProductList(currentSelectedCategory, filterArray, selectedBrandData, selectedColorData, selectedSizeData, selectedSortString);
+        try {
+            Bundle analyticsBundle = new Bundle();
+            analyticsBundle.putString("category_id", categoryArrayList.get(position).getCategoryId());
+            analyticsBundle.putString("category_name", categoryArrayList.get(position).getDescriptions().get(0).getCategoryName());
+            analyticsBundle.putString("category_code", categoryArrayList.get(position).getCategoryCode());
+            analyticsBundle.putString("parent_category_id", categoryArrayList.get(position).getParentId());
+            dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_SELECTED", analyticsBundle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshProductList(String currentSelectedCategory, JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray, String sort) {

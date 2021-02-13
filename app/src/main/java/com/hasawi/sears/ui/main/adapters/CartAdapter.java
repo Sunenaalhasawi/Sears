@@ -86,7 +86,7 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
             if (shoppingCartItem.getQuantity() != null)
                 holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
             if (shoppingCartItem.getProduct().getManufature() != null)
-                holder.cartRecyclerItemBinding.tvBrand.setText(shoppingCartItem.getProduct().getManufature().toString());
+                holder.cartRecyclerItemBinding.tvBrand.setText(shoppingCartItem.getProduct().getManufature().getManufactureDescriptions().get(0).getName());
 
             if (shoppingCartItem.getProduct().getDiscountPercentage() != 0) {
                 holder.cartRecyclerItemBinding.tvOfferPercent.setText("FLAT " + shoppingCartItem.getProduct().getDiscountPercentage() + "% OFF");
@@ -138,6 +138,11 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
                     }
                 }
             });
+            if (shoppingCartItem.getProductConfigurable() != null) {
+                holder.cartRecyclerItemBinding.tvSize.setText(shoppingCartItem.getProductConfigurable().getSize());
+                holder.cartRecyclerItemBinding.tvColor.setText(shoppingCartItem.getProductConfigurable().getColor());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

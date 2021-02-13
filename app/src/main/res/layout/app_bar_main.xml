@@ -134,6 +134,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:padding="8dp"
+            android:elevation="4dp"
             app:itemIconTint="@drawable/bottom_tab_color"
             app:itemTextColor="@drawable/bottom_tab_color"
             app:labelVisibilityMode="labeled"

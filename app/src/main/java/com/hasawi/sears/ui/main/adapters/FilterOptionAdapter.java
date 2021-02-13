@@ -30,6 +30,7 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
     List<FilterAttributeValues> selectedColors = new ArrayList<>();
     List<FilterAttributeValues> selectedSizes = new ArrayList<>();
     RecyclerView filterValueRecycler;
+    int filteValueCount = 0;
 
     public FilterOptionAdapter(Context context, RecyclerView filterValueRecycler) {
         this.context = context;
@@ -51,8 +52,17 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String filterOption = productAttributeList.get(position);
         holder.filterOptionBinding.tvFilterValue.setText(filterOption);
+        List<FilterAttributeValues> filterAttributeValuesList = filterOptionValueMap.get(productAttributeList.get(position));
+        filteValueCount = 0;
+
+        for (int i = 0; i < filterAttributeValuesList.size(); i++) {
+            if (filterAttributeValuesList.get(i).isChecked())
+                filteValueCount++;
+        }
         if (sSelected == position) {
-            filterValueRecycler.setAdapter(new FilterValueAdapter(context, filterOptionValueMap.get(productAttributeList.get(position))) {
+            filterValueRecycler.setAdapter(new FilterValueAdapter(context, filterAttributeValuesList
+
+            ) {
                 @Override
                 public void onFilterSelected(List<FilterAttributeValues> selectedFilterAttributeValues) {
                     if (filterOption.equalsIgnoreCase("brands"))
@@ -64,6 +74,7 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
                     else
                         selectedFilterData.addAll(selectedFilterAttributeValues);
                     FilterOptionAdapter.this.onFilterSelected(selectedFilterData, selectedBrands, selectedColors, selectedSizes);
+                    holder.filterOptionBinding.tvFilterValueCount.setText(selectedFilterAttributeValues.size() + "");
                 }
             });
             holder.filterOptionBinding.tvFilterValue.setTextColor(context.getResources().getColor(R.color.txt_clr_blue));
@@ -72,6 +83,13 @@ public abstract class FilterOptionAdapter extends RecyclerView.Adapter<FilterOpt
             holder.filterOptionBinding.tvFilterValue.setTextColor(context.getResources().getColor(R.color.white));
             holder.filterOptionBinding.tvFilterValue.setBackgroundColor(context.getResources().getColor(R.color.txt_clr_blue));
         }
+        if (filteValueCount == 0)
+            holder.filterOptionBinding.tvFilterValueCount.setVisibility(View.GONE);
+        else {
+            holder.filterOptionBinding.tvFilterValueCount.setVisibility(View.VISIBLE);
+            holder.filterOptionBinding.tvFilterValueCount.setText(filteValueCount + "");
+        }
+
     }
 
     public void addAll(Map<String, List<FilterAttributeValues>> filterOptionValueMap, List<String> optionList) {

@@ -124,14 +124,18 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Product, 
                 productItemBinding.tvOfferPercent.setVisibility(View.VISIBLE);
             }
 
-            Glide.with(context)
-                    .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
-                    .centerCrop()
-                    .into(productItemBinding.imageViewProductImage);
-            Glide.with(context)
-                    .load(productContent.getBrandLogoUrl())
-                    .centerCrop()
-                    .into(productItemBinding.imageViewBrangLogo);
+            try {
+                Glide.with(context)
+                        .load(productContent.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
+                        .centerCrop()
+                        .into(productItemBinding.imageViewProductImage);
+                Glide.with(context)
+                        .load(productContent.getBrandLogoUrl())
+                        .centerCrop()
+                        .into(productItemBinding.imageViewBrangLogo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             try {
                 productItemBinding.tvOriginalPrice.setText("KWD " + productContent.getDiscountPrice());
@@ -142,6 +146,7 @@ public abstract class ProductPagedListAdapter extends PagedListAdapter<Product, 
                     productItemBinding.tvOriginalPrice.setPaintFlags(productItemBinding.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
 
+                productItemBinding.tvBrandName.setText(productContent.getManufature().getManufactureDescriptions().get(0).getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -99,8 +99,9 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     private HashMap<String, DynamicUiResponse.UiData> dynamicUiDataHashmap = new HashMap<>();
     private List<Category> allCategoryList = new ArrayList<>();
     private String searchQuery = "";
-    private String currentlyShowingProductId = "";
+    boolean isUserLoggedin = false;
     private BadgeDrawable bottomBarBadgeDrawable, appBarBadgeDrawable;
+    private String currentlyShowingProductId = "", currentlyShowingProductName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
         PreferenceHandler preferenceHandler = new PreferenceHandler(this, PreferenceHandler.TOKEN_LOGIN);
         String username = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
-        boolean isUserLoggedin = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+        isUserLoggedin = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
         String userId = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
         //Setting analytics default parameter
         if (isUserLoggedin) {
@@ -422,7 +423,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 replaceFragment(R.id.fragment_replacer, new NotificationFragment(), null, true, false);
                 return true;
             case R.id.action_share:
-                shareProduct(currentlyShowingProductId);
+                shareProduct(currentlyShowingProductId, currentlyShowingProductName);
+                return true;
+            case R.id.action_bag:
+                handleActionMenuBar(true, true, "My Bag");
+                replaceFragment(R.id.fragment_replacer_product, new MyCartFragment(), null, true, false);
                 return true;
             default:
                 super.onOptionsItemSelected(item);
@@ -597,6 +602,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
                 handleActionMenuBar(false, true, "");
+                callMyCartApi();
             }
 
         }
@@ -767,12 +773,12 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     }
 
 
-    public void shareProduct(String productId) {
+    public void shareProduct(String productId, String currentlyShowingProductName) {
         handleSocialShare(true);
         String url = createDynamicLink(productId);
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Install Sears Outlet App to shop world's most famous brands at great prices!\n" +
+        sendIntent.putExtra(Intent.EXTRA_TEXT, this.currentlyShowingProductName + "\n" +
                 url);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
@@ -922,6 +928,14 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     public void setCurrentlyShowingProductId(String currentlyShowingProductId) {
         this.currentlyShowingProductId = currentlyShowingProductId;
+    }
+
+    public String getCurrentlyShowingProductName() {
+        return currentlyShowingProductName;
+    }
+
+    public void setCurrentlyShowingProductName(String currentlyShowingProductName) {
+        this.currentlyShowingProductName = currentlyShowingProductName;
     }
 
     public String createDynamicLink(String productId) {

@@ -27,13 +27,13 @@
                 android:id="@+id/textView63"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/actual_price_caps"
                 android:textColor="@color/cart_grey"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
-                app:layout_constraintTop_toBottomOf="@+id/textView71" />
+                app:layout_constraintTop_toBottomOf="@+id/textView116" />
 
             <TextView
                 android:id="@+id/tvOriginalPrice"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="KWD 400"
+                android:text="KWD 0"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView63"
@@ -51,9 +51,9 @@
                 android:id="@+id/tvOfferPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="FLAT 30% OFF"
+                android:text="FLAT 0% OFF"
                 android:textColor="@color/txt_clr_green"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/textView63"
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:background="@drawable/cart_grey_outlined_rounded_rectangle"
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal"
@@ -159,10 +159,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="KWD 300"
-                android:visibility="visible"
+                android:text="KWD 0"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/txt_amount_to_pay"
                 app:layout_constraintStart_toEndOf="@+id/txt_amount_to_pay" />
 
@@ -197,7 +197,7 @@
                 android:id="@+id/tvBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="4dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text=""
                 android:textColor="@color/txt_clr_blue"
@@ -217,11 +217,57 @@
                 app:layout_constraintStart_toStartOf="@+id/tvOfferPercent"
                 app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
 
+            <TextView
+                android:id="@+id/textView115"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/size_hiphen"
+                android:textColor="@color/cart_grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView71"
+                app:layout_constraintTop_toBottomOf="@+id/textView71" />
+
+            <TextView
+                android:id="@+id/textView116"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/color"
+                android:textColor="@color/cart_grey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView71"
+                app:layout_constraintTop_toBottomOf="@+id/textView115" />
+
+            <TextView
+                android:id="@+id/tvSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView115"
+                app:layout_constraintStart_toEndOf="@+id/textView115" />
+
+            <TextView
+                android:id="@+id/tvColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView116"
+                app:layout_constraintStart_toEndOf="@+id/textView116" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="130dp"
-            android:layout_height="210dp"
+            android:layout_height="250dp"
             android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
 
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"

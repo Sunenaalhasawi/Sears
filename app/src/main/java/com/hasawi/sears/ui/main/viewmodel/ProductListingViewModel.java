@@ -8,6 +8,7 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.hasawi.sears.data.api.Resource;
+import com.hasawi.sears.data.api.model.pojo.Category;
 import com.hasawi.sears.data.api.model.pojo.FilterAttributeValues;
 import com.hasawi.sears.data.api.model.pojo.Product;
 import com.hasawi.sears.data.api.response.WishlistResponse;
@@ -34,6 +35,7 @@ public class ProductListingViewModel extends ViewModel {
     private LiveData<PagedList<Product>> productPaginationLiveData;
     private LiveData<Map<String, List<FilterAttributeValues>>> filterAttributeMap;
     private LiveData<List<String>> sortStrings;
+    private LiveData<List<Category>> categoryList;
 
 
     public ProductListingViewModel() {
@@ -58,7 +60,8 @@ public class ProductListingViewModel extends ViewModel {
                 dataSource -> dataSource.getFilterAttributeMap());
         sortStrings = Transformations.switchMap(productDataFactory.getMutableLiveData(),
                 dataSource -> dataSource.getSortStrings());
-
+        categoryList = Transformations.switchMap(productDataFactory.getMutableLiveData(),
+                dataSource -> dataSource.getCategoryList());
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
                         .setEnablePlaceholders(false)
@@ -114,6 +117,10 @@ public class ProductListingViewModel extends ViewModel {
 
     public LiveData<List<String>> getSortStrings() {
         return sortStrings;
+    }
+
+    public LiveData<List<Category>> getCategoryList() {
+        return categoryList;
     }
     //    public MutableLiveData<Map<String, List<FilterAttributeValues>>> getFilterData() {
 //        return filterAttributesLiveData;

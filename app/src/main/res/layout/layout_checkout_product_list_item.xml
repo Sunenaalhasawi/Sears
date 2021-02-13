@@ -20,7 +20,7 @@
             android:fontFamily="@font/avantgarde_bold"
             android:text="TextView"
             android:textColor="@color/cart_grey"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/tvProductPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
             android:fontFamily="@font/avantgarde_bold"
             android:text="KWD 20"
             android:textColor="@color/txt_clr_blue"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

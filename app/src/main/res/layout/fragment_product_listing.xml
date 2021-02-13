@@ -24,7 +24,7 @@
             android:textColor="@color/txt_clr_blue"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories" />
 
         <View
             android:layout_width="0dp"
@@ -62,16 +62,16 @@
                 tools:visibility="gone" />
         </LinearLayout>
 
-        <!--                <androidx.recyclerview.widget.RecyclerView-->
-        <!--                    android:id="@+id/recyclerViewCategories"-->
-        <!--                    android:layout_width="0dp"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:layout_marginStart="16dp"-->
-        <!--                    android:layout_marginTop="16dp"-->
-        <!--                    android:layout_marginEnd="16dp"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCategories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
         <!--            android:id="@+id/swipeRefreshProducts"-->
@@ -110,18 +110,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_top_deals_heading" />
 
 
-
-        <View
-            android:id="@+id/view6"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/light_grey"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <View
             android:id="@+id/view7"
             android:layout_width="0dp"
@@ -139,7 +127,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal"
             android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/lv_filter"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -169,10 +157,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/light_grey"
-            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintBottom_toBottomOf="@id/lv_sort"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view7" />
+            app:layout_constraintTop_toTopOf="@+id/lv_sort" />
 
 
         <LinearLayout
@@ -183,7 +171,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal"
             android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lv_sort">
 
@@ -238,6 +226,7 @@
             android:id="@+id/fragment_replacer_product"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

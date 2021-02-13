@@ -23,7 +23,7 @@
     <string name="wishlist_caps">WISHLIST</string>
     <string name="category_caps">CATEGORY</string>
     <string name="profile_caps">PROFILE</string>
-    <string name="cart_caps">CART</string>
+    <string name="cart_caps">BAG</string>
     <string name="continue_caps">CONTINUE</string>
     <string name="click_here_to_continue_category">Click Here To Continue Category of Products</string>
     <string name="click_here_to_continue_gender">Click Here To Continue Gender</string>
@@ -153,7 +153,7 @@
     <string name="female">Female</string>
     <string name="your_product_size">Your Product Size</string>
     <string name="size_no_colon">Size</string>
-    <string name="add_to_cart">ADD TO CART</string>
+    <string name="add_to_cart">ADD TO BAG</string>
     <string name="buy_now">BUY NOW</string>
     <string name="product_details">Product Details :</string>
     <string name="services">Services :</string>
@@ -193,9 +193,9 @@
     <string name="save">Save</string>
     <string name="search_hint_sears">What are you looking for ?</string>
     <string name="awesome_choice">Awesome Choice !</string>
-    <string name="product_added_to_cart">Product has been added to cart successfully</string>
+    <string name="product_added_to_cart">Product has been added to bag successfully</string>
     <string name="continue_shopping">Continue Shopping</string>
-    <string name="view_cart">View Cart</string>
+    <string name="view_cart">View Bag</string>
     <string name="original_price">Original Price:</string>
     <string name="actual_price">Actual Price:</string>
     <string name="hurry_only_left">Hurry, Only 3 Left</string>
@@ -208,7 +208,7 @@
     <string name="back">BACK</string>
     <string name="actual_price_caps">ACTUAL PRICE - </string>
     <string name="amount_to_pay">AMOUNT TO PAY</string>
-    <string name="brand">"BRAND - "</string>
+    <string name="brand">BRAND-</string>
     <string name="order_qty">ORDER QTY -</string>
     <string name="totoal_items_in">Total items in</string>
     <string name="total_amount_to_pay">Total amount to pay</string>
@@ -270,7 +270,7 @@
 
     <string name="it_empty_wishlist">It\'s empty here !</string>
     <string name="follow_collections">Follow collections you love to find them here</string>
-    <string name="your_cart_empty">Your cart is empty!</string>
+    <string name="your_cart_empty">Your bag is empty!</string>
     <string name="add_items_to_it">Add items to it now</string>
     <string name="shop_now">Shop Now</string>
     <string name="default_notification_channel_id">DEFAULT NOTIFICATION CHANNEL</string>
@@ -381,5 +381,15 @@
     </string>
     <string name="chat">Chat</string>
     <string name="bag_caps">BAG</string>
+    <string name="size_hiphen">SIZE-</string>
+    <string name="color">COLOR-</string>
+    <string name="success">Success</string>
+    <string name="thanks_for_registering">Thanks for Registering</string>
+
+    <string name="insider_points">INSIDER POINTS</string>
+    <string name="total_points">Total Points:</string>
+    <string name="used_points">Used Points:</string>
+    <string name="like_to_redeem">Would you like to redeem points?</string>
+    <string name="redeem_points">REDEEM POINTS</string>
 
 </resources>

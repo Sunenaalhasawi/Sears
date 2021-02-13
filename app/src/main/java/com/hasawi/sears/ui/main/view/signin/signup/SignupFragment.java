@@ -1,7 +1,6 @@
 package com.hasawi.sears.ui.main.view.signin.signup;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
@@ -14,11 +13,12 @@ import com.facebook.appevents.AppEventsLogger;
 import com.hasawi.sears.R;
 import com.hasawi.sears.databinding.FragmentSignupBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
-import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.SignupViewModel;
 import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.PreferenceHandler;
+import com.hasawi.sears.utils.dialogs.GeneralDialog;
+import com.hasawi.sears.utils.dialogs.RegistrationSuccessDialog;
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
@@ -147,23 +147,24 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                                 e.printStackTrace();
                             }
 
-                            Intent intent = new Intent(signinActivity, DashboardActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+                            RegistrationSuccessDialog registrationSuccessDialog = new RegistrationSuccessDialog(signinActivity);
+                            registrationSuccessDialog.show(getParentFragmentManager(), "REG_SUCCESS_DIALOG");
+
                             break;
                         case LOADING:
                             break;
                         case ERROR:
                             String error = signupResponse.message;
-                            String errorcode = signupResponse.data.getStatusCode() + "";
                             String date = "";
                             try {
                                 date = DateTimeUtils.getCurrentStringDateTime();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            logREGISTRATION_FAILEDEvent(error, errorcode, date);
+                            logREGISTRATION_FAILEDEvent(error, date);
                             Toast.makeText(signinActivity, signupResponse.message, Toast.LENGTH_SHORT).show();
+                            GeneralDialog generalDialog = new GeneralDialog("Error", error);
+                            generalDialog.show(getParentFragmentManager(), "GENERAL_DIALOG");
                             break;
                     }
                 });
@@ -270,10 +271,9 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
      * This function assumes logger is an instance of AppEventsLogger and has been
      * created using AppEventsLogger.newLogger() call.
      */
-    public void logREGISTRATION_FAILEDEvent(String error, String error_code, String registration_date) {
+    public void logREGISTRATION_FAILEDEvent(String error, String registration_date) {
         Bundle params = new Bundle();
         params.putString("error", error);
-        params.putString("error_code", error_code);
         params.putString("registration_date", registration_date);
         logger.logEvent("REGISTRATION_FAILED", params);
         signinActivity.getmFirebaseAnalytics().logEvent("REGISTRATION_FAILED", params);

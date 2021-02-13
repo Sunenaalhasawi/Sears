@@ -120,6 +120,12 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
                 resetilterData();
             }
         });
+        fragmentFilterBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dashboardActivity.onBackPressed();
+            }
+        });
 
     }
 

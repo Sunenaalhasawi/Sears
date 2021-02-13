@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+      >
 
         <ImageView
             android:id="@+id/imageViewProduct"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/view10"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,34 +28,50 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="--"
             android:fontFamily="@font/avantgarde_regular"
-            android:text="Product Name"
             android:textColor="@color/txt_clr_blue"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/view10"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewRightArrow"
-            app:layout_constraintStart_toEndOf="@+id/imageViewProduct"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageViewRightArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_right_arrow_blue_small"
-            app:layout_constraintBottom_toTopOf="@id/view10"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewProduct"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/view10"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginRight="16dp"
             android:background="@color/light_grey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvProductDescrption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="--"
+            android:textColor="@color/cart_grey"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_product_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvProductDescrption"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductDescrption" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

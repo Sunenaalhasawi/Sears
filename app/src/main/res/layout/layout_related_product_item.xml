@@ -121,12 +121,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/textView17"
             app:layout_constraintEnd_toEndOf="@+id/tv_product_rating" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/radioButtonWishlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@null"
             android:button="@drawable/custom_radio_button_wishlist"
             android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"

@@ -26,9 +26,9 @@
             android:id="@+id/constraintLayout10"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/grey_outlined_rounded_rectangle_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -293,156 +293,176 @@
             app:layout_constraintTop_toBottomOf="@+id/lvShippingAddress" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/grey_outlined_rounded_rectangle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewProducts">
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout18"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout18"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout18">
+
+
+            <View
+                android:id="@+id/viewHorizontal2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/horizontal_small_dashed_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView120" />
+
+            <View
+                android:id="@+id/view13"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/vertical_dashed_line"
+                app:layout_constraintBottom_toTopOf="@+id/viewHorizontal2"
+                app:layout_constraintStart_toEndOf="@+id/textView117"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/viewHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/horizontal_small_dashed_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView68" />
+
+            <TextView
+                android:id="@+id/textView117"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/insider_points"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView118"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/total_points"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/textView117"
+                app:layout_constraintTop_toBottomOf="@+id/textView117" />
+
+            <TextView
+                android:id="@+id/textView120"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/used_points"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/textView118"
+                app:layout_constraintTop_toBottomOf="@+id/textView118" />
+
+            <TextView
+                android:id="@+id/textView122"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/like_to_redeem"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView123"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view13"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/textView123"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_check_circle_outline"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/redeem_points"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/viewHorizontal2"
+                app:layout_constraintEnd_toEndOf="@+id/textView122"
+                app:layout_constraintStart_toStartOf="@+id/textView122"
+                app:layout_constraintTop_toBottomOf="@+id/textView122"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tvTotalPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="1000"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView118"
+                app:layout_constraintStart_toEndOf="@+id/textView118" />
+
+            <TextView
+                android:id="@+id/tvUsedPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="200"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView120"
+                app:layout_constraintStart_toEndOf="@+id/textView120" />
 
             <TextView
                 android:id="@+id/textView77"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_regular"
-                android:text="@string/total"
+                android:text="@string/total_amount"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvtotal"
-                app:layout_constraintStart_toStartOf="@+id/textView67"
-                app:layout_constraintTop_toTopOf="@+id/tvtotal"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/tvtotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="KWD 0"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView77"
-                app:layout_constraintTop_toBottomOf="@+id/textView67"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/textView79"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/avantgarde_regular"
-                android:text="@string/apply_counpon_code"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/grey_outlined_rectangle"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView79"
-                app:layout_constraintTop_toBottomOf="@+id/textView79">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edtCouponCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/avantgarde_bold"
-                    android:textColor="@color/txt_clr_blue"
-                    android:textSize="10sp" />
-
-
-                <TextView
-                    android:id="@+id/tvApplyCoupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@color/txt_clr_blue"
-                    android:fontFamily="@font/avantgarde_bold"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="@string/apply_caps"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
-
-                <TextView
-                    android:id="@+id/tvRemoveCoupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@color/txt_clr_blue"
-                    android:fontFamily="@font/avantgarde_bold"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="@string/remove_caps"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView80"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/avantgarde_regular"
-                android:text="@string/conditions_apply"
-                android:textColor="@color/txt_clr_blue"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView79"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
-
-            <View
-                android:id="@+id/view13"
-                android:layout_width="2dp"
-
-                android:layout_height="0dp"
-                android:background="@drawable/vertical_dashed_line"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvtotal"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tvtotal" />
 
             <TextView
                 android:id="@+id/textView68"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:drawableLeft="@drawable/tag"
                 android:drawablePadding="4dp"
                 android:fontFamily="@font/avantgarde_regular"
                 android:text="@string/sub_total_amount"
                 android:textColor="@color/cart_grey"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/viewHorizontal2" />
 
             <TextView
                 android:id="@+id/tvSubTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="KWD 0.00"
                 android:textColor="@color/txt_clr_blue"
@@ -456,27 +476,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
                 android:drawableLeft="@drawable/discount"
                 android:drawablePadding="4dp"
                 android:fontFamily="@font/avantgarde_regular"
                 android:text="@string/discount_amount"
                 android:textColor="@color/cart_grey"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="@+id/textView68"
-                app:layout_constraintTop_toBottomOf="@+id/textView68" />
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tvDiscountAmount"
+                app:layout_constraintTop_toBottomOf="@+id/viewHorizontal2" />
 
             <TextView
                 android:id="@+id/tvDiscountAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="KWD 0.00"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView67"
-                app:layout_constraintStart_toEndOf="@+id/textView67"
-                app:layout_constraintTop_toTopOf="@+id/textView67" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewHorizontal2" />
+
+            <TextView
+                android:id="@+id/tvtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="KWD 0"
+                android:textColor="@color/txt_clr_green"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/textView77"
+                app:layout_constraintTop_toBottomOf="@+id/viewHorizontal" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -499,6 +539,89 @@
             app:layout_constraintEnd_toEndOf="@+id/recyclerviewPaymentmode"
             app:layout_constraintStart_toStartOf="@+id/textView38"
             app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout18"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle"
+            app:layout_constraintEnd_toEndOf="@+id/recyclerViewProducts"
+            app:layout_constraintStart_toStartOf="@+id/recyclerViewProducts"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewProducts">
+
+            <TextView
+                android:id="@+id/textView79"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/avantgarde_regular"
+                android:text="@string/apply_counpon_code"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/grey_outlined_rectangle"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView79"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCouponCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:text="MYFIRSTBUY"
+                    android:textColor="@color/txt_clr_blue"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/tvApplyCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@color/txt_clr_blue"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/apply_caps"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvRemoveCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@color/txt_clr_blue"
+                    android:fontFamily="@font/avantgarde_bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/remove_caps"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -29,8 +29,7 @@
         <activity
             android:name=".ui.main.view.signin.SigninActivity"
             android:hardwareAccelerated="true" />
-        <activity
-            android:name=".ui.main.view.user_details.UserPreferenceActivity" />
+        <activity android:name=".ui.main.view.user_details.UserPreferenceActivity" />
         <activity
             android:name=".ui.main.view.DashboardActivity"
             android:hardwareAccelerated="true"

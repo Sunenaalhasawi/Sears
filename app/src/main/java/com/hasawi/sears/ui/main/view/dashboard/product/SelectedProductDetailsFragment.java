@@ -127,6 +127,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     try {
                         currentSelectedProduct = searchedProductDetailsResponse.data.getData().getProduct();
                         dashboardActivity.setCurrentlyShowingProductId(currentSelectedProduct.getProductId());
+                        dashboardActivity.setCurrentlyShowingProductName(currentSelectedProduct.getDescriptions().get(0).getProductName() + "\n" + currentSelectedProduct.getDescriptions().get(0).getProductDescription());
                         if (currentSelectedProduct.getDescriptions() != null)
                             dashboardActivity.handleActionMenuBar(true, false, currentSelectedProduct.getDescriptions().get(0).getProductName());
                         recommendedProductList = (ArrayList<Product>) searchedProductDetailsResponse.data.getData().getRecommendedProductList();
