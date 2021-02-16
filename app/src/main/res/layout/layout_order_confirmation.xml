@@ -123,6 +123,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cvPaymentDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -648,14 +649,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/landmark_colon"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/textView23"
-                app:layout_constraintTop_toBottomOf="@+id/tv_pobox" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_rural_address" />
 
             <TextView
                 android:id="@+id/textView25"
@@ -745,12 +745,13 @@
 
             <TextView
                 android:id="@+id/tv_landmark"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="301dp"
+                android:layout_height="15dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/avantgarde_bold"
                 android:text="--"
+                android:visibility="gone"
                 android:textColor="@color/txt_clr_grey"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -800,6 +801,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView83"
                 app:layout_constraintTop_toTopOf="@+id/textView83" />
+
+            <TextView
+                android:id="@+id/textView80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/phone_colon"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/tv_counter_delivery" />
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="--"
+                android:textColor="@color/txt_clr_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_landmark"
+                app:layout_constraintStart_toEndOf="@+id/textView80"
+                app:layout_constraintTop_toTopOf="@+id/textView80" />
 
             <!--                <LinearLayout-->
             <!--                    android:id="@+id/btn_add_new_address"-->

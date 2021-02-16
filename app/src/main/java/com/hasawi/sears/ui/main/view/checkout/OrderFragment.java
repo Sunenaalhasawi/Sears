@@ -22,6 +22,7 @@ import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.viewmodel.OrderViewModel;
 import com.hasawi.sears.utils.DateTimeUtils;
 import com.hasawi.sears.utils.PreferenceHandler;
+import com.hasawi.sears.utils.dialogs.GeneralDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,12 +88,12 @@ public class OrderFragment extends BaseFragment {
 
             fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderedDate.setText(orderedDate);
             fragmentOrderReviewBinding.layoutOrderConfirmation.tvPurchaseDate.setText(orderedDate);
-            fragmentOrderReviewBinding.layoutOrderConfirmation.tvName.setText(orderConfirmedResponse.getOrderData().getCustomerName());
             Address shippingAddress = orderConfirmedResponse.getOrderData().getAddress();
+            fragmentOrderReviewBinding.layoutOrderConfirmation.tvName.setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
             fragmentOrderReviewBinding.layoutOrderConfirmation.tvStreetAddress.setText(shippingAddress.getStreet());
             fragmentOrderReviewBinding.layoutOrderConfirmation.tvRuralAddress.setText(shippingAddress.getFlat() + " " + shippingAddress.getBlock());
             fragmentOrderReviewBinding.layoutOrderConfirmation.tvLandmark.setText(shippingAddress.getArea());
-
+            fragmentOrderReviewBinding.layoutOrderConfirmation.tvPhone.setText(shippingAddress.getMobile());
             List<OrderTrack> orderTrackList = orderConfirmedResponse.getOrderData().getOrderTrackList();
             for (int i = 0; i < orderTrackList.size(); i++) {
                 OrderTrack orderTrackItem = orderTrackList.get(i);
@@ -101,11 +102,14 @@ public class OrderFragment extends BaseFragment {
                     fragmentOrderReviewBinding.layoutOrderConfirmation.tvOrderedDate.setText(orderedDate);
                 }
             }
-            fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentDate.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getTransactionDate());
-            fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentAmount.setText("KWD " + orderConfirmedResponse.getOrderData().getTotal());
-            fragmentOrderReviewBinding.layoutOrderConfirmation.tvReferenceNo.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getReferenceId());
-            fragmentOrderReviewBinding.layoutOrderConfirmation.tvTransactionId.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getTransactionId());
+            if (orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse() != null) {
+                fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentDate.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getTransactionDate());
+                fragmentOrderReviewBinding.layoutOrderConfirmation.tvPaymentAmount.setText("KWD " + orderConfirmedResponse.getOrderData().getTotal());
+                fragmentOrderReviewBinding.layoutOrderConfirmation.tvReferenceNo.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getReferenceId());
+                fragmentOrderReviewBinding.layoutOrderConfirmation.tvTransactionId.setText(orderConfirmedResponse.getOrderData().getGetPaymentStatusResponse().getInvoiceTransactions().get(0).getTransactionId());
+            }
             logPurchaseEvent();
+            dashboardActivity.setCartBadgeNumber(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,7 +212,9 @@ public class OrderFragment extends BaseFragment {
                     break;
                 case ERROR:
                     try {
-                        Toast.makeText(dashboardActivity, orderResponseResource.message, Toast.LENGTH_SHORT).show();
+                        GeneralDialog generalDialog = new GeneralDialog("Error", orderResponseResource.message);
+                        generalDialog.show(getParentFragmentManager(), "GENERAL_DIALOG");
+//                        Toast.makeText(dashboardActivity, orderResponseResource.data.getMessage(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

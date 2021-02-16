@@ -14,6 +14,7 @@ import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
 import com.hasawi.sears.databinding.LayoutCartRecyclerItemBinding;
 import com.hasawi.sears.ui.main.view.DashboardActivity;
+import com.hasawi.sears.utils.dialogs.GeneralDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,9 +122,15 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
             holder.cartRecyclerItemBinding.imageAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (shoppingCartItem.getProductConfigurable().getQuantity() >= 1)
+                    cartCount = Integer.parseInt(holder.cartRecyclerItemBinding.tvCartCount.getText().toString());
+                    if (shoppingCartItem.getProductConfigurable().getQuantity() >= 1 && cartCount < shoppingCartItem.getProductConfigurable().getQuantity()) {
                         if (cartCount >= 0)
                             cartCount++;
+                    } else {
+                        GeneralDialog generalDialog = new GeneralDialog("Error", "Maximum quantity reached for this product");
+                        generalDialog.show(dashboardActivity.getSupportFragmentManager(), "GENERAL_DIALOG");
+                    }
+
                     holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
                     cartItemsUpdated(shoppingCartItem, cartCount, true);
                 }
@@ -131,6 +138,7 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
             holder.cartRecyclerItemBinding.imageSubtract.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    cartCount = Integer.parseInt(holder.cartRecyclerItemBinding.tvCartCount.getText().toString());
                     if (cartCount > 1) {
                         cartCount--;
                         holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");

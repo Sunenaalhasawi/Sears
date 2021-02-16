@@ -49,12 +49,14 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (selectedOrder.getPaymentType() != null)
                     fragmentOrderDetailsBinding.tvPaymentMode.setText(selectedOrder.getPaymentType());
                 if (selectedOrder.getAddress() != null) {
+                    fragmentOrderDetailsBinding.tvName.setText(selectedOrder.getAddress().getFirstName() + " " + selectedOrder.getAddress().getLastName());
                     if (selectedOrder.getAddress().getStreet() != null)
                         fragmentOrderDetailsBinding.tvStreetAddress.setText(selectedOrder.getAddress().getStreet());
                     if (selectedOrder.getAddress().getFlat() != null && selectedOrder.getAddress().getBlock() != null)
                         fragmentOrderDetailsBinding.tvRuralAddress.setText(selectedOrder.getAddress().getFlat() + " " + selectedOrder.getAddress().getBlock());
                     if (selectedOrder.getAddress().getArea() != null)
                         fragmentOrderDetailsBinding.tvLandmark.setText(selectedOrder.getAddress().getArea());
+                    fragmentOrderDetailsBinding.tvMobile.setText(selectedOrder.getAddress().getMobile());
                 }
 
                 if (selectedOrder.getTotal() != null)
@@ -62,12 +64,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (selectedOrder.getDiscounted() != null)
                     fragmentOrderDetailsBinding.tvSavedAmount.setText("KWD " + selectedOrder.getDiscounted());
                 PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-                String name = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
                 String mobile = preferenceHandler.getData(PreferenceHandler.LOGIN_PHONENUMBER, "");
                 String email = preferenceHandler.getData(PreferenceHandler.LOGIN_EMAIL, "");
-                fragmentOrderDetailsBinding.tvName.setText(name);
+
                 fragmentOrderDetailsBinding.tvMailId.setText(email);
-                fragmentOrderDetailsBinding.tvMobile.setText(mobile);
+
 
                 fragmentOrderDetailsBinding.recyclerviewProducts.setLayoutManager(new LinearLayoutManager(getActivity()));
                 orderedProductsAdapter = new OrderedProductsAdapter(selectedOrder, getActivity());

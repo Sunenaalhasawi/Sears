@@ -2,6 +2,7 @@ package com.hasawi.sears.ui.main.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,12 @@ public class ProductSizeAdapter extends RecyclerView.Adapter<ProductSizeAdapter.
             holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle));
             holder.productSizeAdapterItemBinding.tvSize.setTextColor(context.getResources().getColor(R.color.text_grey));
         }
+        if (sizeList.get(position).getQuantity() == 0) {
+            holder.productSizeAdapterItemBinding.tvSize.setBackground(context.getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle));
+            holder.productSizeAdapterItemBinding.tvSize.setTextColor(context.getResources().getColor(R.color.text_grey));
+            holder.productSizeAdapterItemBinding.tvSize.setPaintFlags(holder.productSizeAdapterItemBinding.tvSize.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
 
     }
 

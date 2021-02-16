@@ -391,5 +391,6 @@
     <string name="used_points">Used Points:</string>
     <string name="like_to_redeem">Would you like to redeem points?</string>
     <string name="redeem_points">REDEEM POINTS</string>
+    <string name="phone_colon">Phone:</string>
 
 </resources>

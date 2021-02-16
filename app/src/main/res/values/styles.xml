@@ -99,4 +99,9 @@
         <item name="colorPrimaryDark">@color/app_blue</item>
     </style>
 
+    <style name="GreenRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/txt_clr_blue</item>
+        <item name="colorControlActivated">@color/txt_clr_green</item>
+    </style>
+
 </resources>

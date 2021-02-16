@@ -602,7 +602,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
                 handleActionMenuBar(false, true, "");
-                callMyCartApi();
             }
 
         }
@@ -881,7 +880,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         bottomBarBadgeDrawable.setBadgeTextColor(getResources().getColor(R.color.white));
         bottomBarBadgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
         setCartBadgeNumber(0);
-        callMyCartApi();
+        if (isUserLoggedin)
+            callMyCartApi();
     }
 
     public void setCartBadgeNumber(int cartCount) {

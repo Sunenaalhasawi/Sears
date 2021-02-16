@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.hasawi.sears.R;
+import com.hasawi.sears.data.api.Resource;
 import com.hasawi.sears.data.api.model.pojo.ShoppingCartItem;
+import com.hasawi.sears.data.api.response.CartResponse;
 import com.hasawi.sears.databinding.FragmentCartBinding;
 import com.hasawi.sears.ui.base.BaseFragment;
 import com.hasawi.sears.ui.main.adapters.CartAdapter;
@@ -20,6 +22,7 @@ import com.hasawi.sears.ui.main.view.DashboardActivity;
 import com.hasawi.sears.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears.ui.main.viewmodel.CartViewModel;
 import com.hasawi.sears.utils.PreferenceHandler;
+import com.hasawi.sears.utils.dialogs.GeneralDialog;
 
 import org.json.JSONObject;
 
@@ -40,6 +43,8 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     String cartId;
     boolean isUserLoggedIn = false;
     DashboardActivity dashboardActivity;
+    List<ShoppingCartItem> availableItemList = new ArrayList<>();
+    List<ShoppingCartItem> outOfStockItemList = new ArrayList<>();
     boolean isQuantityIncreased;
 
     @Override
@@ -110,8 +115,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvContinueOrder:
-                dashboardActivity.handleActionMenuBar(true, false, "Checkout");
-                dashboardActivity.replaceFragment(R.id.fragment_replacer, new CheckoutFragment(), null, true, false);
+                if (outOfStockItemList.size() > 0) {
+                    GeneralDialog generalDialog = new GeneralDialog("Error", "Please remove out of stock items from the bag to proceed?");
+                    generalDialog.show(getParentFragmentManager(), "GENERAL_DIALOG");
+                } else {
+                    dashboardActivity.handleActionMenuBar(true, false, "Checkout");
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new CheckoutFragment(), null, true, false);
+                }
                 break;
             case R.id.btnShopNow:
                 int fragmentCount = getParentFragmentManager().getBackStackEntryCount();
@@ -130,39 +140,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         cartViewModel.getCartItems(userID, sessionToken).observe(this, cartResponse -> {
             switch (cartResponse.status) {
                 case SUCCESS:
-                    try {
-                        cartItemsList = new ArrayList<>();
-                        List<ShoppingCartItem> availableItems = cartResponse.data.getCartData().getAvailable();
-                        for (int i = 0; i < availableItems.size(); i++) {
-                            availableItems.get(i).setOutOfStock(false);
-                            cartItemsList.add(availableItems.get(i));
-                        }
-                        List<ShoppingCartItem> outofStockItems = cartResponse.data.getCartData().getOutOfStock();
-                        for (int i = 0; i < outofStockItems.size(); i++) {
-                            outofStockItems.get(i).setOutOfStock(true);
-                            cartItemsList.add(outofStockItems.get(i));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if (cartItemsList.size() == 0) {
-                        fragmentCartBinding.cvLoggedUserEmptyCart.setVisibility(View.VISIBLE);
-                    } else {
-                        try {
-                            cartId = cartResponse.data.getCartData().getShoppingCartId();
-                            PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
-                            preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_CART_ID, cartId);
-                            totalPrice = cartResponse.data.getCartData().getTotal() + "";
-                            cartCount = cartResponse.data.getCartData().getShoppingCartItems().size();
-                            cartAdapter.addAll(cartItemsList);
-                            setUiValues();
-                            dashboardActivity.setCartBadgeNumber(cartCount);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
+                    updateCartValues(cartResponse);
                     try {
                         logViewCartEvent((ArrayList<ShoppingCartItem>) cartResponse.data.getCartData().getShoppingCartItems(), cartResponse.data.getCartData().getTotal());
                     } catch (Exception e) {
@@ -179,12 +157,49 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
+    private void updateCartValues(Resource<CartResponse> cartResponse) {
+        try {
+            cartItemsList = new ArrayList<>();
+            availableItemList = cartResponse.data.getCartData().getAvailable();
+            for (int i = 0; i < availableItemList.size(); i++) {
+                availableItemList.get(i).setOutOfStock(false);
+                cartItemsList.add(availableItemList.get(i));
+            }
+            outOfStockItemList = cartResponse.data.getCartData().getOutOfStock();
+            for (int i = 0; i < outOfStockItemList.size(); i++) {
+                outOfStockItemList.get(i).setOutOfStock(true);
+                cartItemsList.add(outOfStockItemList.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (cartItemsList.size() == 0) {
+            fragmentCartBinding.cvLoggedUserEmptyCart.setVisibility(View.VISIBLE);
+        } else {
+            try {
+                cartId = cartResponse.data.getCartData().getShoppingCartId();
+                PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
+                preferenceHandler.saveData(PreferenceHandler.LOGIN_USER_CART_ID, cartId);
+                totalPrice = cartResponse.data.getCartData().getTotal() + "";
+                cartCount = cartResponse.data.getCartData().getItemCount();
+                cartAdapter.addAll(cartItemsList);
+                setUiValues();
+                dashboardActivity.setCartBadgeNumber(cartCount);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void removeItemFromCartApi(ShoppingCartItem shoppingCartItem) {
 
         cartViewModel.removeItemFromCart(userID, shoppingCartItem.getShoppingCartItemId(), sessionToken).observe(this, cartResponse -> {
             switch (cartResponse.status) {
                 case SUCCESS:
                     Toast.makeText(dashboardActivity, "Removed item from cart successfully", Toast.LENGTH_SHORT).show();
+                    cartCount = cartResponse.data.getCartData().getItemCount();
+                    dashboardActivity.setCartBadgeNumber(cartCount);
 //                    cartItemsList = cartResponse.data.getCartData().getShoppingCartItems();
 //                    if (cartItemsList.size() == 0) {
 //                        fragmentCartBinding.cvLoggedUserEmptyCart.setVisibility(View.VISIBLE);
@@ -214,20 +229,18 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         jsonParams.put("quantity", quantity);
 
         String jsonParamString = (new JSONObject(jsonParams)).toString();
-        cartViewModel.updateCartItems(userID, jsonParamString, sessionToken).observe(getActivity(), addToCartResponse -> {
+        cartViewModel.updateCartItems(userID, jsonParamString, sessionToken).observe(getActivity(), cartResponseResource -> {
             fragmentCartBinding.progressBar.setVisibility(View.GONE);
-            switch (addToCartResponse.status) {
+            switch (cartResponseResource.status) {
                 case SUCCESS:
-                    totalPrice = addToCartResponse.data.getCartData().getTotal() + "";
-                    cartCount = addToCartResponse.data.getCartData().getShoppingCartItems().size();
-                    setUiValues();
+                    updateCartValues(cartResponseResource);
                     Toast.makeText(dashboardActivity, "Cart Updated Successfully", Toast.LENGTH_SHORT).show();
                     break;
                 case LOADING:
                     break;
                 case ERROR:
                     cartAdapter.addAll(cartItemsList);
-                    Toast.makeText(dashboardActivity, addToCartResponse.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dashboardActivity, cartResponseResource.message, Toast.LENGTH_SHORT).show();
                     break;
             }
         });

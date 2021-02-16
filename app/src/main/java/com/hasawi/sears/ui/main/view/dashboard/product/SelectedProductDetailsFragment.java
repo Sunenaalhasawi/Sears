@@ -580,7 +580,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                         cartDialog.show(getParentFragmentManager(), "CART_DIALOG");
                     }
                     try {
-                        int cartCount = addToCartResponse.data.getCartData().getItemCount();
+                        int cartCount = addToCartResponse.data.getCartData().getAvailable().size();
                         dashboardActivity.setCartBadgeNumber(cartCount);
                     } catch (Exception e) {
                         e.printStackTrace();

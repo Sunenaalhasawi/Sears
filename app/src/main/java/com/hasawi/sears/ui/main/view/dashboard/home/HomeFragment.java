@@ -123,12 +123,12 @@ public class HomeFragment extends BaseFragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         dashboardActivity = (DashboardActivity) getActivity();
         dashboardActivity.handleActionBarIcons(true);
-        fragmentHomeBinding.carouselViewBanners.setImageListener(imageListener);
+//        fragmentHomeBinding.carouselViewBanners.setImageListener(imageListener);
         try {
-            if (bannerList != null)
-                fragmentHomeBinding.carouselViewBanners.setPageCount(bannerList.size());
-            else
-                fragmentHomeBinding.carouselViewBanners.setPageCount(0);
+//            if (bannerList != null)
+//                fragmentHomeBinding.carouselViewBanners.setPageCount(bannerList.size());
+//            else
+//                fragmentHomeBinding.carouselViewBanners.setPageCount(0);
             homeDynamicUiAdapter = new HomeDynamicUiAdapter(sectionList, getContext()) {
                 @Override
                 public void onGridClicked(HomeSectionElement homeSectionElement) {

@@ -36,7 +36,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:text="@null"
-            android:buttonTint="@color/txt_clr_blue"
+            android:theme="@style/GreenRadioButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

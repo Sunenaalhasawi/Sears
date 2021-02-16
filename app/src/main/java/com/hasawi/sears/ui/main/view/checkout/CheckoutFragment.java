@@ -184,7 +184,11 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                         shippingModeList = checkoutResponseResource.data.getCheckoutData().getShippingModes();
                         setShippingModeAdapter(shippingModeList);
                         fragmentCheckoutNewBinding.layoutCheckout.recyclerviewPaymentmode.setAdapter(paymentModeAdapter);
-                        fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount());
+
+                        if (checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount() != null)
+                            fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getDiscountedAmount());
+                        else
+                            fragmentCheckoutNewBinding.layoutCheckout.tvDiscountAmount.setText("KWD 0.00");
                         fragmentCheckoutNewBinding.layoutCheckout.tvItemCount.setText("Bag " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getAvailable().size());
                         fragmentCheckoutNewBinding.layoutCheckout.tvtotal.setText(checkoutResponseResource.data.getCheckoutData().getShoppingCart().getTotal() + "");
                         fragmentCheckoutNewBinding.layoutCheckout.tvSubTotalAmount.setText("KWD " + checkoutResponseResource.data.getCheckoutData().getShoppingCart().getSubTotal());
@@ -249,6 +253,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case R.id.tvApplyCoupon:
+                dashboardActivity.hideSoftKeyboard(dashboardActivity);
                 couponCode = fragmentCheckoutNewBinding.layoutCheckout.edtCouponCode.getText().toString();
                 if (couponCode.equals(""))
                     Toast.makeText(dashboardActivity, "Invalid Coupon code", Toast.LENGTH_SHORT).show();
@@ -256,6 +261,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
                 break;
             case R.id.tvRemoveCoupon:
+                dashboardActivity.hideSoftKeyboard(dashboardActivity);
                 couponCode = "";
                 dashboardActivity.showMessageToast("Coupon Removed", Toast.LENGTH_SHORT);
                 callCheckoutApi(userId, cartId, couponCode, sessionToken, shippingId);
