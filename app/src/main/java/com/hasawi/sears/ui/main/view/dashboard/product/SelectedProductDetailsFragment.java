@@ -34,6 +34,7 @@ import com.hasawi.sears.databinding.ActivityImageShowingBinding;
 import com.hasawi.sears.databinding.FragmentSelectedProductDetailsBinding;
 import com.hasawi.sears.ui.base.BaseActivity;
 import com.hasawi.sears.ui.base.BaseFragment;
+import com.hasawi.sears.ui.base.Sears;
 import com.hasawi.sears.ui.main.adapters.OffersAdapter;
 import com.hasawi.sears.ui.main.adapters.ProductAttributesAdapter;
 import com.hasawi.sears.ui.main.adapters.ProductColorAdapter;
@@ -52,9 +53,12 @@ import com.hasawi.sears.utils.dialogs.DisabledCartDialog;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import zendesk.messaging.android.Messaging;
 
 import static com.hasawi.sears.utils.AppConstants.CALL_PHONE_REQUEST_CODE;
 
@@ -150,8 +154,9 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
                                 }
                             }
-                            setProductSizeRecyclerview(productConfigurableList);
-                            setColorSizeAdapterList(productConfigurableList);
+                            List<ProductConfigurable> updatedProductConfigurableList = processProductConfigurableList(productConfigurableList);
+                            setProductSizeRecyclerview(updatedProductConfigurableList);
+                            setColorSizeAdapterList(updatedProductConfigurableList);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -231,6 +236,28 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 dashboardActivity.sendEmailToCustomerCare();
             }
         });
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Sears.zendeskMessagingEnabled)
+                    Messaging.instance().showMessaging(dashboardActivity);
+            }
+        });
+    }
+
+    private List<ProductConfigurable> processProductConfigurableList(List<ProductConfigurable> productConfigurableList) {
+        List<String> sizeStringList = new ArrayList<>();
+        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
+        IgnoreCaseComparator icc = new IgnoreCaseComparator();
+        java.util.Collections.sort(sizeStringList, icc);
+        for (int i = 0; i < productConfigurableList.size(); i++) {
+            if (!sizeStringList.contains(productConfigurableList.get(i).getSize())) {
+                sizeStringList.add(productConfigurableList.get(i).getSize());
+                if (productConfigurableList.get(i).getQuantity() != 0)
+                    newProductConfigurableList.add(productConfigurableList.get(i));
+            }
+        }
+        return newProductConfigurableList;
     }
 
     private void showDisabledCartDialog() {
@@ -356,6 +383,10 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 fragmentSelectedProductDetailsBinding.tvOutOfStock.setVisibility(View.VISIBLE);
                 fragmentSelectedProductDetailsBinding.tvOfferPercent.setVisibility(View.GONE);
                 disableAddToCart = true;
+                fragmentSelectedProductDetailsBinding.txtSelectSize.setVisibility(View.GONE);
+                fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
+                fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
+                fragmentSelectedProductDetailsBinding.listviewProductSize.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -554,6 +585,8 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     public void onResume() {
         super.onResume();
         try {
+            ProductSizeAdapter.setsSelected(0);
+            ProductColorAdapter.setsSelected(0);
             dashboardActivity.handleActionMenuBar(true, false, dashboardActivity.getTitle().toString());
             dashboardActivity.hideSearchPage();
         } catch (Exception e) {
@@ -788,6 +821,12 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             } else {
                 Toast.makeText(dashboardActivity, "Call Permission Denied", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    class IgnoreCaseComparator implements Comparator<String> {
+        public int compare(String strA, String strB) {
+            return strA.compareToIgnoreCase(strB);
         }
     }
 

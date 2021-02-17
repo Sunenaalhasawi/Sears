@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -411,6 +412,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 return true;
             }
         });
+
         setCartBadges();
         return super.onCreateOptionsMenu(menu);
     }
@@ -424,10 +426,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 return true;
             case R.id.action_share:
                 shareProduct(currentlyShowingProductId, currentlyShowingProductName);
-                return true;
-            case R.id.action_bag:
-                handleActionMenuBar(true, true, "My Bag");
-                replaceFragment(R.id.fragment_replacer_product, new MyCartFragment(), null, true, false);
                 return true;
             default:
                 super.onOptionsItemSelected(item);
@@ -867,6 +865,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                     }
                 }
             }
+            FrameLayout fr_viewBag = (FrameLayout) bagItem.getActionView();
+
+            fr_viewBag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleActionMenuBar(true, true, "My Bag");
+                    replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
+                }
+            });
         }
 
 

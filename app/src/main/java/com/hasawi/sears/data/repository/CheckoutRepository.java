@@ -19,7 +19,7 @@ public class CheckoutRepository {
             @Override
             public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
                 if (response.code() != 200) {
-                    cheResourceMutableLiveData.setValue(Resource.error("Network Error !", null));
+                    cheResourceMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     cheResourceMutableLiveData.setValue(Resource.success(response.body()));
 
@@ -41,7 +41,7 @@ public class CheckoutRepository {
             @Override
             public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                 if (response.code() != 200) {
-                    paymentSuccessMutableData.setValue(Resource.error("Network Error !", null));
+                    paymentSuccessMutableData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     paymentSuccessMutableData.setValue(Resource.success(response.body()));
 

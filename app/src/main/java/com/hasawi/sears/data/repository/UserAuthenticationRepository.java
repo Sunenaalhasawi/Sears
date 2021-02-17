@@ -29,7 +29,7 @@ public class UserAuthenticationRepository {
                 if (response.body().getStatusCode() == 400)
                     signupResponseMutableLiveData.setValue(Resource.error("Email ID Already Exists", null));
                 else if (response.body().getStatusCode() != 200) {
-                    signupResponseMutableLiveData.setValue(Resource.error("Something went wrong. Please try again!", null));
+                    signupResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body().getData() != null)
                     signupResponseMutableLiveData.setValue(Resource.success(response.body()));
 
@@ -52,7 +52,7 @@ public class UserAuthenticationRepository {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.code() != 200) {
-                    loginResponseMutableLiveData.setValue(Resource.error("Something went wrong. Please try again!", null));
+                    loginResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null)
                     loginResponseMutableLiveData.setValue(Resource.success(response.body()));
             }
@@ -73,7 +73,7 @@ public class UserAuthenticationRepository {
             @Override
             public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
                 if (response.code() != 200) {
-                    changePswdMutableLiveData.setValue(Resource.error("Something went wrong. Please try again!", null));
+                    changePswdMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null)
                     changePswdMutableLiveData.setValue(Resource.success(response.body()));
             }

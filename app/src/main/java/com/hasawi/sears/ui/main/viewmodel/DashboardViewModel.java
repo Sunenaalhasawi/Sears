@@ -80,7 +80,7 @@ public class DashboardViewModel extends ViewModel {
                     if (response.body() != null)
                         generalMutsbleLiveData.setValue(Resource.success(response.body()));
                 } else {
-                    generalMutsbleLiveData.setValue(Resource.error("Network Error !", null));
+                    generalMutsbleLiveData.setValue(Resource.error(response.message(), null));
                 }
 
             }

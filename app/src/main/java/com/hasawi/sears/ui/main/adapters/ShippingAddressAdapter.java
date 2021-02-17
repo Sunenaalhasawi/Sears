@@ -95,10 +95,8 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (sSelected == position)
-                            checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(true);
-                        else
-                            checkoutAddressViewHolder.addressAdapterItemBinding.radioButtonSelectAddress.setChecked(false);
+                        sSelected = position;
+                        sClickListener.onItemClickListener(position, holder.itemView);
                     }
                 });
                 checkoutAddressViewHolder.addressAdapterItemBinding.imageViewDeleteAddress.setOnClickListener(new View.OnClickListener() {

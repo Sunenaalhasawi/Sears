@@ -49,7 +49,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.code() != 200) {
-                    mutableLiveDataProductResponse.setValue(Resource.error("Network Error !", null));
+                    mutableLiveDataProductResponse.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     mutableLiveDataProductResponse.setValue(Resource.success(response.body()));
 
@@ -73,7 +73,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<ProductDetailsResponse> call, Response<ProductDetailsResponse> response) {
                 if (response.code() != 200) {
-                    mutableLiveDataProductDetailsResponse.setValue(Resource.error("Network Error !", null));
+                    mutableLiveDataProductDetailsResponse.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     mutableLiveDataProductDetailsResponse.setValue(Resource.success(response.body()));
 
@@ -96,7 +96,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<SearchProductListResponse> call, Response<SearchProductListResponse> response) {
                 if (response.code() != 200) {
-                    searchProductListResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    searchProductListResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     searchProductListResponseMutableLiveData.setValue(Resource.success(response.body()));
                 }
@@ -118,7 +118,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<SearchedProductDetailsResponse> call, Response<SearchedProductDetailsResponse> response) {
                 if (response.code() != 200) {
-                    searchedProductDetailsResponseMutableLiveData.setValue(Resource.error("Network Error !", null));
+                    searchedProductDetailsResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     searchedProductDetailsResponseMutableLiveData.setValue(Resource.success(response.body()));
 
@@ -142,7 +142,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<WishlistResponse> call, Response<WishlistResponse> response) {
                 if (response.code() != 200) {
-                    wishlistResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    wishlistResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     wishlistResponseMutableLiveData.setValue(Resource.success(response.body()));
                 }
@@ -165,7 +165,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<WishlistResponse> call, Response<WishlistResponse> response) {
                 if (response.code() != 200) {
-                    wishListItemsLiveData.setValue(Resource.error("Network Error !", null));
+                    wishListItemsLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     wishListItemsLiveData.setValue(Resource.success(response.body()));
 
@@ -189,7 +189,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 if (response.code() != 200) {
-                    addToCartResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    addToCartResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     addToCartResponseMutableLiveData.setValue(Resource.success(response.body()));
                 }
@@ -213,7 +213,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 if (response.code() != 200) {
-                    updateCartResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    updateCartResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     updateCartResponseMutableLiveData.setValue(Resource.success(response.body()));
                 }
@@ -235,7 +235,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 if (response.code() != 200) {
-                    addToCartResponseMutableLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    addToCartResponseMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     addToCartResponseMutableLiveData.setValue(Resource.success(response.body()));
                 }
@@ -257,7 +257,7 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
                 if (response.code() != 200) {
-                    cartItemsMutableLiveData.setValue(Resource.error("Network Error !", null));
+                    cartItemsMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     cartItemsMutableLiveData.setValue(Resource.success(response.body()));
 

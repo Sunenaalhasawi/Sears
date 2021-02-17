@@ -393,4 +393,9 @@
     <string name="redeem_points">REDEEM POINTS</string>
     <string name="phone_colon">Phone:</string>
 
+    <string name="zendesk_channel_key">eyJzZXR0aW5nc191cmwiOiJodHRwczovL3NlYXJzb3V0bGV0LnplbmRlc2suY29tL21vYmlsZV9zZGtfYXBpL3NldHRpbmdzLzAxRVlONkhOM01WWDBFV01XUVQ0UTlFV1FXLmpzb24ifQ==</string>
+    <string name="size_chart">SIZE CHART</string>
+    <string name="eu">EU</string>
+    <string name="uk">UK</string>
+
 </resources>

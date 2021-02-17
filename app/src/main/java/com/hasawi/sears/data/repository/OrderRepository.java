@@ -26,7 +26,7 @@ public class OrderRepository {
             @Override
             public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                 if (response.code() != 200) {
-                    orderMutableLiveData.setValue(Resource.error("Network Error !", null));
+                    orderMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     orderMutableLiveData.setValue(Resource.success(response.body()));
 
@@ -48,7 +48,7 @@ public class OrderRepository {
             @Override
             public void onResponse(Call<OrderHistoryResponse> call, Response<OrderHistoryResponse> response) {
                 if (response.code() != 200) {
-                    orderHistoryMutableLiveData.setValue(Resource.error("Network Error !", null));
+                    orderHistoryMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     orderHistoryMutableLiveData.setValue(Resource.success(response.body()));
 

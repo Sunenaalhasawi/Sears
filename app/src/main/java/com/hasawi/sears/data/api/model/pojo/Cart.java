@@ -45,7 +45,7 @@ public class Cart {
     private String shippingId;
     @SerializedName("shippingCharges")
     @Expose
-    private Integer shippingCharges;
+    private Double shippingCharges;
     @SerializedName("shoppingCartItems")
     @Expose
     private List<ShoppingCartItem> shoppingCartItems = null;
@@ -177,11 +177,11 @@ public class Cart {
         this.shippingId = shippingId;
     }
 
-    public Integer getShippingCharges() {
+    public Double getShippingCharges() {
         return shippingCharges;
     }
 
-    public void setShippingCharges(Integer shippingCharges) {
+    public void setShippingCharges(Double shippingCharges) {
         this.shippingCharges = shippingCharges;
     }
 }

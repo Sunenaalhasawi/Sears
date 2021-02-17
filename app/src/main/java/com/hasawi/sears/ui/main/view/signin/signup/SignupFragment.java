@@ -70,13 +70,13 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     private void userRegistration() {
 
 
-        String firstName = fragmentSignupBinding.layoutSignup.edtFirstname.getText().toString();
-        String lastName = fragmentSignupBinding.layoutSignup.edtLastname.getText().toString();
-        String email = fragmentSignupBinding.layoutSignup.edtEmail.getText().toString();
-        String phone = fragmentSignupBinding.layoutSignup.edtMobile.getText().toString();
-        String password = fragmentSignupBinding.layoutSignup.edtPassword.getText().toString();
-        String dob = fragmentSignupBinding.layoutSignup.edtBirthday.getText().toString();
-        String confirmPassword = fragmentSignupBinding.layoutSignup.edtConfirmPassword.getText().toString();
+        String firstName = fragmentSignupBinding.layoutSignup.edtFirstname.getText().toString().trim();
+        String lastName = fragmentSignupBinding.layoutSignup.edtLastname.getText().toString().trim();
+        String email = fragmentSignupBinding.layoutSignup.edtEmail.getText().toString().trim();
+        String phone = fragmentSignupBinding.layoutSignup.edtMobile.getText().toString().trim();
+        String password = fragmentSignupBinding.layoutSignup.edtPassword.getText().toString().trim();
+        String dob = fragmentSignupBinding.layoutSignup.edtBirthday.getText().toString().trim();
+        String confirmPassword = fragmentSignupBinding.layoutSignup.edtConfirmPassword.getText().toString().trim();
 
         if (firstName.equals(""))
             fragmentSignupBinding.layoutSignup.tvFirstNameError.setVisibility(View.VISIBLE);

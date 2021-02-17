@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -24,9 +25,15 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hasawi.sears.BuildConfig;
+import com.hasawi.sears.R;
 import com.hasawi.sears.data.api.RetrofitApiClient;
 import com.hasawi.sears.utils.AppConstants;
 import com.hasawi.sears.utils.DateTimeUtils;
+
+import zendesk.messaging.android.FailureCallback;
+import zendesk.messaging.android.Messaging;
+import zendesk.messaging.android.MessagingError;
+import zendesk.messaging.android.SuccessCallback;
 
 public class Sears extends Application implements LifecycleObserver {
 
@@ -35,6 +42,7 @@ public class Sears extends Application implements LifecycleObserver {
     private FirebaseAnalytics mFirebaseAnalytics;
     private AppEventsLogger facebookEventLogger;
     InstallReferrerClient referrerClient;
+    public static boolean zendeskMessagingEnabled = false;
 
     public RetrofitApiClient getRetrofitApiClient() {
         retrofitApiClient = RetrofitApiClient.getInstance();
@@ -113,6 +121,23 @@ public class Sears extends Application implements LifecycleObserver {
         mFirebaseAnalytics.setUserProperty("language", AppLang);
         appGetFirstTimeRun();
 
+        Messaging.initialize(
+                this,
+                getResources().getString(R.string.zendesk_channel_key),
+                new SuccessCallback<Messaging>() {
+                    @Override
+                    public void onSuccess(Messaging value) {
+                        zendeskMessagingEnabled = true;
+                        Log.i("SearsOutletZendesk", "Initialization successful");
+                    }
+                },
+                new FailureCallback<MessagingError>() {
+                    @Override
+                    public void onFailure(@Nullable MessagingError cause) {
+                        zendeskMessagingEnabled = false;
+                        Log.e("SearsOutletZendesk", "Messaging failed to initialize", cause);
+                    }
+                });
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

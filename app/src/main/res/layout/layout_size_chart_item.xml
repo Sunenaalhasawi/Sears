@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutValues"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/radioButton"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvEuroSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/eu"
+                android:textColor="@color/cart_grey"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvEuroSize2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/eu"
+                android:textColor="@color/cart_grey"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvUKSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="11.5C"
+                android:textColor="@color/cart_grey"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <!--        <androidx.appcompat.widget.AppCompatRadioButton-->
+        <!--            android:id="@+id/radioButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginStart="24dp"-->
+        <!--            android:minWidth="0dp"-->
+        <!--            android:minHeight="0dp"-->
+        <!--            android:text="@null"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/relativeLayoutValues"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/relativeLayoutValues" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

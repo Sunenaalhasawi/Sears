@@ -54,10 +54,8 @@ public class ShippingModeAdapter extends RecyclerView.Adapter<ShippingModeAdapte
         holder.shippingModeAdapterItemBinding.radioButtonSelectShippingMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sSelected == position)
-                    holder.shippingModeAdapterItemBinding.radioButtonSelectShippingMode.setChecked(true);
-                else
-                    holder.shippingModeAdapterItemBinding.radioButtonSelectShippingMode.setChecked(false);
+                sSelected = position;
+                sClickListener.onItemClickListener(position, holder.itemView);
             }
         });
     }

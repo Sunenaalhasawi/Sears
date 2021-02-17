@@ -26,7 +26,7 @@ public class DynamicDataRepository {
             @Override
             public void onResponse(Call<LanguageResponse> call, Response<LanguageResponse> response) {
                 if (response.code() != 200) {
-                    mutableLiveDataLanguageResponse.setValue(Resource.error("Something Went Wrong !", null));
+                    mutableLiveDataLanguageResponse.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     LanguageResponse languageResponse = response.body();
                     if (languageResponse != null && languageResponse.getData() != null) {
@@ -53,7 +53,7 @@ public class DynamicDataRepository {
             public void onResponse(Call<DynamicDataResponse> call, Response<DynamicDataResponse> response) {
                 DynamicDataResponse dynamicDataResponse = response.body();
                 if (response.code() != 200) {
-                    dynamicLiveData.setValue(Resource.error("Something Went Wrong. Please Try Again !", null));
+                    dynamicLiveData.setValue(Resource.error(response.message(), null));
                 } else if (dynamicDataResponse != null) {
                     List<String> genderList = dynamicDataResponse.getData().getGender();
                     List<String> sizeList = dynamicDataResponse.getData().getSizes();
@@ -82,7 +82,7 @@ public class DynamicDataRepository {
             @Override
             public void onResponse(Call<MainCategoryResponse> call, Response<MainCategoryResponse> response) {
                 if (response.code() != 200) {
-                    mutableLiveDataMainCategoryResponse.setValue(Resource.error("Something Went Wrong !", null));
+                    mutableLiveDataMainCategoryResponse.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     MainCategoryResponse mainCategoryResponse = response.body();
                     if (mainCategoryResponse != null) {
@@ -107,7 +107,7 @@ public class DynamicDataRepository {
             @Override
             public void onResponse(Call<DynamicUiResponse> call, Response<DynamicUiResponse> response) {
                 if (response.code() != 200) {
-                    dynamicUiMutableLiveData.setValue(Resource.error("Something Went Wrong !", null));
+                    dynamicUiMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     dynamicUiMutableLiveData.postValue(Resource.success(response.body()));
                 }
@@ -128,7 +128,7 @@ public class DynamicDataRepository {
             @Override
             public void onResponse(Call<DynamicContentResponse> call, Response<DynamicContentResponse> response) {
                 if (response.code() != 200) {
-                    webviewMutableLiveData.setValue(Resource.error("Something Went Wrong !", null));
+                    webviewMutableLiveData.setValue(Resource.error(response.message(), null));
                 } else if (response.body() != null) {
                     webviewMutableLiveData.postValue(Resource.success(response.body()));
                 }

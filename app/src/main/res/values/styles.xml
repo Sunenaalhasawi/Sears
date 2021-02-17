@@ -7,7 +7,7 @@
     <!--        <item name="colorAccent">@color/colorAccent</item>-->
     <!--    </style>-->
 
-    <style name="SearsAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="SearsAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/app_blue</item>
         <item name="colorPrimaryDark">@color/app_blue</item>
         <item name="colorAccent">@color/app_blue</item>
@@ -103,5 +103,4 @@
         <item name="colorControlNormal">@color/txt_clr_blue</item>
         <item name="colorControlActivated">@color/txt_clr_green</item>
     </style>
-
 </resources>

@@ -21,7 +21,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/phone" />
+            app:srcCompat="@drawable/telephone" />
 
         <ImageView
             android:id="@+id/imageViewMail"
@@ -33,7 +33,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/imageViewCall"
             app:layout_constraintTop_toTopOf="@+id/imageViewCall"
-            app:srcCompat="@drawable/email" />
+            app:srcCompat="@drawable/mail" />
 
         <ImageView
             android:id="@+id/imageViewChat"

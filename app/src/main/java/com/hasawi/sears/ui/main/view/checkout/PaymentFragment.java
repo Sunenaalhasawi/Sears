@@ -73,7 +73,25 @@ public class PaymentFragment extends BaseFragment implements PaymentSuccessListe
         fragmentPaymentNewBinding.webviewPayment.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (url.contains(selectedPaymentMode.getFailedUrl())) {
+                    view.destroy();
+                    failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
+                    logAddPaymentInfoEvent(selectedPaymentMode, false);
+                    logAddPaymentInfoFirebaseEvent(selectedPaymentMode, false);
+                } else if (url.contains(selectedPaymentMode.getSuccessUrl())) {
+                    logAddPaymentInfoEvent(selectedPaymentMode, true);
+                    logAddPaymentInfoFirebaseEvent(selectedPaymentMode, true);
+
+                    Bundle paymentBundle = new Bundle();
+                    Gson gson = new Gson();
+                    String paymentJson = gson.toJson(selectedPaymentMode, PaymentMode.class);
+                    paymentBundle.putString("payment", paymentJson);
+                    paymentBundle.putString("payment_url", url);
+                    paymentBundle.putString("paymentId", "");
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), paymentBundle, true, false);
+
+                } else
+                    view.loadUrl(url);
                 return true;
             }
 
@@ -86,35 +104,35 @@ public class PaymentFragment extends BaseFragment implements PaymentSuccessListe
             @Override
             public void onPageFinished(WebView view, String url) {
                 fragmentPaymentNewBinding.progressBar.setVisibility(View.GONE);
-                try {
-
-                    if (url.contains(selectedPaymentMode.getFailedUrl())) {
-                        failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
-                        logAddPaymentInfoEvent(selectedPaymentMode, false);
-                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, false);
-                    } else if (url.contains(selectedPaymentMode.getSuccessUrl())) {
-                        fragmentPaymentNewBinding.webviewPayment.stopLoading();
-//                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-
-//                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:HtmlViewer.showHTML" +
-//                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-                        logAddPaymentInfoEvent(selectedPaymentMode, true);
-                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, true);
-
-                        Bundle paymentBundle = new Bundle();
-                        Gson gson = new Gson();
-                        String paymentJson = gson.toJson(selectedPaymentMode, PaymentMode.class);
-                        paymentBundle.putString("payment", paymentJson);
-                        paymentBundle.putString("payment_url", url);
-                        paymentBundle.putString("paymentId", "");
-                        dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), paymentBundle, true, false);
-
-                    }
-
-                } catch (Exception exception) {
-                    failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
-                    exception.printStackTrace();
-                }
+//                try {
+//
+//                    if (url.contains(selectedPaymentMode.getFailedUrl())) {
+//                        failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
+//                        logAddPaymentInfoEvent(selectedPaymentMode, false);
+//                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, false);
+//                    } else if (url.contains(selectedPaymentMode.getSuccessUrl())) {
+//                        fragmentPaymentNewBinding.webviewPayment.stopLoading();
+////                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+//
+////                        fragmentPaymentNewBinding.webviewPayment.loadUrl("javascript:HtmlViewer.showHTML" +
+////                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+//                        logAddPaymentInfoEvent(selectedPaymentMode, true);
+//                        logAddPaymentInfoFirebaseEvent(selectedPaymentMode, true);
+//
+//                        Bundle paymentBundle = new Bundle();
+//                        Gson gson = new Gson();
+//                        String paymentJson = gson.toJson(selectedPaymentMode, PaymentMode.class);
+//                        paymentBundle.putString("payment", paymentJson);
+//                        paymentBundle.putString("payment_url", url);
+//                        paymentBundle.putString("paymentId", "");
+//                        dashboardActivity.replaceFragment(R.id.fragment_replacer, new OrderFragment(), paymentBundle, true, false);
+//
+//                    }
+//
+//                } catch (Exception exception) {
+//                    failedPaymentDialog.show(getParentFragmentManager(), "PAYMENT_FAILED");
+//                    exception.printStackTrace();
+//                }
             }
         });
 

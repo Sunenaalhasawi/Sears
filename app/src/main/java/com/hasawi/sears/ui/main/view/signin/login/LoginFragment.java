@@ -173,8 +173,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     private void userAuthentication() {
         signinActivity.showProgressBar(true);
-        String username = fragmentLoginBinding.edtEmail.getText().toString();
-        String password = fragmentLoginBinding.edtPassword.getText().toString();
+        String username = fragmentLoginBinding.edtEmail.getText().toString().trim();
+        String password = fragmentLoginBinding.edtPassword.getText().toString().trim();
         if (!username.equals("") && !password.equals("")) {
             Map<String, Object> jsonParams = new ArrayMap<>();
             jsonParams.put("emailId", username);

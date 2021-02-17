@@ -207,6 +207,10 @@ public class OrderFragment extends BaseFragment {
                 case SUCCESS:
                     orderConfirmedResponse = orderResponseResource.data;
                     setUiValues();
+                    if (orderConfirmedResponse.getOrderData().getPayment().getName().equalsIgnoreCase("cod") ||
+                            orderConfirmedResponse.getOrderData().getPayment().getPaymentId().equalsIgnoreCase("1")) {
+                        fragmentOrderReviewBinding.layoutOrderConfirmation.cvPaymentDetails.setVisibility(View.GONE);
+                    }
                     break;
                 case LOADING:
                     break;

@@ -216,7 +216,7 @@
                         android:textColor="@color/txt_clr_grey"
                         android:textSize="16sp" />
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <Spinner
                         android:id="@+id/spinnerAddressType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
