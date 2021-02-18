@@ -46,52 +46,56 @@
             android:id="@+id/textView76"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/avantgarde_bold"
             android:text="@string/date_colon"
             android:textColor="@color/txt_clr_blue"
-            android:textSize="12sp"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView93"
             app:layout_constraintStart_toStartOf="@+id/textView44"
-            app:layout_constraintTop_toBottomOf="@+id/textView44" />
+            app:layout_constraintTop_toTopOf="@+id/textView93" />
 
         <TextView
             android:id="@+id/tvOrderedDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/avantgarde_regular"
             android:text="--"
             android:textColor="@color/cart_grey"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView76"
+            app:layout_constraintEnd_toStartOf="@+id/textView93"
             app:layout_constraintStart_toEndOf="@+id/textView76" />
 
         <TextView
             android:id="@+id/textView93"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/avantgarde_bold"
             android:text="@string/order_status_colon"
             android:textColor="@color/txt_clr_blue"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvOrderedDate"
-            app:layout_constraintStart_toEndOf="@+id/tvOrderedDate" />
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOrderStatus"
+            app:layout_constraintEnd_toStartOf="@+id/tvOrderStatus"
+            app:layout_constraintTop_toTopOf="@+id/tvOrderStatus" />
 
         <TextView
             android:id="@+id/tvOrderStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:drawableLeft="@drawable/order_placed"
             android:drawablePadding="4dp"
             android:fontFamily="@font/avantgarde_bold"
             android:gravity="center_vertical"
             android:text="Order Placed"
             android:textColor="@color/txt_dark_yellow"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView93"
-            app:layout_constraintStart_toEndOf="@+id/textView93" />
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView44" />
 
         <TextView
             android:id="@+id/textView98"
@@ -101,7 +105,7 @@
             android:fontFamily="@font/avantgarde_bold"
             android:text="@string/amount_colon"
             android:textColor="@color/txt_clr_blue"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/textView76"
             app:layout_constraintTop_toBottomOf="@+id/textView76" />
 
@@ -125,7 +129,7 @@
             android:fontFamily="@font/avantgarde_bold"
             android:text="@string/items_colon"
             android:textColor="@color/txt_clr_blue"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvOrderAmount"
             app:layout_constraintStart_toStartOf="@+id/textView93"
             app:layout_constraintTop_toBottomOf="@+id/textView93" />
@@ -136,9 +140,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/avantgarde_bold"
-            android:text="4"
+            android:text="--"
             android:textColor="@color/cart_grey"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView100"
             app:layout_constraintStart_toEndOf="@+id/textView100" />
 

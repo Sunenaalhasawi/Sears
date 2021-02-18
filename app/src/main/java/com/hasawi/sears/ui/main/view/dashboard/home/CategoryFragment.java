@@ -159,5 +159,10 @@ public class CategoryFragment extends BaseFragment implements RecyclerviewSingle
         dashboardActivity.getmFirebaseAnalytics().logEvent("OUTFIT_TYPE_SELECTED", params);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SubCategoryAdapter.setsSelected(0);
+    }
 }
 

@@ -57,13 +57,19 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Address addressItem = addressArrayList.get(position);
+        String firstName = "", lastName = "";
         switch (ADDRESS_VIEW_TYPE) {
+
             case AppConstants.ADDRESS_VIEW_TYPE_ADDRESSBOOK:
                 AddressbookViewHolder addressbookViewHolder = (AddressbookViewHolder) holder;
                 addressbookViewHolder.addressBookAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
                 String address = addressItem.getFlat() + " " + addressItem.getBlock() + ", " + addressItem.getStreet() + " " + addressItem.getArea();
                 addressbookViewHolder.addressBookAdapterItemBinding.tvAddress.setText(address);
-                addressbookViewHolder.addressBookAdapterItemBinding.tvName.setText(addressItem.getFirstName() + " " + addressItem.getLastName());
+                if (addressItem.getFirstName().equals(null) || addressItem.getFirstName().equalsIgnoreCase("null") || addressItem.getFirstName() == null)
+                    firstName = "";
+                if (addressItem.getLastName().equals(null) || addressItem.getLastName().equalsIgnoreCase("null") || addressItem.getLastName() == null)
+                    lastName = "";
+                addressbookViewHolder.addressBookAdapterItemBinding.tvName.setText(firstName + " " + lastName);
                 addressbookViewHolder.addressBookAdapterItemBinding.tvEditAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -75,7 +81,11 @@ public abstract class ShippingAddressAdapter extends RecyclerView.Adapter<Recycl
                 CheckoutAddressViewHolder checkoutAddressViewHolder = (CheckoutAddressViewHolder) holder;
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvStreet.setText(addressItem.getStreet());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvArea.setText(addressItem.getArea());
-                checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(addressItem.getFirstName() + " " + addressItem.getLastName());
+                if (addressItem.getFirstName().equals(null) || addressItem.getFirstName().equalsIgnoreCase("null") || addressItem.getFirstName() == null)
+                    firstName = "";
+                if (addressItem.getLastName().equals(null) || addressItem.getLastName().equalsIgnoreCase("null") || addressItem.getLastName() == null)
+                    lastName = "";
+                checkoutAddressViewHolder.addressAdapterItemBinding.tvName.setText(firstName + " " + lastName);
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvFlat.setText(addressItem.getFlat() + " " + addressItem.getBlock());
                 checkoutAddressViewHolder.addressAdapterItemBinding.tvCountry.setText(addressItem.getCountry());
                 if (sSelected == position) {

@@ -68,6 +68,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     FragmentSelectedProductDetailsBinding fragmentSelectedProductDetailsBinding;
     Product currentSelectedProduct;
     ProductConfigurable selectedProductConfigurable;
+    String selectedSize = "", selectedColor = "";
     DashboardActivity dashboardActivity;
     ArrayList<String> productAvailableSizes = new ArrayList<>();
     ProductColorAdapter productColorAdapter;
@@ -81,8 +82,10 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     private String selectedObjectID = "";
     private String sessionToken, userID;
     private HashMap<String, List<ProductConfigurable>> sizeColorHashMap;
-    ProductConfigurable selectedColor;
-    private ArrayList<ProductConfigurable> currentColorsList = new ArrayList<>();
+    //    ProductConfigurable selectedColor;
+    private List<ProductConfigurable> productConfigurableList = new ArrayList<>();
+    private ArrayList<String> currentColorsList = new ArrayList<>();
+    private ArrayList<String> currentSizeList = new ArrayList<>();
     private boolean isbuyNow = false;
     private boolean disableAddToCart = false;
     private boolean isRedirectedFromProductListing = false;
@@ -138,25 +141,26 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                         setRelatedProducts();
                         setUIValues(currentSelectedProduct);
                         try {
-                            List<ProductConfigurable> productConfigurableList = new ArrayList<>();
-                            for (int i = 0; i < currentSelectedProduct.getProductConfigurables().size(); i++) {
-                                if (productConfigurableList.size() == 0)
-                                    productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
-
-                                for (int j = 0; j < productConfigurableList.size(); j++) {
-                                    if (currentSelectedProduct.getProductConfigurables().get(i).getSize().equalsIgnoreCase(productConfigurableList.get(j).getSize())) {
-                                        // do not add
-
-                                    } else {
-                                        productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
-                                        break;
-                                    }
-
-                                }
-                            }
-                            List<ProductConfigurable> updatedProductConfigurableList = processProductConfigurableList(productConfigurableList);
-                            setProductSizeRecyclerview(updatedProductConfigurableList);
-                            setColorSizeAdapterList(updatedProductConfigurableList);
+                            productConfigurableList = currentSelectedProduct.getProductConfigurables();
+//                            for (int i = 0; i < currentSelectedProduct.getProductConfigurables().size(); i++) {
+//                                if (productConfigurableList.size() == 0)
+//                                    productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
+//
+//                                for (int j = 0; j < productConfigurableList.size(); j++) {
+//                                    if (currentSelectedProduct.getProductConfigurables().get(i).getSize().equalsIgnoreCase(productConfigurableList.get(j).getSize())) {
+//                                        // do not add
+//
+//                                    } else {
+//                                        productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
+//                                        break;
+//                                    }
+//
+//                                }
+//                            }
+//                            List<ProductConfigurable> updatedProductConfigurableList = processProductConfigurableList(productConfigurableList);
+                            processProductConfigurableList(productConfigurableList);
+//                            setProductSizeRecyclerview(updatedProductConfigurableList);
+//                            setColorSizeAdapterList(updatedProductConfigurableList);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -245,19 +249,60 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         });
     }
 
-    private List<ProductConfigurable> processProductConfigurableList(List<ProductConfigurable> productConfigurableList) {
-        List<String> sizeStringList = new ArrayList<>();
-        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
-        IgnoreCaseComparator icc = new IgnoreCaseComparator();
-        java.util.Collections.sort(sizeStringList, icc);
+    private void processProductConfigurableList(List<ProductConfigurable> productConfigurableList) {
         for (int i = 0; i < productConfigurableList.size(); i++) {
-            if (!sizeStringList.contains(productConfigurableList.get(i).getSize())) {
-                sizeStringList.add(productConfigurableList.get(i).getSize());
-                if (productConfigurableList.get(i).getQuantity() != 0)
-                    newProductConfigurableList.add(productConfigurableList.get(i));
+            if (productConfigurableList.get(i).getQuantity() == 0)
+                productConfigurableList.remove(i);
+        }
+        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
+
+        for (int i = 0; i < productConfigurableList.size(); i++) {
+            if (!currentSizeList.contains(productConfigurableList.get(i).getSize())) {
+                currentSizeList.add(productConfigurableList.get(i).getSize());
             }
         }
-        return newProductConfigurableList;
+        for (int i = 0; i < productConfigurableList.size(); i++) {
+            if (!currentColorsList.contains(productConfigurableList.get(i).getColor())) {
+                currentColorsList.add(productConfigurableList.get(i).getColor());
+            }
+        }
+        try {
+            selectedSize = currentSizeList.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            selectedColor = currentColorsList.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setProductSizeRecyclerview(currentSizeList);
+        setColorAdapter(currentColorsList);
+        selectedProductConfigurable = getSelectedProductConfigurable(selectedSize, selectedColor);
+
+//        List<String> sizeStringList = new ArrayList<>();
+//        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
+//        IgnoreCaseComparator icc = new IgnoreCaseComparator();
+//        java.util.Collections.sort(sizeStringList, icc);
+//        for (int i = 0; i < productConfigurableList.size(); i++) {
+//            if (!sizeStringList.contains(productConfigurableList.get(i).getSize())) {
+//                sizeStringList.add(productConfigurableList.get(i).getSize());
+//                if (productConfigurableList.get(i).getQuantity() != 0)
+//                    newProductConfigurableList.add(productConfigurableList.get(i));
+//            }
+//        }
+    }
+
+    private ProductConfigurable getSelectedProductConfigurable(String size, String color) {
+        ProductConfigurable selectedProductConfigurable = null;
+        for (int i = 0; i < productConfigurableList.size(); i++) {
+            ProductConfigurable current = productConfigurableList.get(i);
+            if (current.getSize().equalsIgnoreCase(size) && current.getColor().equalsIgnoreCase(color)) {
+                selectedProductConfigurable = current;
+                break;
+            }
+        }
+        return selectedProductConfigurable;
     }
 
     private void showDisabledCartDialog() {
@@ -324,9 +369,9 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     }
 
-    private void setColorAdapter(List<ProductConfigurable> colors) {
+    private void setColorAdapter(List<String> colors) {
         fragmentSelectedProductDetailsBinding.listviewColorVariants.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        productColorAdapter = new ProductColorAdapter(getContext(), (ArrayList<ProductConfigurable>) colors);
+        productColorAdapter = new ProductColorAdapter(getContext(), (ArrayList<String>) colors);
         productColorAdapter.setOnItemClickListener(this);
         fragmentSelectedProductDetailsBinding.listviewColorVariants.setAdapter(productColorAdapter);
     }
@@ -458,7 +503,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             ArrayList<String> sizeList = new ArrayList<>(sizeColorHashMap.keySet());
 //            setProductSizeRecyclerview(sizeList);
             if (sizeColorHashMap.size() > 0) {
-                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(sizeList.get(0));
+//                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(sizeList.get(0));
                 //Hiding colors if color code is null
 //                for (int i = 0; i < currentColorsList.size(); i++) {
 //                    if (currentColorsList.get(i).getColorCode() == null)
@@ -469,13 +514,13 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                     fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
                     fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
                 } else if (currentColorsList.size() > 0) {
-                    selectedColor = currentColorsList.get(0);
-                    selectedProductConfigurable = selectedColor;
+//                    selectedColor = currentColorsList.get(0);
+//                    selectedProductConfigurable = selectedColor;
 
                 }
 
 
-                setColorAdapter(currentColorsList);
+//                setColorAdapter(currentColorsList);
             }
 
         } catch (Exception e) {
@@ -484,25 +529,12 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
     }
 
-    private void setProductSizeRecyclerview(List<ProductConfigurable> sizes) {
-//        productAvailableSizes = new ArrayList<>();
-//        productAvailableSizes.addAll(sizes);
+    private void setProductSizeRecyclerview(List<String> sizes) {
         sizeAdapter = new ProductSizeAdapter(getContext(), sizes);
         sizeAdapter.setOnItemClickListener(this);
         LinearLayoutManager horizontalLayoutManagersize = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        if (sizes.size() > 0)
-            selectedProductConfigurable = sizes.get(0);
         fragmentSelectedProductDetailsBinding.listviewProductSize.setLayoutManager(horizontalLayoutManagersize);
         fragmentSelectedProductDetailsBinding.listviewProductSize.setAdapter(sizeAdapter);
-
-//        productAvailableSizes = new ArrayList<>();
-//        productAvailableSizes.addAll(sizes);
-//        sizeAdapter = new ProductSizeAdapter(getContext(), productAvailableSizes);
-//        sizeAdapter.setOnItemClickListener(this);
-//        LinearLayoutManager horizontalLayoutManagersize = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-//
-//        fragmentSelectedProductDetailsBinding.listviewProductSize.setLayoutManager(horizontalLayoutManagersize);
-//        fragmentSelectedProductDetailsBinding.listviewProductSize.setAdapter(sizeAdapter);
     }
 
     private void setOffersAdapter() {
@@ -521,26 +553,11 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         try {
             if (view.getId() == R.id.cv_background_size) {
                 sizeAdapter.selectedItem();
-                String selectedSize = currentSelectedProduct.getProductConfigurables().get(position).getSize();
-                selectedProductConfigurable = currentSelectedProduct.getProductConfigurables().get(position);
+                selectedSize = currentSizeList.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("selected_size", selectedSize);
                 dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
                 dashboardActivity.getFacebookEventsLogger().logEvent("SIZE_SELECTED", bundle);
-//                ProductColorAdapter.setsSelected(-1);
-                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
-                //Hiding colors if color code is null
-//                for (int i = 0; i < currentColorsList.size(); i++) {
-//                    if (currentColorsList.get(i).getColorCode() == null)
-//                        currentColorsList.remove(i);
-//                }
-                // hiding views
-                if (currentColorsList.size() == 0) {
-                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
-                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
-                } else if (currentColorsList.size() > 0)
-                    selectedColor = currentColorsList.get(0);
-                setColorAdapter(currentColorsList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -552,27 +569,88 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 if (ProductSizeAdapter.sSelected == -1) {
                     ChooseSizeDialog chooseSizeDialog = new ChooseSizeDialog(dashboardActivity);
                     chooseSizeDialog.show(getParentFragmentManager(), "CHOOSE_SIZE_DIALOG");
-                } else {
+                } else
                     selectedColor = currentColorsList.get(position);
-                    selectedProductConfigurable = selectedColor;
-                    try {
-                        Glide.with(this)
-                                .load(selectedColor.getProductImages().get(0).getImageUrl())
-                                .centerCrop()
-                                .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        FirebaseCrashlytics.getInstance().log(e.getMessage());
-                    }
-                }
+
 
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            selectedProductConfigurable = getSelectedProductConfigurable(selectedSize, selectedColor);
+            try {
+                Glide.with(this)
+                        .load(selectedProductConfigurable.getProductImages().get(0).getImageUrl())
+                        .centerCrop()
+                        .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+            } catch (Exception e) {
+                e.printStackTrace();
+                FirebaseCrashlytics.getInstance().log(e.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+//    @Override
+//    public void onItemClickListener(int position, View view) {
+//
+//        try {
+//            if (view.getId() == R.id.cv_background_size) {
+//                sizeAdapter.selectedItem();
+//                String selectedSize = currentSelectedProduct.getProductConfigurables().get(position).getSize();
+//                selectedProductConfigurable = currentSelectedProduct.getProductConfigurables().get(position);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("selected_size", selectedSize);
+//                dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
+//                dashboardActivity.getFacebookEventsLogger().logEvent("SIZE_SELECTED", bundle);
+////                ProductColorAdapter.setsSelected(-1);
+//                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
+//                //Hiding colors if color code is null
+////                for (int i = 0; i < currentColorsList.size(); i++) {
+////                    if (currentColorsList.get(i).getColorCode() == null)
+////                        currentColorsList.remove(i);
+////                }
+//                // hiding views
+//                if (currentColorsList.size() == 0) {
+//                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
+//                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
+//                } else if (currentColorsList.size() > 0)
+//                    selectedColor = currentColorsList.get(0);
+//                setColorAdapter(currentColorsList);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            if (view.getId() == R.id.tvColorVariant) {
+//                productColorAdapter.selectedItem();
+//                if (ProductSizeAdapter.sSelected == -1) {
+//                    ChooseSizeDialog chooseSizeDialog = new ChooseSizeDialog(dashboardActivity);
+//                    chooseSizeDialog.show(getParentFragmentManager(), "CHOOSE_SIZE_DIALOG");
+//                } else {
+//                    selectedColor = currentColorsList.get(position);
+//                    selectedProductConfigurable = selectedColor;
+//                    try {
+//                        Glide.with(this)
+//                                .load(selectedColor.getProductImages().get(0).getImageUrl())
+//                                .centerCrop()
+//                                .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        FirebaseCrashlytics.getInstance().log(e.getMessage());
+//                    }
+//                }
+//
+//            }
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onDestroyView() {

@@ -436,13 +436,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
+        int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < fragmentCount; i++) {
+            getSupportFragmentManager().popBackStack();
+        }
         switch (item.getItemId()) {
 
             case R.id.navigation_home:
-                int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
-                for (int i = 0; i < fragmentCount; i++) {
-                    getSupportFragmentManager().popBackStack();
-                }
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
                 handleActionMenuBar(false, true, "");
                 return true;
@@ -457,11 +457,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 return true;
             case R.id.navigation_categories:
                 handleActionMenuBar(false, true, "");
-
-                int count = getSupportFragmentManager().getBackStackEntryCount();
-                for (int i = 0; i < count; i++) {
-                    getSupportFragmentManager().popBackStackImmediate();
-                }
+//
+//                int count = getSupportFragmentManager().getBackStackEntryCount();
+//                for (int i = 0; i < count; i++) {
+//                    getSupportFragmentManager().popBackStackImmediate();
+//                }
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.VISIBLE);
                 BaseFragment showingFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout_categories);
                 if (showingFragment instanceof CategoryFragment) {

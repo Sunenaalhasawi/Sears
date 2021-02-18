@@ -23,6 +23,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     private ArrayList<Category> categoryArrayList;
     private Context context;
 
+
     public SubCategoryAdapter(Context context, ArrayList<Category> categories) {
         this.categoryArrayList = categories;
         if (categoryArrayList == null)

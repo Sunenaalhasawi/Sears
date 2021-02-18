@@ -20,7 +20,7 @@
         android:id="@+id/navigation_wishlist"
         android:checked="false"
         android:enabled="true"
-        android:icon="@drawable/wishlist_header"
+        android:icon="@drawable/wishlist_selector"
         android:iconTint="@color/white"
         android:title="@string/wishlist_caps" />
 

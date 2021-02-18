@@ -10,19 +10,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears.R;
-import com.hasawi.sears.data.api.model.pojo.ProductConfigurable;
 import com.hasawi.sears.databinding.LayoutColorVariantAdapterItemBinding;
 import com.hasawi.sears.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 
 import java.util.ArrayList;
 
 public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapter.ViewHolder> {
-    ArrayList<ProductConfigurable> colorList;
+//    ArrayList<ProductConfigurable> colorList;
+ArrayList<String> colorList;
     Context context;
     private static RecyclerviewSingleChoiceClickListener sClickListener;
     private static int sSelected = 0;
 
-    public ProductColorAdapter(Context context, ArrayList<ProductConfigurable> colorList) {
+    public ProductColorAdapter(Context context, ArrayList<String> colorList) {
         this.context = context;
         this.colorList = colorList;
     }
@@ -54,8 +54,10 @@ public class ProductColorAdapter extends RecyclerView.Adapter<ProductColorAdapte
 //            }
 //            holder.colorVariantAdapterItemBinding.imageViewColorVariant.setImageDrawable(
 //                    gradientDrawable);
-            if (colorList.get(position).getColor() != null && !colorList.get(position).getColor().equalsIgnoreCase(""))
-                holder.colorVariantAdapterItemBinding.tvColorVariant.setText(colorList.get(position).getColor());
+
+//            if (colorList.get(position).getColor() != null && !colorList.get(position).getColor().equalsIgnoreCase(""))
+            if (colorList.get(position) != null && !colorList.get(position).equalsIgnoreCase(""))
+                holder.colorVariantAdapterItemBinding.tvColorVariant.setText(colorList.get(position));
             else
                 holder.colorVariantAdapterItemBinding.tvColorVariant.setVisibility(View.GONE);
             if (sSelected == position) {
