@@ -1,0 +1,9 @@
+keytool -exportcert -alias androiddebugkey -keystore %HOMEPATH%\.android\debug.keystore | “C:\Program Files\openssl-0.9.8k_X64\bin\openssl.exe” sha1 -binary | “C:\Program Files\openssl-0.9.8k_X64\bin\openssl.exe” base64
+
+ga0RGNYHvNM5d0SLGQfpQWAPGJ8=
+
+Release
+
+KeyStore Path - D:\Hasawi Android Projects\SEARS\release\SearsOutletRelease.jks
+Alias - SearsReleaseKey
+Password - Kuwait123
