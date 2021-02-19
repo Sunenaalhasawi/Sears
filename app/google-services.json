@@ -38,6 +38,59 @@
             {
               "client_id": "27697563484-45vhh7bcfvt22ucho046q268u1rsgfdg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "27697563484-5bueta6p85ult5h364g2tllrhd0novpg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alhasawi.sears",
+                "app_store_id": "1544027220"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27697563484:android:0651a2ba8a4d601024e399",
+        "android_client_info": {
+          "package_name": "com.hasawi.sears_outlet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27697563484-aq0svve049f23nindduqel5bds8veq1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hasawi.sears_outlet",
+            "certificate_hash": "16463126d88fe37b07aca47c212173931b736c00"
+          }
+        },
+        {
+          "client_id": "27697563484-45vhh7bcfvt22ucho046q268u1rsgfdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC64sVySJHiYOm-tz5x349HtAttpBc23Fk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27697563484-45vhh7bcfvt22ucho046q268u1rsgfdg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "27697563484-5bueta6p85ult5h364g2tllrhd0novpg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alhasawi.sears",
+                "app_store_id": "1544027220"
+              }
             }
           ]
         }

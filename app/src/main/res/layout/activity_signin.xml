@@ -13,7 +13,7 @@
 
         <fragment
             android:id="@+id/fragment_login"
-            android:name="com.hasawi.sears.ui.main.view.signin.login.LoginFragment"
+            android:name="com.hasawi.sears_outlet.ui.main.view.signin.login.LoginFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
