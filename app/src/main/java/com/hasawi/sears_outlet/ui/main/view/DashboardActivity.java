@@ -3,6 +3,7 @@ package com.hasawi.sears_outlet.ui.main.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
@@ -77,6 +79,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import zendesk.messaging.android.FailureCallback;
+import zendesk.messaging.android.Messaging;
+import zendesk.messaging.android.MessagingError;
+import zendesk.messaging.android.SuccessCallback;
+
 public class DashboardActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // tags used to attach the fragments
@@ -103,6 +110,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     boolean isUserLoggedin = false;
     private BadgeDrawable bottomBarBadgeDrawable, appBarBadgeDrawable;
     private String currentlyShowingProductId = "", currentlyShowingProductName = "";
+    public boolean zendeskMessagingEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +156,24 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         });
 
         retrieveFirebaseDynamicLinks();
+        if (!zendeskMessagingEnabled)
+            Messaging.initialize(
+                    this,
+                    "{" + getResources().getString(R.string.zendesk_channel_key) + "}",
+                    new SuccessCallback<Messaging>() {
+                        @Override
+                        public void onSuccess(Messaging value) {
+                            zendeskMessagingEnabled = true;
+                            Log.i("SearsOutletZendesk", "Initialization successful");
+                        }
+                    },
+                    new FailureCallback<MessagingError>() {
+                        @Override
+                        public void onFailure(@Nullable MessagingError cause) {
+                            zendeskMessagingEnabled = false;
+                            Log.e("SearsOutletZendesk", "Messaging failed to initialize", cause);
+                        }
+                    });
     }
 
     private void retrieveFirebaseDynamicLinks() {

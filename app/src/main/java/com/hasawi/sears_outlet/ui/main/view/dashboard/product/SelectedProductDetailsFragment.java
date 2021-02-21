@@ -34,7 +34,6 @@ import com.hasawi.sears_outlet.databinding.ActivityImageShowingBinding;
 import com.hasawi.sears_outlet.databinding.FragmentSelectedProductDetailsBinding;
 import com.hasawi.sears_outlet.ui.base.BaseActivity;
 import com.hasawi.sears_outlet.ui.base.BaseFragment;
-import com.hasawi.sears_outlet.ui.base.Sears;
 import com.hasawi.sears_outlet.ui.main.adapters.OffersAdapter;
 import com.hasawi.sears_outlet.ui.main.adapters.ProductAttributesAdapter;
 import com.hasawi.sears_outlet.ui.main.adapters.ProductColorAdapter;
@@ -54,7 +53,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +60,7 @@ import zendesk.messaging.android.Messaging;
 
 import static com.hasawi.sears_outlet.utils.AppConstants.CALL_PHONE_REQUEST_CODE;
 
-public class SelectedProductDetailsFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener {
+public class SelectedProductDetailsFragment extends BaseFragment implements RecyclerviewSingleChoiceClickListener, View.OnClickListener {
 
     ProductDetailViewModel productDetailViewModel;
     FragmentSelectedProductDetailsBinding fragmentSelectedProductDetailsBinding;
@@ -70,7 +68,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     ProductConfigurable selectedProductConfigurable;
     String selectedSize = "", selectedColor = "";
     DashboardActivity dashboardActivity;
-    ArrayList<String> productAvailableSizes = new ArrayList<>();
     ProductColorAdapter productColorAdapter;
     private ArrayList<ProductAttribute> productAttributeArrayList = new ArrayList<>();
     private ProductAttributesAdapter productAttributesAdapter;
@@ -81,8 +78,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     private boolean isSearch = false;
     private String selectedObjectID = "";
     private String sessionToken, userID;
-    private HashMap<String, List<ProductConfigurable>> sizeColorHashMap;
-    //    ProductConfigurable selectedColor;
     private List<ProductConfigurable> productConfigurableList = new ArrayList<>();
     private ArrayList<String> currentColorsList = new ArrayList<>();
     private ArrayList<String> currentSizeList = new ArrayList<>();
@@ -111,7 +106,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 //        setOffersAdapter();
         Bundle bundle = getArguments();
         try {
-
             selectedObjectID = bundle.getString("product_object_id");
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,25 +136,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                         setUIValues(currentSelectedProduct);
                         try {
                             productConfigurableList = currentSelectedProduct.getProductConfigurables();
-//                            for (int i = 0; i < currentSelectedProduct.getProductConfigurables().size(); i++) {
-//                                if (productConfigurableList.size() == 0)
-//                                    productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
-//
-//                                for (int j = 0; j < productConfigurableList.size(); j++) {
-//                                    if (currentSelectedProduct.getProductConfigurables().get(i).getSize().equalsIgnoreCase(productConfigurableList.get(j).getSize())) {
-//                                        // do not add
-//
-//                                    } else {
-//                                        productConfigurableList.add(currentSelectedProduct.getProductConfigurables().get(i));
-//                                        break;
-//                                    }
-//
-//                                }
-//                            }
-//                            List<ProductConfigurable> updatedProductConfigurableList = processProductConfigurableList(productConfigurableList);
                             processProductConfigurableList(productConfigurableList);
-//                            setProductSizeRecyclerview(updatedProductConfigurableList);
-//                            setColorSizeAdapterList(updatedProductConfigurableList);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -180,95 +156,34 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             fragmentSelectedProductDetailsBinding.progressBar.setVisibility(View.GONE);
         });
 
-        fragmentSelectedProductDetailsBinding.imageViewSelected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(dashboardActivity, ProductImageActivity.class);
-                i.putExtra("image_url", currentSelectedProduct.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl());
-                startActivity(i);
-            }
-        });
+        fragmentSelectedProductDetailsBinding.imageViewSelected.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.checkboxWishlist.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.lvAddToCart.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.lvBuyNow.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewCall.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewChat.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.layoutShare.imageViewMail.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.tvSizeChart.setOnClickListener(this);
+        fragmentSelectedProductDetailsBinding.imageButtonSizeNext.setOnClickListener(this);
 
-        fragmentSelectedProductDetailsBinding.checkboxWishlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
-                boolean isAlreadyLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
-                if (isAlreadyLoggedIn)
-                    callWishlistApi(currentSelectedProduct, fragmentSelectedProductDetailsBinding.checkboxWishlist.isChecked());
-                else {
-                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, currentSelectedProduct.getProductId());
-                    dashboardActivity.setTitle("Wishlist");
-                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new WishListFragment(), null, true, false);
-                }
-            }
-        });
-
-        fragmentSelectedProductDetailsBinding.lvAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (disableAddToCart) {
-                    showDisabledCartDialog();
-                } else {
-                    addingProductToCart();
-                    isbuyNow = false;
-                }
-
-            }
-        });
-        fragmentSelectedProductDetailsBinding.lvBuyNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (disableAddToCart) {
-                    showDisabledCartDialog();
-                } else {
-                    addingProductToCart();
-                    isbuyNow = true;
-                }
-            }
-        });
-
-        fragmentSelectedProductDetailsBinding.layoutShare.imageViewCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPermission(Manifest.permission.CALL_PHONE, CALL_PHONE_REQUEST_CODE);
-            }
-        });
-        fragmentSelectedProductDetailsBinding.layoutShare.imageViewMail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dashboardActivity.sendEmailToCustomerCare();
-            }
-        });
-        fragmentSelectedProductDetailsBinding.layoutShare.imageViewChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Sears.zendeskMessagingEnabled)
-                    Messaging.instance().showMessaging(dashboardActivity);
-            }
-        });
     }
 
     private void processProductConfigurableList(List<ProductConfigurable> productConfigurableList) {
+        IgnoreCaseComparator icc = new IgnoreCaseComparator();
         for (int i = 0; i < productConfigurableList.size(); i++) {
             if (productConfigurableList.get(i).getQuantity() == 0)
                 productConfigurableList.remove(i);
         }
-        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
 
         for (int i = 0; i < productConfigurableList.size(); i++) {
             if (!currentSizeList.contains(productConfigurableList.get(i).getSize())) {
                 currentSizeList.add(productConfigurableList.get(i).getSize());
             }
         }
-//        for (int i = 0; i < productConfigurableList.size(); i++) {
-//            if (!currentColorsList.contains(productConfigurableList.get(i).getColor())) {
-//                currentColorsList.add(productConfigurableList.get(i).getColor());
-//            }
-//        }
         try {
             selectedSize = currentSizeList.get(0);
             currentColorsList = (ArrayList<String>) getColorList(selectedSize);
+            java.util.Collections.sort(currentColorsList, icc);
             setColorAdapter(currentColorsList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,21 +194,9 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         } catch (Exception e) {
             e.printStackTrace();
         }
+        java.util.Collections.sort(currentSizeList, icc);
         setProductSizeRecyclerview(currentSizeList);
-//        setColorAdapter(currentColorsList);
         selectedProductConfigurable = getSelectedProductConfigurable(selectedSize, selectedColor);
-
-//        List<String> sizeStringList = new ArrayList<>();
-//        List<ProductConfigurable> newProductConfigurableList = new ArrayList<>();
-//        IgnoreCaseComparator icc = new IgnoreCaseComparator();
-//        java.util.Collections.sort(sizeStringList, icc);
-//        for (int i = 0; i < productConfigurableList.size(); i++) {
-//            if (!sizeStringList.contains(productConfigurableList.get(i).getSize())) {
-//                sizeStringList.add(productConfigurableList.get(i).getSize());
-//                if (productConfigurableList.get(i).getQuantity() != 0)
-//                    newProductConfigurableList.add(productConfigurableList.get(i));
-//            }
-//        }
     }
 
     private ProductConfigurable getSelectedProductConfigurable(String size, String color) {
@@ -486,63 +389,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         });
     }
 
-    private void setColorSizeAdapterList(List<ProductConfigurable> productConfigurableList) {
-        sizeColorHashMap = new HashMap<>();
-        List<ProductConfigurable> colorList = new ArrayList<>();
-        for (int i = 0; i < productConfigurableList.size(); i++) {
-            ProductConfigurable productConfigurableItem = productConfigurableList.get(i);
-            String key = productConfigurableItem.getSize();
-            try {
-                if (sizeColorHashMap.containsKey(key)) {
-                    colorList.add(productConfigurableItem);
-                    List<ProductConfigurable> existingList = new ArrayList<>();
-                    if (sizeColorHashMap != null && sizeColorHashMap.size() > 0)
-                        existingList = sizeColorHashMap.get(key);
-                    existingList.addAll(colorList);
-                    sizeColorHashMap.remove(key);
-                    sizeColorHashMap.put(key, existingList);
-                    colorList = new ArrayList<>();
-                } else {
-                    colorList = new ArrayList<>();
-                    colorList.add(productConfigurableItem);
-                    sizeColorHashMap.put(key, colorList);
-                    colorList = new ArrayList<>();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            ArrayList<String> sizeList = new ArrayList<>(sizeColorHashMap.keySet());
-//            setProductSizeRecyclerview(sizeList);
-            if (sizeColorHashMap.size() > 0) {
-//                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(sizeList.get(0));
-                //Hiding colors if color code is null
-//                for (int i = 0; i < currentColorsList.size(); i++) {
-//                    if (currentColorsList.get(i).getColorCode() == null)
-//                        currentColorsList.remove(i);
-//                }
-                // hiding views
-                if (currentColorsList.size() == 0) {
-                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
-                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
-                } else if (currentColorsList.size() > 0) {
-//                    selectedColor = currentColorsList.get(0);
-//                    selectedProductConfigurable = selectedColor;
-
-                }
-
-
-//                setColorAdapter(currentColorsList);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void setProductSizeRecyclerview(List<String> sizes) {
         sizeAdapter = new ProductSizeAdapter(getContext(), sizes);
         sizeAdapter.setOnItemClickListener(this);
@@ -610,64 +456,6 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
             e.printStackTrace();
         }
     }
-//    @Override
-//    public void onItemClickListener(int position, View view) {
-//
-//        try {
-//            if (view.getId() == R.id.cv_background_size) {
-//                sizeAdapter.selectedItem();
-//                String selectedSize = currentSelectedProduct.getProductConfigurables().get(position).getSize();
-//                selectedProductConfigurable = currentSelectedProduct.getProductConfigurables().get(position);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("selected_size", selectedSize);
-//                dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
-//                dashboardActivity.getFacebookEventsLogger().logEvent("SIZE_SELECTED", bundle);
-////                ProductColorAdapter.setsSelected(-1);
-//                currentColorsList = (ArrayList<ProductConfigurable>) sizeColorHashMap.get(productAvailableSizes.get(position));
-//                //Hiding colors if color code is null
-////                for (int i = 0; i < currentColorsList.size(); i++) {
-////                    if (currentColorsList.get(i).getColorCode() == null)
-////                        currentColorsList.remove(i);
-////                }
-//                // hiding views
-//                if (currentColorsList.size() == 0) {
-//                    fragmentSelectedProductDetailsBinding.txtColorVariant.setVisibility(View.GONE);
-//                    fragmentSelectedProductDetailsBinding.listviewColorVariants.setVisibility(View.GONE);
-//                } else if (currentColorsList.size() > 0)
-//                    selectedColor = currentColorsList.get(0);
-//                setColorAdapter(currentColorsList);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            if (view.getId() == R.id.tvColorVariant) {
-//                productColorAdapter.selectedItem();
-//                if (ProductSizeAdapter.sSelected == -1) {
-//                    ChooseSizeDialog chooseSizeDialog = new ChooseSizeDialog(dashboardActivity);
-//                    chooseSizeDialog.show(getParentFragmentManager(), "CHOOSE_SIZE_DIALOG");
-//                } else {
-//                    selectedColor = currentColorsList.get(position);
-//                    selectedProductConfigurable = selectedColor;
-//                    try {
-//                        Glide.with(this)
-//                                .load(selectedColor.getProductImages().get(0).getImageUrl())
-//                                .centerCrop()
-//                                .into(fragmentSelectedProductDetailsBinding.imageViewSelected);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        FirebaseCrashlytics.getInstance().log(e.getMessage());
-//                    }
-//                }
-//
-//            }
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void onDestroyView() {
@@ -830,6 +618,62 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
 
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imageViewSelected:
+                Intent i = new Intent(dashboardActivity, ProductImageActivity.class);
+                i.putExtra("image_url", currentSelectedProduct.getProductConfigurables().get(0).getProductImages().get(0).getImageUrl());
+                startActivity(i);
+                break;
+            case R.id.checkboxWishlist:
+                PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
+                boolean isAlreadyLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
+                if (isAlreadyLoggedIn)
+                    callWishlistApi(currentSelectedProduct, fragmentSelectedProductDetailsBinding.checkboxWishlist.isChecked());
+                else {
+                    preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_WISHLISTED, currentSelectedProduct.getProductId());
+                    dashboardActivity.setTitle("Wishlist");
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new WishListFragment(), null, true, false);
+                }
+                break;
+            case R.id.lv_add_to_cart:
+                if (disableAddToCart) {
+                    showDisabledCartDialog();
+                } else {
+                    addingProductToCart();
+                    isbuyNow = false;
+                }
+                break;
+            case R.id.lv_buy_now:
+                if (disableAddToCart) {
+                    showDisabledCartDialog();
+                } else {
+                    addingProductToCart();
+                    isbuyNow = true;
+                }
+                break;
+            case R.id.imageViewCall:
+                checkPermission(Manifest.permission.CALL_PHONE, CALL_PHONE_REQUEST_CODE);
+                break;
+            case R.id.imageViewMail:
+                dashboardActivity.sendEmailToCustomerCare();
+                break;
+            case R.id.imageViewChat:
+                if (dashboardActivity.zendeskMessagingEnabled)
+                    Messaging.instance().showMessaging(dashboardActivity);
+                break;
+            case R.id.tvSizeChart:
+                dashboardActivity.replaceFragment(R.id.fragment_replacer, new SizeChartFragment(), null, true, false);
+                break;
+            case R.id.imageButtonSizeNext:
+                break;
+            default:
+                break;
+
+        }
     }
 
 

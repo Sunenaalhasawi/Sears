@@ -147,19 +147,19 @@
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSizeNext"
+                        app:layout_constraintEnd_toStartOf="@+id/imageButtonSizeNext"
                         app:layout_constraintStart_toEndOf="@+id/txtSelectSize"
-                        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+                        app:layout_constraintTop_toTopOf="@+id/imageButtonSizeNext" />
 
                     <TextView
                         android:id="@+id/tv_product_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="--"
                         android:textColor="@color/txt_clr_blue"
@@ -173,7 +173,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/avantgarde_regular"
                         android:text="--"
                         android:textColor="@color/grey"
@@ -186,7 +186,7 @@
                         android:id="@+id/tvOurPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="KWD"
                         android:textColor="@color/price_color"
@@ -210,7 +210,7 @@
                         android:id="@+id/txtColorVariant"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="@string/color_variants"
                         android:textColor="@android:color/black"
@@ -258,13 +258,14 @@
                         android:id="@+id/listview_color_variants"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/listview_product_size"
-                        app:layout_constraintStart_toStartOf="@+id/listview_product_size"
-                        app:layout_constraintTop_toBottomOf="@+id/listview_product_size"
+                        app:layout_constraintEnd_toEndOf="@+id/tvSizeChart"
+                        app:layout_constraintStart_toEndOf="@+id/txtColorVariant"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSizeChart"
                         app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
@@ -321,7 +322,7 @@
                         android:id="@+id/tvOriginalPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/avantgarde_bold"
                         android:text="KWD"
                         android:textColor="@color/txt_clr_grey"
@@ -340,6 +341,39 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_product_name"
                         app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
+                    <TextView
+                        android:id="@+id/tvSizeChart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/beige_rounded_rectangle_4dp_corner"
+                        android:drawableLeft="@drawable/size"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/size_chart"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="@+id/tvOriginalPrice"
+                        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonSizeNext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/beige_rounded_rectangle_4dp_corner"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvSizeChart"
+                        app:layout_constraintEnd_toStartOf="@+id/tvSizeChart"
+                        app:layout_constraintTop_toTopOf="@+id/tvSizeChart"
+                        app:srcCompat="@drawable/ic_right_arrow_white_small" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

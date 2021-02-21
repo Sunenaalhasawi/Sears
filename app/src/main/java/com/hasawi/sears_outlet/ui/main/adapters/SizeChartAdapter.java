@@ -1,5 +1,7 @@
 package com.hasawi.sears_outlet.ui.main.adapters;
 
+import android.content.Context;
+import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears_outlet.databinding.LayoutSizeChartItemBinding;
 
+import java.util.ArrayList;
+
 public class SizeChartAdapter extends RecyclerView.Adapter<SizeChartAdapter.ViewHolder> {
+
+    ArrayList<Size> shippingModeArrayList;
+    Context context;
 
     @NonNull
     @Override
