@@ -61,7 +61,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         fragmentSignupBinding.layoutSignup.pickerNationality.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected(Country selectedCountry) {
-                selectedNationality = selectedCountry.getName();
+//                selectedNationality = selectedCountry.getName();
             }
         });
 
@@ -75,7 +75,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         String email = fragmentSignupBinding.layoutSignup.edtEmail.getText().toString().trim();
         String phone = fragmentSignupBinding.layoutSignup.edtMobile.getText().toString().trim();
         String password = fragmentSignupBinding.layoutSignup.edtPassword.getText().toString().trim();
-        String dob = fragmentSignupBinding.layoutSignup.edtBirthday.getText().toString().trim();
+//        String dob = fragmentSignupBinding.layoutSignup.edtBirthday.getText().toString().trim();
         String confirmPassword = fragmentSignupBinding.layoutSignup.edtConfirmPassword.getText().toString().trim();
 
         if (firstName.equals(""))
@@ -101,8 +101,8 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 jsonParams.put("active", true);
                 jsonParams.put("emailId", email);
                 jsonParams.put("gender", selectedGender);
-                jsonParams.put("nationality", selectedNationality);
-                jsonParams.put("dob", selectedDate);
+                jsonParams.put("nationality", "");
+                jsonParams.put("dob", "");
                 signinActivity.showProgressBar(true);
                 signupViewModel.userRegistration(jsonParams).observe(getActivity(), signupResponse -> {
                     signinActivity.showProgressBar(false);

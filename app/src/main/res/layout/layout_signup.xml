@@ -77,7 +77,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/email"
+                android:hint="johndoe@gmail.com"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -113,7 +113,7 @@
                 android:inputType="number"
                 android:maxLength="8"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/mobile_number"
+                android:hint="99xxxxxx"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -127,6 +127,7 @@
             android:elevation="2dp"
             android:orientation="vertical"
             android:padding="12dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/linearLayoutDob"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutDob"
             app:layout_constraintTop_toBottomOf="@+id/textView88">
@@ -192,7 +193,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="*******"
+                android:hint="xxxxxxx"
                 android:enabled="true"
                 android:inputType="textPassword"
                 android:textColor="@color/app_blue"
@@ -231,15 +232,15 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/white_rounded_rectangle_16dp"
             android:elevation="2dp"
-            android:visibility="visible"
             android:orientation="vertical"
             android:padding="12dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textView89">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCountryCode">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -256,7 +257,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="******"
+                android:hint="xxxxxxx"
                 android:inputType="textPassword"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
@@ -272,6 +273,7 @@
             android:elevation="2dp"
             android:orientation="vertical"
             android:padding="12dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="@+id/linearLayout"
             app:layout_constraintTop_toBottomOf="@+id/tvMobileError">
@@ -329,7 +331,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/first_name"
+                android:hint="John"
                 android:inputType="text"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
@@ -363,7 +365,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
                 android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/last_name"
+                android:hint="Doe"
                 android:inputType="text"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />

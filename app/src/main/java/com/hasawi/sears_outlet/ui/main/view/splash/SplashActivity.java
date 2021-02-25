@@ -18,7 +18,7 @@ import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.databinding.ActivitySplashBinding;
 import com.hasawi.sears_outlet.ui.base.BaseActivity;
 import com.hasawi.sears_outlet.ui.main.view.DashboardActivity;
-import com.hasawi.sears_outlet.ui.main.view.user_details.UserPreferenceActivity;
+import com.hasawi.sears_outlet.ui.main.view.onboard.OnBoardActivity;
 import com.hasawi.sears_outlet.utils.PreferenceHandler;
 
 public class SplashActivity extends BaseActivity {
@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
             startActivity(intent);
             finish();
         } else {
-            Intent intent = new Intent(SplashActivity.this, UserPreferenceActivity.class);
+            Intent intent = new Intent(SplashActivity.this, OnBoardActivity.class);
             startActivity(intent);
             finish();
         }

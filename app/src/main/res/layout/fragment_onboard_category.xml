@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnMen"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Men"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/btnWomen"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView124" />
+
+        <TextView
+            android:id="@+id/textView121"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="@font/avengarde_thick_bold"
+            android:text="@string/here_we_go"
+            android:textColor="@color/bright_blue"
+            android:textSize="45sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView124"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView124"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="58dp"
+            android:fontFamily="@font/avenir_regular"
+            android:gravity="center_horizontal"
+            android:text="@string/category_like_to_shop"
+            android:textColor="@color/txt_grey"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnWomen"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="women"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/btnMen"
+            app:layout_constraintEnd_toStartOf="@+id/btnKids"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/btnMen"
+            app:layout_constraintTop_toBottomOf="@+id/textView124" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSports"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Sports"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/btnKids"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/btnWomen"
+            app:layout_constraintTop_toBottomOf="@+id/btnWomen" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnKids"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Kids"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/btnMen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/btnWomen"
+            app:layout_constraintTop_toBottomOf="@+id/textView124" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnHome"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/grey_outlined_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Home"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/btnWomen"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/btnMen"
+            app:layout_constraintTop_toBottomOf="@+id/btnMen" />
+
+        <TextView
+            android:id="@+id/tvSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:drawableRight="@drawable/ic_skip_arrow_blue"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/avenir_medium"
+            android:gravity="center_vertical"
+            android:text="@string/skip"
+            android:textColor="@color/txt_grey"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="75dp"
+            android:background="@drawable/bright_blue_rounded_rectangle_20dp"
+            android:fontFamily="@font/avenir_regular"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="@string/done"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

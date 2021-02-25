@@ -112,12 +112,14 @@ public class AddShippingAddressFragment extends BaseFragment implements AdapterV
         String firstName = fragmentAddAddressBinding.edtFirstName.getText().toString();
         String lastName = fragmentAddAddressBinding.edtLastName.getText().toString();
         String mobile = fragmentAddAddressBinding.edtMobileNumber.getText().toString();
-//        String area = fragmentAddAddressBinding.edtArea.getText().toString();
+        String area = fragmentAddAddressBinding.spinnerArea.getSelectedItem().toString();
         String flat = fragmentAddAddressBinding.edtFlatNumber.getText().toString();
         String block = fragmentAddAddressBinding.edtBlock.getText().toString();
 //        String country = fragmentAddAddressBinding.edtCountry.getText().toString();
+        String buidingType = fragmentAddAddressBinding.spinnerAddressType.getSelectedItem().toString();
+        String buildingNumber = fragmentAddAddressBinding.edtBuildingNumber.getText().toString();
         if (!firstName.equalsIgnoreCase("") && !lastName.equalsIgnoreCase("") && !mobile.equalsIgnoreCase("")
-                && !street.equalsIgnoreCase("") && !flat.equalsIgnoreCase("") && !block.equalsIgnoreCase("") && !selectedCountryName.equalsIgnoreCase("")) {
+                && !street.equalsIgnoreCase("") && !buidingType.equalsIgnoreCase("") && !buildingNumber.equalsIgnoreCase("") && !block.equalsIgnoreCase("") && !selectedCountryName.equalsIgnoreCase("")) {
             fragmentAddAddressBinding.progressBar.setVisibility(View.VISIBLE);
             PreferenceHandler preferenceHandler = new PreferenceHandler(getActivity(), PreferenceHandler.TOKEN_LOGIN);
             String userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
@@ -127,9 +129,11 @@ public class AddShippingAddressFragment extends BaseFragment implements AdapterV
             jsonParams.put("lastName", lastName);
             jsonParams.put("mobile", mobile);
             jsonParams.put("street", street);
-            jsonParams.put("area", "");
+            jsonParams.put("area", area);
             jsonParams.put("flat", flat);
             jsonParams.put("block", block);
+            jsonParams.put("buidingType", buidingType);
+            jsonParams.put("buildingNo", buildingNumber);
             jsonParams.put("country", selectedCountryName);
             jsonParams.put("customerId", userID);
 

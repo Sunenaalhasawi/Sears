@@ -15,6 +15,7 @@ import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.NavigationMenuItem;
 import com.hasawi.sears_outlet.databinding.LayoutNavigationDrawerItemBinding;
 import com.hasawi.sears_outlet.utils.AppConstants;
+import com.hasawi.sears_outlet.utils.PreferenceHandler;
 
 import java.util.List;
 
@@ -48,6 +49,12 @@ public abstract class NavigationDrawerAdapter extends ArrayAdapter<NavigationMen
         }
         navigationDrawerItemBinding.imageView.setImageDrawable(menuItemList.get(position).getDrawable()
         );
+        PreferenceHandler preferenceHandler = new PreferenceHandler(context, PreferenceHandler.TOKEN_LOGIN);
+        boolean isNotificationEnabled = preferenceHandler.getData(PreferenceHandler.NOTIFICATION_STATUS, false);
+        if (isNotificationEnabled)
+            navigationDrawerItemBinding.swOnOff.setChecked(true);
+        else
+            navigationDrawerItemBinding.swOnOff.setChecked(false);
         navigationDrawerItemBinding.swOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

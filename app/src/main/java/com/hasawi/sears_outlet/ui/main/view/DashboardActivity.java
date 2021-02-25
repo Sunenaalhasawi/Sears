@@ -28,8 +28,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -152,6 +154,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             @Override
             public void onClick(View v) {
                 // Todo upload customer image
+                replaceFragment(R.id.fragment_replacer, new UserProfileFragment(), null, true, false);
+                handleActionMenuBar(true, true, "My Profile");
             }
         });
 
@@ -174,6 +178,24 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                             Log.e("SearsOutletZendesk", "Messaging failed to initialize", cause);
                         }
                     });
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        Toast.makeText(DashboardActivity.this, token, Toast.LENGTH_LONG).show();
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, token);
+                    }
+                });
     }
 
     private void retrieveFirebaseDynamicLinks() {
@@ -308,10 +330,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 menuItemArrayList) {
             @Override
             public void onNotificationStatusChanged(boolean isNotificationEnabled) {
-                if (isNotificationEnabled)
+                PreferenceHandler preferenceHandler = new PreferenceHandler(DashboardActivity.this, PreferenceHandler.TOKEN_LOGIN);
+                if (isNotificationEnabled) {
+                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, true);
                     FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
-                else
+                } else {
+                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, false);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConstants.APP_NAME);
+                }
+
             }
         });
         activityDashboardBinding.listviewMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {

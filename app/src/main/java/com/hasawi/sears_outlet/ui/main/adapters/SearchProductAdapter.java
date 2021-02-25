@@ -35,7 +35,7 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.searchProductItemBinding.tvProductName.setText(productSearchList.get(position).getNameEn());
-        holder.searchProductItemBinding.tvProductDescrption.setText(productSearchList.get(position).getNameEn());
+        holder.searchProductItemBinding.tvProductDescrption.setText(productSearchList.get(position).getBrand());
         Glide.with(context)
                 .load(productSearchList.get(position).getImageUrl())
                 .centerCrop()

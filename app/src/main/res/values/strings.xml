@@ -397,5 +397,24 @@
     <string name="size_chart">SIZE CHART</string>
     <string name="eu">EU</string>
     <string name="uk">UK</string>
+    <string name="building_type">Building Type</string>
+    <string name="color_variants_colon">Color Variants:</string>
+
+    <string name="hello_there">Hello there,</string>
+    <string name="let_make_shopping">Let me make this shopping experience a better one for you.</string>
+    <string name="get_started">Get Started</string>
+    <string name="here_we_go">Here We Go!</string>
+    <string name="category_like_to_shop">Which category would you like to shop from?</string>
+    <string name="alright">Alright!</string>
+    <string name="help_choosE_fit">Help me choose your Fit!</string>
+    <string name="select_caps">SELECT</string>
+    <string name="you_are_almost_there">You are almost there!</string>
+    <string name="brand_would_like_to_shop">What brands would you like to shop from?</string>
+    <string name="amazing">Amazing!</string>
+    <string name="enjoy_shopping_outlet">Now enjoy shopping on our outlet!</string>
+    <string name="skip">Skip</string>
+    <string name="select_your_size_no_colon">Select Your Size</string>
+    <string name="done">Done</string>
+    <string name="select_your_brand">Select Your Brands</string>
 
 </resources>

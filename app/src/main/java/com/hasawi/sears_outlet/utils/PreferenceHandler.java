@@ -37,6 +37,7 @@ public class PreferenceHandler {
     public static final String LOGIN_CATEGORY_NAME = "category_name";
     public static final String LOGIN_PASSWORD = "login_password";
     public static final String LOGIN_CONFIRM_PASSWORD = "login_confirm_password";
+    public static final String NOTIFICATION_STATUS = "notification_status";
 
     public static final String LOGIN_ITEM_TO_BE_WISHLISTED = "item_to_be_wishlisted";
     public static final String LOGIN_ITEM_TO_BE_CARTED = "item_to_be_carted";

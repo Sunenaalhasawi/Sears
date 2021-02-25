@@ -113,7 +113,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/first_name"
+                        android:hint="John"
                         android:inputType="textPersonName"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -151,7 +151,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/last_name"
+                        android:hint="Doe"
                         android:inputType="textPersonName"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -203,7 +203,7 @@
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayoutNationality"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/linearLayoutNationality"
@@ -213,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:text="@string/address_type"
+                        android:text="@string/building_type"
                         android:textColor="@color/txt_clr_grey"
                         android:textSize="16sp" />
 
@@ -238,7 +238,7 @@
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -292,7 +292,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/block"
+                        android:hint="Block 12"
                         android:inputType="text"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -329,7 +329,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/street"
+                        android:hint="Street 3"
                         android:inputType="text"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -346,7 +346,7 @@
                     android:elevation="2dp"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutstreet">
@@ -367,7 +367,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/building_no"
+                        android:hint="xxxxx"
                         android:inputType="text"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -404,7 +404,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/flat_number"
+                        android:hint="11"
                         android:inputType="text"
                         android:textColor="@color/txt_clr_blue"
                         android:textSize="14sp" />
@@ -441,7 +441,7 @@
                         android:background="@color/white"
                         android:ems="10"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:hint="@string/mobile_number"
+                        android:hint="99xxxxxx"
                         android:inputType="number"
                         android:maxLength="8"
                         android:textColor="@color/txt_clr_blue"

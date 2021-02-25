@@ -163,8 +163,8 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         fragmentSelectedProductDetailsBinding.layoutShare.imageViewCall.setOnClickListener(this);
         fragmentSelectedProductDetailsBinding.layoutShare.imageViewChat.setOnClickListener(this);
         fragmentSelectedProductDetailsBinding.layoutShare.imageViewMail.setOnClickListener(this);
-        fragmentSelectedProductDetailsBinding.tvSizeChart.setOnClickListener(this);
-        fragmentSelectedProductDetailsBinding.imageButtonSizeNext.setOnClickListener(this);
+//        fragmentSelectedProductDetailsBinding.tvSizeChart.setOnClickListener(this);
+//        fragmentSelectedProductDetailsBinding.imageButtonSizeNext.setOnClickListener(this);
 
     }
 

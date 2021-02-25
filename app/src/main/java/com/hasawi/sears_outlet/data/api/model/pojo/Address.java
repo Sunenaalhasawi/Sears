@@ -35,6 +35,12 @@ public class Address {
     @SerializedName("country")
     @Expose
     private String country;
+    @SerializedName("buildingNo")
+    @Expose
+    private String buildingNo;
+    @SerializedName("buildingType")
+    @Expose
+    private String buildingType;
 
     public String getAddressId() {
         return addressId;
@@ -114,6 +120,22 @@ public class Address {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getBuildingNo() {
+        return buildingNo;
+    }
+
+    public void setBuildingNo(String buildingNo) {
+        this.buildingNo = buildingNo;
+    }
+
+    public String getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(String buildingType) {
+        this.buildingType = buildingType;
     }
 }
 

@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/SearsAppTheme"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.main.view.onboard.OnBoardActivity">
+
+        </activity>
         <activity android:name=".ui.main.view.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +37,6 @@
             android:name=".ui.main.view.DashboardActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/SearsAppTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -45,6 +47,7 @@
                     android:host="searsoutlet.page.link"
                     android:scheme="https" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -52,27 +55,28 @@
         <activity
             android:name=".ui.main.view.dashboard.product.SelectedProductDetailsFragment$ProductImageActivity"
             android:theme="@style/SearsAppTheme">
-            <!--            <tools:validation testUrl="https://alhasawi.page.link/products" />-->
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
 
-            <!--                <category android:name="android.intent.category.DEFAULT" />-->
-            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+            <!-- <tools:validation testUrl="https://alhasawi.page.link/products" /> -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
 
-            <!--                <data-->
-            <!--                    android:host="alhasawi.page.link"-->
-            <!--                    android:pathPrefix="/products"-->
-            <!--                    android:scheme="https" />-->
-            <!--            </intent-filter>-->
-        </activity>
 
-        <!--        <service-->
-        <!--            android:name=".ui.main.service.MyFirebaseMessagingService"-->
-        <!--            android:exported="false">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+            <!-- <data -->
+            <!-- android:host="alhasawi.page.link" -->
+            <!-- android:pathPrefix="/products" -->
+            <!-- android:scheme="https" /> -->
+            <!-- </intent-filter> -->
+        </activity> <!-- <service -->
+        <!-- android:name=".ui.main.service.MyFirebaseMessagingService" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <!--
  Set custom default icon. This is used when no icon is set for incoming notification messages.
              See README(https://goo.gl/l4GJaQ) for more.
