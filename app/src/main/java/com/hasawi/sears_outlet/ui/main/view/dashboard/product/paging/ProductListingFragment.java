@@ -85,10 +85,17 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
         // Redirecting from home sub category
         try {
             Bundle bundle = getArguments();
-            currentSelectedCategory = bundle.getString("category_id");
-            String currentCategoryName = bundle.getString("category_name");
-            attributeIds = bundle.getString("attribute_ids");
-            fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
+            if (bundle.containsKey("SELECTED_BRAND")) {
+                selectedBrandData = new JSONArray();
+                selectedBrandData.put(bundle.getString("SELECTED_BRAND"));
+                currentSelectedCategory = preferenceHandler.getData(PreferenceHandler.LOGIN_CATEGORY_ID, "");
+            } else {
+                currentSelectedCategory = bundle.getString("category_id");
+                String currentCategoryName = bundle.getString("category_name");
+                attributeIds = bundle.getString("attribute_ids");
+                fragmentProductListingBinding.tvTopDealsHeading.setText(currentCategoryName);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,48 +175,6 @@ public class ProductListingFragment extends BaseFragment implements Recyclerview
             e.printStackTrace();
         }
     }
-
-//    private void getSortStrings() {
-//        showProgressBarDialog(true);
-
-
-//        productListingViewModel.callProductDataApi(currentSelectedCategory, currentPage + "").observe(getActivity(), productResponseResource -> {
-//            switch (productResponseResource.status) {
-//                case SUCCESS:
-////                    categoryArrayList = productResponseResource.data.getData().getCategories();
-//                    sortStrings = productResponseResource.data.getData().getSortStrings();
-////                    categoryRecyclerviewAdapter = new CategoryRecyclerviewAdapter(getContext(), (ArrayList<Category>) categoryArrayList);
-////                    fragmentProductListingBinding.recyclerViewCategories.setAdapter(categoryRecyclerviewAdapter);
-//                    break;
-//                case LOADING:
-//                    break;
-//                case ERROR:
-//                    Toast.makeText(dashboardActivity, productResponseResource.message, Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//            showProgressBarDialog(false);
-//        });
-//
-//    }
-
-//    public void loadFilterData(JSONArray filterArray) {
-//        showProgressBarDialog(true);
-//        productListingViewModel.getProductsInfo(currentSelectedCategory, "0" +
-//                "", filterArray).observe(dashboardActivity, productResponse -> {
-//            switch (productResponse.status) {
-//                case SUCCESS:
-//                    productListingViewModel.setFilterData(productResponse.data.getData().getFilterAttributes());
-//                    break;
-//                case LOADING:
-//                    break;
-//                case ERROR:
-//                    Toast.makeText(dashboardActivity, productResponse.message, Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//
-//            showProgressBarDialog(false);
-//        });
-//    }
 
     private void setupProductRecyclerview() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);

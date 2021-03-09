@@ -9,26 +9,33 @@
         app:showAsAction="collapseActionView|always" />
     <item
         android:id="@+id/action_wishlist"
-        android:icon="@drawable/wishlist_header"
+        android:icon="@drawable/ic_action_wishlist_header"
         android:title=""
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_notifications"
         android:icon="@drawable/ic_action_notification"
         android:title=""
         app:showAsAction="always" />
+
     <item
         android:id="@+id/action_bag"
+        android:actionLayout="@layout/layout_cart_badge"
         android:icon="@drawable/shopping_bag_beige"
         android:title=""
-        android:actionLayout="@layout/layout_cart_badge"
         android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
         android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_filter_clear"
+        android:title="CLEAR ALL"
         android:visible="false"
         app:showAsAction="always" />
 

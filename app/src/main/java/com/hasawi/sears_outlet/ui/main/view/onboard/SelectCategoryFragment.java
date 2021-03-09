@@ -4,22 +4,27 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.pojo.Category;
 import com.hasawi.sears_outlet.databinding.FragmentOnboardCategoryBinding;
 import com.hasawi.sears_outlet.ui.base.BaseFragment;
+import com.hasawi.sears_outlet.ui.main.adapters.OnBoardCategoryAdapter;
+import com.hasawi.sears_outlet.ui.main.listeners.RecyclerviewSingleChoiceClickListener;
 import com.hasawi.sears_outlet.ui.main.viewmodel.OnboardViewModel;
 import com.hasawi.sears_outlet.utils.PreferenceHandler;
+import com.hasawi.sears_outlet.utils.dialogs.GeneralDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectCategoryFragment extends BaseFragment implements View.OnClickListener {
+public class SelectCategoryFragment extends BaseFragment implements View.OnClickListener, RecyclerviewSingleChoiceClickListener {
     FragmentOnboardCategoryBinding fragmentOnboardCategoryBinding;
     OnBoardActivity onBoardActivity;
     OnboardViewModel onboardViewModel;
     Category currentSelectedCategory;
+    OnBoardCategoryAdapter onBoardCategoryAdapter;
     private ArrayList<Category> categoryList = new ArrayList<>();
 
     @Override
@@ -34,6 +39,17 @@ public class SelectCategoryFragment extends BaseFragment implements View.OnClick
         onBoardActivity = (OnBoardActivity) getActivity();
         onBoardActivity.showProgressBar(true);
         onboardViewModel = new ViewModelProvider(this).get(OnboardViewModel.class);
+        // Create a grid layout with two columns
+        GridLayoutManager layoutManager = new GridLayoutManager(onBoardActivity, 3);
+
+        // Create a custom SpanSizeLookup where the first item spans both columns
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return 1;
+            }
+        });
+        fragmentOnboardCategoryBinding.recyclerviewCategories.setLayoutManager(layoutManager);
         onboardViewModel.getMainCateogries().observe(getActivity(), mainCategoryResponseResource -> {
             switch (mainCategoryResponseResource.status) {
                 case SUCCESS:
@@ -55,35 +71,13 @@ public class SelectCategoryFragment extends BaseFragment implements View.OnClick
         });
 
         fragmentOnboardCategoryBinding.tvSkip.setOnClickListener(this);
-        fragmentOnboardCategoryBinding.btnMen.setOnClickListener(this);
-        fragmentOnboardCategoryBinding.btnWomen.setOnClickListener(this);
-        fragmentOnboardCategoryBinding.btnHome.setOnClickListener(this);
-        fragmentOnboardCategoryBinding.btnSports.setOnClickListener(this);
-        fragmentOnboardCategoryBinding.btnKids.setOnClickListener(this);
         fragmentOnboardCategoryBinding.btnDone.setOnClickListener(this);
     }
 
     private void setUi() {
-        if (categoryList.size() > 0) {
-            for (int i = 0; i < categoryList.size(); i++) {
-                String categoryName = categoryList.get(i).getDescriptions().get(0).getCategoryName();
-                if (categoryName.equalsIgnoreCase("Men")) {
-                    fragmentOnboardCategoryBinding.btnMen.setVisibility(View.VISIBLE);
-                }
-                if (categoryName.equalsIgnoreCase("Women")) {
-                    fragmentOnboardCategoryBinding.btnMen.setVisibility(View.VISIBLE);
-                }
-                if (categoryName.equalsIgnoreCase("Kids")) {
-                    fragmentOnboardCategoryBinding.btnMen.setVisibility(View.VISIBLE);
-                }
-                if (categoryName.equalsIgnoreCase("Home")) {
-                    fragmentOnboardCategoryBinding.btnMen.setVisibility(View.VISIBLE);
-                }
-                if (categoryName.equalsIgnoreCase("Sports")) {
-                    fragmentOnboardCategoryBinding.btnMen.setVisibility(View.VISIBLE);
-                }
-            }
-        }
+        onBoardCategoryAdapter = new OnBoardCategoryAdapter(getContext(), categoryList);
+        onBoardCategoryAdapter.setOnItemClickListener(this);
+        fragmentOnboardCategoryBinding.recyclerviewCategories.setAdapter(onBoardCategoryAdapter);
     }
 
     private Category getSelectedCategory(String name) {
@@ -102,59 +96,28 @@ public class SelectCategoryFragment extends BaseFragment implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnWomen:
-                if (fragmentOnboardCategoryBinding.btnWomen.getBackground() == getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp)) {
-                    fragmentOnboardCategoryBinding.btnWomen.setBackground(getResources().getDrawable(R.drawable.bright_blue_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnWomen.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    fragmentOnboardCategoryBinding.btnWomen.setBackground(getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnWomen.setTextColor(getResources().getColor(R.color.cart_grey));
-                }
-                currentSelectedCategory = getSelectedCategory("Women");
-                break;
-            case R.id.btnMen:
-                if (fragmentOnboardCategoryBinding.btnMen.getBackground() == getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp)) {
-                    fragmentOnboardCategoryBinding.btnMen.setBackground(getResources().getDrawable(R.drawable.bright_blue_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnMen.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    fragmentOnboardCategoryBinding.btnMen.setBackground(getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnMen.setTextColor(getResources().getColor(R.color.cart_grey));
-                }
-                currentSelectedCategory = getSelectedCategory("Men");
-
-                break;
-            case R.id.btnKids:
-                if (fragmentOnboardCategoryBinding.btnKids.getBackground() == getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp)) {
-                    fragmentOnboardCategoryBinding.btnKids.setBackground(getResources().getDrawable(R.drawable.bright_blue_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnKids.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    fragmentOnboardCategoryBinding.btnKids.setBackground(getResources().getDrawable(R.drawable.grey_outlined_rounded_rectangle_20dp));
-                    fragmentOnboardCategoryBinding.btnKids.setTextColor(getResources().getColor(R.color.cart_grey));
-                }
-                currentSelectedCategory = getSelectedCategory("Kids");
-                break;
-            case R.id.btnHome:
-                currentSelectedCategory = getSelectedCategory("Home");
-                break;
-            case R.id.btnSports:
-                currentSelectedCategory = getSelectedCategory("Sports");
-                break;
             case R.id.tvSkip:
                 onBoardActivity.redirectToHomePage();
                 break;
             case R.id.btnDone:
-                try {
-                    currentSelectedCategory = categoryList.get(0);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (currentSelectedCategory != null) {
+                    saveValues();
+                    showNextPage();
+                } else {
+                    GeneralDialog generalDialog = new GeneralDialog("Error", "Please select any category to proceed?");
+                    generalDialog.show(getParentFragmentManager(), "GENERAL_DIALOG");
                 }
-                saveValues();
-                showNextPage();
                 break;
             default:
                 break;
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        OnBoardCategoryAdapter.setsSelected(-1);
     }
 
     private void showNextPage() {
@@ -166,5 +129,11 @@ public class SelectCategoryFragment extends BaseFragment implements View.OnClick
         preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_ID, currentSelectedCategory.getCategoryId());
         preferenceHandler.saveData(PreferenceHandler.LOGIN_CATEGORY_NAME, currentSelectedCategory.getDescriptions().get(0).getCategoryName());
         preferenceHandler.saveData(PreferenceHandler.HAS_CATEGORY_PAGE_SHOWN, true);
+    }
+
+    @Override
+    public void onItemClickListener(int position, View view) {
+        onBoardCategoryAdapter.selectedItem();
+        currentSelectedCategory = categoryList.get(position);
     }
 }

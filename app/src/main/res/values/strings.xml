@@ -337,9 +337,9 @@
     <string name="sub_total_amount">Subtotal amount</string>
     <string name="total">TOTAL</string>
     <string name="view_your_profile">View your profile</string>
-    <string name="profile">Profile</string>
+    <string name="profile">My Profile</string>
     <string name="enter_email_id">Enter Email ID</string>
-    <string name="new_password">New Password</string>
+    <string name="new_password">New Password*</string>
     <string name="verify_email">Verify E-mail</string>
     <string name="check_mail_to_reset_pswd">Please check the mail to reset password</string>
     <string name="dont_receive_mail">If you don\'t receive an email ?</string>
@@ -416,5 +416,31 @@
     <string name="select_your_size_no_colon">Select Your Size</string>
     <string name="done">Done</string>
     <string name="select_your_brand">Select Your Brands</string>
+
+    <string name="my_preference">My Preference</string>
+    <string name="edit_brnads">Edit your brands and sizes</string>
+    <string name="your_preferred_size">Your Preferred Size:</string>
+    <string name="your_preferred_brand">Your Preferred Brand:</string>
+    <string name="brand_caps">BRANDS</string>
+    <string name="color_colon">Color:</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="close">CLOSE</string>
+    <string name="sears_outlet">SEARS OUTLET</string>
+    <string name="sears">SEARS</string>
+    <string name="outlet">OUTLET</string>
+    <string name="signin">Sign In</string>
+    <string name="my_account">My Account</string>
+    <string name="my_returns">My Returns</string>
+    <string name="manage_your_addresses">Manage your addresses</string>
+    <string name="manage_your_returns">Manage your returns</string>
+    <string name="bag">Bag</string>
+    <string name="proceed_to_checkout">PROCEED TO CHECKOUT</string>
+    <string name="manage_notification">Manage your notification settings</string>
+    <string name="complete_profile">Complete your profile for added benefits</string>
+    <string name="got_a_question">Got a question? We\'re here to answer</string>
+    <string name="read_terms">Read the terms and conditions</string>
+    <string name="get_in_touch">Get in touch with our team</string>
+    <string name="shopping_bag">Shopping Bag</string>
+    <string name="our_story">Our Story</string>
 
 </resources>

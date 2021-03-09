@@ -265,24 +265,24 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
     }
 
     private void addingProductToCart() {
-        if (selectedProductConfigurable.getQuantity() >= 1) {
+//        if (selectedProductConfigurable.getQuantity() >= 1) {
             PreferenceHandler preferenceHandler = new PreferenceHandler(dashboardActivity, PreferenceHandler.TOKEN_LOGIN);
             boolean isAlreadyLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
             Map<String, Object> jsonParams = new ArrayMap<>();
             jsonParams.put("productId", currentSelectedProduct.getProductId());
-            jsonParams.put("refSku", selectedProductConfigurable.getRefSku());
-            jsonParams.put("quantity", 1 + "");
-            String jsonParamString = (new JSONObject(jsonParams)).toString();
-            if (isAlreadyLoggedIn)
-                callAddToCartApi(jsonParamString);
-            else {
-                preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, jsonParamString);
-                dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                dashboardActivity.setTitle("My Cart");
-            }
-        } else {
-            showDisabledCartDialog();
+        jsonParams.put("refSku", selectedProductConfigurable.getRefSku());
+        jsonParams.put("quantity", 1 + "");
+        String jsonParamString = (new JSONObject(jsonParams)).toString();
+        if (isAlreadyLoggedIn)
+            callAddToCartApi(jsonParamString);
+        else {
+            preferenceHandler.saveData(PreferenceHandler.LOGIN_ITEM_TO_BE_CARTED, jsonParamString);
+            dashboardActivity.handleActionMenuBar(false, true, "");
+            dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
         }
+//        } else {
+//            showDisabledCartDialog();
+//        }
 
     }
 
@@ -489,8 +489,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 case SUCCESS:
                     if (isbuyNow) {
                         dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
-                        dashboardActivity.handleActionMenuBar(true, false, "My Cart");
-                        dashboardActivity.setTitle("My Cart");
+                        dashboardActivity.handleActionMenuBar(false, true, "");
                     } else {
                         CartDialog cartDialog = new CartDialog(dashboardActivity);
                         cartDialog.show(getParentFragmentManager(), "CART_DIALOG");

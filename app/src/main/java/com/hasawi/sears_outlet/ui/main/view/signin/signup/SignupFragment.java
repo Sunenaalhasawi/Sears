@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -22,7 +21,6 @@ import com.hasawi.sears_outlet.utils.dialogs.RegistrationSuccessDialog;
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
-import java.util.Calendar;
 import java.util.Map;
 
 public class SignupFragment extends BaseFragment implements View.OnClickListener {
@@ -48,9 +46,10 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         logger = AppEventsLogger.newLogger(signinActivity);
         signupViewModel = new ViewModelProvider(getActivity()).get(SignupViewModel.class);
         fragmentSignupBinding.layoutSignup.btnSignup.setOnClickListener(this);
-        fragmentSignupBinding.layoutSignup.edtBirthday.setOnClickListener(this);
+//        fragmentSignupBinding.layoutSignup.edtBirthday.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setOnClickListener(this);
         fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setOnClickListener(this);
+        fragmentSignupBinding.cvBackground.setOnClickListener(this);
 
         fragmentSignupBinding.layoutSignup.pickerCountryCode.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
@@ -58,12 +57,12 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 selectedCountryCode = selectedCountry.getPhoneCode();
             }
         });
-        fragmentSignupBinding.layoutSignup.pickerNationality.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected(Country selectedCountry) {
-//                selectedNationality = selectedCountry.getName();
-            }
-        });
+//        fragmentSignupBinding.layoutSignup.pickerNationality.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+//            @Override
+//            public void onCountrySelected(Country selectedCountry) {
+////                selectedNationality = selectedCountry.getName();
+//            }
+//        });
 
     }
 
@@ -177,6 +176,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
 
 
     private void selectMale() {
+        hideSoftKeyboard(signinActivity);
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.bronze_gradient_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.tvMale.setTextColor(getResources().getColor(R.color.white));
         fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
@@ -185,6 +185,7 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void selectFemale() {
+        hideSoftKeyboard(signinActivity);
         fragmentSignupBinding.layoutSignup.constraintLayoutFemale.setBackground(getActivity().getResources().getDrawable(R.drawable.bronze_gradient_rounded_rectangle_12dp));
         fragmentSignupBinding.layoutSignup.txtFemale.setTextColor(getResources().getColor(R.color.white));
         fragmentSignupBinding.layoutSignup.constraintLayoutMale.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_outlined_rounded_rectangle_12dp));
@@ -192,24 +193,24 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
         selectedGender = "F";
     }
 
-    private void showDatePickerDialog() {
-        final Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-        // date picker dialog
-        datePickerDialog = new DatePickerDialog(getActivity(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                        selectedDate = year + "-" + monthOfYear + "-" + dayOfMonth;
-                        fragmentSignupBinding.layoutSignup.edtBirthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    }
-                }, year, month, day);
-        datePickerDialog.getDatePicker().setMaxDate((long) (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 365.25 * 16)));
-        datePickerDialog.show();
-    }
+//    private void showDatePickerDialog() {
+//        final Calendar cldr = Calendar.getInstance();
+//        int day = cldr.get(Calendar.DAY_OF_MONTH);
+//        int month = cldr.get(Calendar.MONTH);
+//        int year = cldr.get(Calendar.YEAR);
+//        // date picker dialog
+//        datePickerDialog = new DatePickerDialog(getActivity(),
+//                new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//
+//                        selectedDate = year + "-" + monthOfYear + "-" + dayOfMonth;
+//                        fragmentSignupBinding.layoutSignup.edtBirthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+//                    }
+//                }, year, month, day);
+//        datePickerDialog.getDatePicker().setMaxDate((long) (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 365.25 * 16)));
+//        datePickerDialog.show();
+//    }
 
 //    @Override
 //    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -238,9 +239,10 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edt_birthday:
-                showDatePickerDialog();
+//                showDatePickerDialog();
                 break;
             case R.id.btn_signup:
+                hideSoftKeyboard(signinActivity);
                 userRegistration();
                 break;
             case R.id.constraintLayoutMale:
@@ -248,6 +250,9 @@ public class SignupFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.constraintLayoutFemale:
                 selectFemale();
+                break;
+            case R.id.cv_background:
+                hideSoftKeyboard(signinActivity);
                 break;
             default:
                 break;

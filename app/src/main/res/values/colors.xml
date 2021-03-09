@@ -41,4 +41,9 @@
     <color name="bronze">#B79984</color>
     <color name="txt_grey">#727272</color>
     <color name="bright_blue">#2B3E81</color>
+
+    <color name="brand_index_bg">#E5E5E5</color>
+    <color name="brand_text_color">#7C7C7D</color>
+    <color name="filter_bg">#F0EEEF</color>
+    <color name="cart_extra_spend_bg">#FAFAFA</color>
 </resources>

@@ -76,8 +76,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/avantgarde_bold"
                 android:text="@string/brand_small"
+                android:fontFamily="@font/avantgarde_bold"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/tvOrderSatus"
@@ -94,7 +94,7 @@
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/textView71"
-                app:layout_constraintTop_toBottomOf="@+id/textView71" />
+                app:layout_constraintTop_toBottomOf="@+id/textView89" />
 
             <TextView
                 android:id="@+id/tvDate"
@@ -132,6 +132,54 @@
                 android:textColor="@color/cart_grey"
                 app:layout_constraintBottom_toBottomOf="@+id/textView73"
                 app:layout_constraintStart_toEndOf="@+id/textView73" />
+
+            <TextView
+                android:id="@+id/textView88"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/size"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView71"
+                app:layout_constraintTop_toBottomOf="@+id/textView71" />
+
+            <TextView
+                android:id="@+id/textView89"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/color_colon"
+                android:textColor="@color/txt_clr_blue"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView88"
+                app:layout_constraintTop_toBottomOf="@+id/textView88" />
+
+            <TextView
+                android:id="@+id/tvSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="--"
+                android:textColor="@color/cart_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView88"
+                app:layout_constraintStart_toEndOf="@+id/textView88" />
+
+            <TextView
+                android:id="@+id/tvColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="--"
+                android:textColor="@color/cart_grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView89"
+                app:layout_constraintStart_toEndOf="@+id/textView89" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

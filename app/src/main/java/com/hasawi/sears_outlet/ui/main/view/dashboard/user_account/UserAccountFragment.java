@@ -13,7 +13,6 @@ import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
 import com.hasawi.sears_outlet.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears_outlet.utils.AppConstants;
-import com.hasawi.sears_outlet.utils.PreferenceHandler;
 import com.hasawi.sears_outlet.utils.dialogs.LoginSignupDialog;
 
 public class UserAccountFragment extends BaseFragment implements View.OnClickListener {
@@ -33,33 +32,17 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
         dashboardActivity.handleActionMenuBar(true, true, "My Account");
         dashboardActivity.handleActionBarIcons(false);
         fragmentUserAccountBinding.constraintLayoutProfile.setOnClickListener(this);
+        fragmentUserAccountBinding.constraintLayoutPreference.setOnClickListener(this);
         fragmentUserAccountBinding.constraintLayoutOrder.setOnClickListener(this);
         fragmentUserAccountBinding.constrainLayoutHelpCenter.setOnClickListener(this);
         fragmentUserAccountBinding.constraintLayoutReferEarn.setOnClickListener(this);
         fragmentUserAccountBinding.constrainLayoutWishlist.setOnClickListener(this);
         fragmentUserAccountBinding.constrainLayoutAddressBook.setOnClickListener(this);
-        fragmentUserAccountBinding.btnLoginSignup.setOnClickListener(this);
         fragmentUserAccountBinding.imageViewFacebook.setOnClickListener(this);
         fragmentUserAccountBinding.imageViewInstagram.setOnClickListener(this);
         fragmentUserAccountBinding.imageViewSnapChat.setOnClickListener(this);
         fragmentUserAccountBinding.imageViewTiktok.setOnClickListener(this);
         fragmentUserAccountBinding.imageViewYoutube.setOnClickListener(this);
-        PreferenceHandler preferenceHandler = new PreferenceHandler(getContext(), PreferenceHandler.TOKEN_LOGIN);
-        String username = preferenceHandler.getData(PreferenceHandler.LOGIN_USERNAME, "");
-        String gender = preferenceHandler.getData(PreferenceHandler.LOGIN_GENDER, "");
-        if (gender.equalsIgnoreCase("f"))
-            fragmentUserAccountBinding.circleImageView.setImageDrawable(getResources().getDrawable(R.drawable.girl));
-        else if (gender.equalsIgnoreCase("m"))
-            fragmentUserAccountBinding.circleImageView.setImageDrawable(getResources().getDrawable(R.drawable.boy));
-        fragmentUserAccountBinding.tvUserName.setText(username);
-        isLoggedIn = preferenceHandler.getData(PreferenceHandler.LOGIN_STATUS, false);
-        if (isLoggedIn) {
-            fragmentUserAccountBinding.btnLoginSignup.setVisibility(View.GONE);
-            fragmentUserAccountBinding.tvUserName.setVisibility(View.VISIBLE);
-        } else {
-            fragmentUserAccountBinding.btnLoginSignup.setVisibility(View.VISIBLE);
-            fragmentUserAccountBinding.tvUserName.setVisibility(View.GONE);
-        }
 
 
     }
@@ -75,6 +58,10 @@ public class UserAccountFragment extends BaseFragment implements View.OnClickLis
                     LoginSignupDialog loginSignupDialog = new LoginSignupDialog(dashboardActivity);
                     loginSignupDialog.show(getParentFragmentManager(), "LOGIN_SIGNUP_DIALOG");
                 }
+                break;
+            case R.id.constraintLayoutPreference:
+                dashboardActivity.handleActionMenuBar(true, false, "My Preference");
+                dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyPreferenceFragment(), null, true, false);
                 break;
             case R.id.constraintLayoutOrder:
                 if (isLoggedIn) {

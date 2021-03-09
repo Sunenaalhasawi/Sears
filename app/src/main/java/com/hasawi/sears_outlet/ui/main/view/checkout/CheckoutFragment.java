@@ -154,7 +154,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-
     public void callCheckoutApi(String userId, String cartId, String couponCode, String sessionToken, String shippingId) {
         fragmentCheckoutNewBinding.progressBar.setVisibility(View.VISIBLE);
         checkoutViewModel.checkout(userId, cartId, couponCode, sessionToken, shippingId).observe(this, checkoutResponseResource -> {

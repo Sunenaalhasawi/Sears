@@ -49,6 +49,8 @@ public class OrderedProductsAdapter extends RecyclerView.Adapter<OrderedProducts
             else
                 holder.orderItemHistoryDetailBinding.tvAmountPaid.setText("--");
             holder.orderItemHistoryDetailBinding.tvProductName.setText(orderProductItem.getProductName());
+            holder.orderItemHistoryDetailBinding.tvSize.setText(orderProductItem.getProductSize());
+            holder.orderItemHistoryDetailBinding.tvColor.setText(orderProductItem.getProductColorCode());
 
             try {
                 Glide.with(context)

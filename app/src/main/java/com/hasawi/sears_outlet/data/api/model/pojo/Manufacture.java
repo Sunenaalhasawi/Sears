@@ -26,6 +26,8 @@ public class Manufacture {
     @Expose
     private List<ManufactureDescription> manufactureDescriptions = null;
 
+    boolean checked = false;
+
     public String getManufactureId() {
         return manufactureId;
     }
@@ -72,5 +74,13 @@ public class Manufacture {
 
     public void setCategoryDisplay(Object categoryDisplay) {
         this.categoryDisplay = categoryDisplay;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -75,21 +76,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <NumberPicker
+        <com.hasawi.sears_outlet.utils.CustomNumberPicker
             android:id="@+id/numberPicker"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:elevation="4dp"
+            android:theme="@style/AppTheme.Picker"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrainLayoutSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/numberPicker">
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/numberPicker"
+            tools:layout_editor_absoluteX="0dp">
 
             <View
                 android:id="@+id/view15"

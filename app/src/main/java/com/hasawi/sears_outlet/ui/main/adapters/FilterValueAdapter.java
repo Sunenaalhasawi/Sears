@@ -12,16 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.pojo.FilterAttributeValues;
-import com.hasawi.sears_outlet.databinding.LayoutFilterValueBinding;
+import com.hasawi.sears_outlet.databinding.LayoutFilterValueItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class FilterValueAdapter extends RecyclerView.Adapter<FilterValueAdapter.ViewHolder> {
 
     Context context;
-    Map<String, List<FilterAttributeValues>> filterOptionValueMap;
     List<FilterAttributeValues> filterAttributeValuesList;
     List<FilterAttributeValues> selectedFiltersList = new ArrayList<>();
 
@@ -35,8 +33,8 @@ public abstract class FilterValueAdapter extends RecyclerView.Adapter<FilterValu
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutFilterValueBinding filterValueBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.layout_filter_value, parent, false);
+        LayoutFilterValueItemBinding filterValueBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.layout_filter_value_item, parent, false);
         return new ViewHolder(filterValueBinding);
     }
 
@@ -110,9 +108,9 @@ public abstract class FilterValueAdapter extends RecyclerView.Adapter<FilterValu
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutFilterValueBinding filterValueBinding;
+        LayoutFilterValueItemBinding filterValueBinding;
 
-        public ViewHolder(@NonNull LayoutFilterValueBinding filterValueBinding) {
+        public ViewHolder(@NonNull LayoutFilterValueItemBinding filterValueBinding) {
             super(filterValueBinding.getRoot());
             this.filterValueBinding = filterValueBinding;
         }

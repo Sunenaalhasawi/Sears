@@ -28,10 +28,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -59,12 +57,14 @@ import com.hasawi.sears_outlet.ui.main.view.checkout.CheckoutFragment;
 import com.hasawi.sears_outlet.ui.main.view.checkout.MyCartFragment;
 import com.hasawi.sears_outlet.ui.main.view.checkout.OrderFragment;
 import com.hasawi.sears_outlet.ui.main.view.checkout.PaymentFragment;
+import com.hasawi.sears_outlet.ui.main.view.dashboard.BrandFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.home.CategoryFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.home.NotificationFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.AboutUsFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.ContactUsFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.FAQFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.PrivatePolicyFragment;
+import com.hasawi.sears_outlet.ui.main.view.dashboard.product.FilterFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.UserAccountFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.WishListFragment;
@@ -72,6 +72,7 @@ import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history.OrderHistoryFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history.TrackOrderFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
+import com.hasawi.sears_outlet.ui.main.view.dashboard.user_settings.UserSettingsFragment;
 import com.hasawi.sears_outlet.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears_outlet.ui.main.viewmodel.DashboardViewModel;
 import com.hasawi.sears_outlet.utils.AppConstants;
@@ -95,7 +96,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
     ActionBarDrawerToggle actionBarDrawerToggle;
     Bundle dataBundle = new Bundle();
     SearchView searchView;
-    MenuItem searchItem, notificationItem, shareItem, bagItem;
+    MenuItem searchItem, wishlistItem, notificationItem, shareItem, bagItem, filterClearItem;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
     private DashboardViewModel dashboardViewModel;
@@ -179,23 +180,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                         }
                     });
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-//                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        Toast.makeText(DashboardActivity.this, token, Toast.LENGTH_LONG).show();
-                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, token);
-                    }
-                });
     }
 
     private void retrieveFirebaseDynamicLinks() {
@@ -241,17 +225,17 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 break;
             case AppConstants.ID_MENU_ABOUT_US:
                 replaceFragment(R.id.fragment_replacer, new AboutUsFragment(), null, true, false);
-                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+                hideToolBar();
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_PRIVACY_POLICY:
                 replaceFragment(R.id.fragment_replacer, new PrivatePolicyFragment(), null, true, false);
-                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+                hideToolBar();
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_FAQ:
                 replaceFragment(R.id.fragment_replacer, new FAQFragment(), null, true, false);
-                activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+                hideToolBar();
                 closeDrawer();
                 break;
             case AppConstants.ID_MENU_SIGNOUT:
@@ -270,7 +254,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }
     }
 
-    private void clearPreferences() {
+    public void hideToolBar() {
+        activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
+    }
+
+    public void clearPreferences() {
         PreferenceHandler preferenceHandler = new PreferenceHandler(getApplicationContext(), PreferenceHandler.TOKEN_LOGIN);
         preferenceHandler.saveData(PreferenceHandler.LOGIN_STATUS, false);
         preferenceHandler.saveData(PreferenceHandler.LOGIN_USERNAME, "");
@@ -407,11 +395,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }));
         searchItem = menu.findItem(R.id.action_search);
         notificationItem = menu.findItem(R.id.action_notifications);
+        wishlistItem = menu.findItem(R.id.action_wishlist);
         shareItem = menu.findItem(R.id.action_share);
         bagItem = menu.findItem(R.id.action_bag);
+        filterClearItem = menu.findItem(R.id.action_filter_clear);
+        filterClearItem.setVisible(false);
         shareItem.setVisible(false);
         bagItem.setVisible(false);
         searchItem.setVisible(true);
+        wishlistItem.setVisible(true);
         notificationItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("What are you looking for?");
@@ -480,6 +472,18 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             case R.id.action_share:
                 shareProduct(currentlyShowingProductId, currentlyShowingProductName);
                 return true;
+            case R.id.action_wishlist:
+                WishListFragment wishlistFragment = new WishListFragment();
+                replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
+                handleActionMenuBar(true, true, "Wishlist");
+                return true;
+            case R.id.action_filter_clear:
+                BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer_product);
+                if (currentFragment instanceof FilterFragment) {
+                    FilterFragment filterFragment = (FilterFragment) currentFragment;
+                    filterFragment.resetilterData();
+                }
+                return true;
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -499,13 +503,13 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
                 handleActionMenuBar(false, true, "");
                 return true;
-            case R.id.navigation_wishlist:
-                if (currentFragment instanceof WishListFragment) {
+            case R.id.navigation_brand:
+                if (currentFragment instanceof BrandFragment) {
 
                 } else {
-                    WishListFragment wishlistFragment = new WishListFragment();
-                    replaceFragment(R.id.fragment_replacer, wishlistFragment, null, true, false);
-                    handleActionMenuBar(true, true, "Wishlist");
+                    BrandFragment brandFragment = new BrandFragment();
+                    replaceFragment(R.id.fragment_replacer, brandFragment, null, true, false);
+                    handleActionMenuBar(true, true, "Brands");
                 }
                 return true;
             case R.id.navigation_categories:
@@ -529,16 +533,16 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 } else {
                     MyCartFragment myCartFragment = new MyCartFragment();
                     replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
-                    handleActionMenuBar(true, true, "My Cart");
+                    handleActionMenuBar(false, true, "");
                 }
                 return true;
             case R.id.navigation_profile:
-                if (currentFragment instanceof UserAccountFragment) {
+                if (currentFragment instanceof UserSettingsFragment) {
 
                 } else {
-                    UserAccountFragment userAccountFragment = new UserAccountFragment();
-                    replaceFragment(R.id.fragment_replacer, userAccountFragment, null, true, false);
-                    handleActionMenuBar(true, true, "My Account");
+                    UserSettingsFragment userSettingsFragment = new UserSettingsFragment();
+                    replaceFragment(R.id.fragment_replacer, userSettingsFragment, null, true, false);
+                    handleActionMenuBar(true, true, "User Settings");
                 }
                 return true;
             default:
@@ -611,11 +615,21 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             if (currentFragment instanceof WishListFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
-                activityDashboardBinding.appBarMain.bottomNavigationView.getMenu().findItem(R.id.navigation_wishlist).setChecked(false);
             } else if (currentFragment instanceof MyCartFragment) {
                 handleActionMenuBar(false, true, "");
+                showToolBar();
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof BrandFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof FilterFragment) {
+                handleActionMenuBar(false, true, "");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+                handleAppBarForFilters(false);
             } else if (currentFragment instanceof UserAccountFragment) {
+                handleActionMenuBar(true, true, "User Settings");
+                activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
+            } else if (currentFragment instanceof UserSettingsFragment) {
                 handleActionMenuBar(false, true, "");
                 activityDashboardBinding.appBarMain.framelayoutCategories.setVisibility(View.GONE);
             } else if (currentFragment instanceof SelectedProductDetailsFragment) {
@@ -822,6 +836,24 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         }
     }
 
+    public void handleAppBarForFilters(boolean showFilter) {
+        try {
+            if (showFilter) {
+                filterClearItem.setVisible(true);
+                searchItem.setVisible(false);
+                wishlistItem.setVisible(false);
+                notificationItem.setVisible(false);
+            } else {
+                filterClearItem.setVisible(false);
+                searchItem.setVisible(true);
+                wishlistItem.setVisible(true);
+                notificationItem.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void shareProduct(String productId, String currentlyShowingProductName) {
         handleSocialShare(true);
@@ -844,11 +876,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 searchItem.setVisible(true);
             if (notificationItem != null)
                 notificationItem.setVisible(true);
+            if (wishlistItem != null)
+                wishlistItem.setVisible(true);
         } else {
             if (searchItem != null)
                 searchItem.setVisible(false);
             if (notificationItem != null)
                 notificationItem.setVisible(false);
+            if (wishlistItem != null)
+                wishlistItem.setVisible(false);
         }
     }
 
@@ -923,7 +959,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             fr_viewBag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handleActionMenuBar(true, true, "My Bag");
+                    handleActionMenuBar(false, true, "");
                     replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
                 }
             });
@@ -955,6 +991,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         setAppBarBadge(cartCount);
 
 
+    }
+
+    public void showToolBar() {
+        activityDashboardBinding.appBarMain.toolbar.setVisibility(View.VISIBLE);
     }
 
     public void callMyCartApi() {

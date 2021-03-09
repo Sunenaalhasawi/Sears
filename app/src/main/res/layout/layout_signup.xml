@@ -6,15 +6,154 @@
 
     </data>
 
-
-    <!--    <androidx.core.widget.NestedScrollView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/linearLayoutName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/white_rounded_rectangle_16dp"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/first_name"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/white"
+                android:fontFamily="@font/avantgarde_regular"
+                android:hint="John"
+                android:inputType="text"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFirstNameError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/firstname_required"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutName" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutLastName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_rounded_rectangle_16dp"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayoutName"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
+            app:layout_constraintTop_toBottomOf="@+id/tvFirstNameError">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/last_name"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/white"
+                android:fontFamily="@font/avantgarde_regular"
+                android:hint="Doe"
+                android:inputType="text"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvLastNameError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/lasttname_required"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutLastName"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastName" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_rounded_rectangle_16dp"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayoutLastName"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
+            app:layout_constraintTop_toBottomOf="@+id/tvLastNameError">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avantgarde_bold"
+                android:text="@string/email"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/white"
+                android:fontFamily="@font/avantgarde_regular"
+                android:hint="johndoe@gmail.com"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvEmailError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/email_required"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <LinearLayout
             android:id="@+id/linearLayoutCountryCode"
@@ -50,39 +189,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutLastName"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
-            app:layout_constraintTop_toBottomOf="@+id/tvLastNameError">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/email"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/white"
-                android:fontFamily="@font/avantgarde_regular"
-                android:hint="johndoe@gmail.com"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/linearLayoutMobile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -110,60 +216,76 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
-                android:inputType="number"
-                android:maxLength="8"
                 android:fontFamily="@font/avantgarde_regular"
                 android:hint="99xxxxxx"
+                android:inputType="number"
+                android:maxLength="8"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvMobileError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/mobile_required"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutCountryCode"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutMobile" />
+
         <LinearLayout
-            android:id="@+id/linearLayoutNationality"
+            android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/white_rounded_rectangle_16dp"
             android:elevation="2dp"
             android:orientation="vertical"
             android:padding="12dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutDob"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutDob"
-            app:layout_constraintTop_toBottomOf="@+id/textView88">
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tvMobileError">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/nationality"
+                android:text="@string/password"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
 
-            <!--            <EditText-->
-            <!--                android:id="@+id/edt_nationality"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="4dp"-->
-            <!--                android:background="@android:color/white"-->
-            <!--                android:enabled="false"-->
-            <!--                android:fontFamily="@font/avantgarde_regular"-->
-            <!--                android:inputType="text"-->
-            <!--                android:textColor="@color/app_blue"-->
-            <!--                android:textSize="16sp" />-->
-            <com.rilixtech.widget.countrycodepicker.CountryCodePicker
-                android:id="@+id/picker_nationality"
+            <EditText
+                android:id="@+id/edt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:ccp_arrowSize="0sp"
-                app:ccp_defaultNameCode="KW"
-                app:ccp_hideNameCode="true"
-                app:ccp_hidePhoneCode="true"
-                app:ccp_showFlag="true"
-                app:ccp_showFullName="true"
-                app:ccp_textFont="@font/avantgarde_bold" />
+                android:layout_marginTop="4dp"
+                android:background="@android:color/white"
+                android:fontFamily="@font/avantgarde_regular"
+                android:hint="xxxxxxx"
+                android:inputType="textPassword"
+                android:textColor="@color/app_blue"
+                android:textSize="18sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPasswordError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:text="@string/password_required"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
         <LinearLayout
             android:id="@+id/linearLayoutConfirmPassword"
@@ -192,27 +314,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@android:color/white"
+                android:enabled="true"
                 android:fontFamily="@font/avantgarde_regular"
                 android:hint="xxxxxxx"
-                android:enabled="true"
                 android:inputType="textPassword"
                 android:textColor="@color/app_blue"
                 android:textSize="18sp" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvPasswordError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/password_required"
-            android:textColor="@color/txt_dark_yellow"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
         <TextView
             android:id="@+id/tvConfirmPasswordError"
@@ -222,154 +330,11 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/avantgarde_regular"
             android:text="@string/confirm_required"
-            android:textColor="@color/txt_dark_yellow"
+            android:textColor="@color/red"
             android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/linearLayoutConfirmPassword"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutConfirmPassword" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCountryCode">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/password"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/white"
-                android:fontFamily="@font/avantgarde_regular"
-                android:hint="xxxxxxx"
-                android:inputType="textPassword"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayoutDob"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/tvMobileError">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/dob"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/white"
-                android:clickable="true"
-                android:focusable="false"
-                android:fontFamily="@font/avantgarde_regular"
-                android:hint="@string/dob"
-                android:inputType="none"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/first_name"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_firstname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/white"
-                android:fontFamily="@font/avantgarde_regular"
-                android:hint="John"
-                android:inputType="text"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutLastName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/white_rounded_rectangle_16dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutName"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
-            app:layout_constraintTop_toBottomOf="@+id/tvFirstNameError">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/avantgarde_bold"
-                android:text="@string/last_name"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/edt_lastname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/white"
-                android:fontFamily="@font/avantgarde_regular"
-                android:hint="Doe"
-                android:inputType="text"
-                android:textColor="@color/app_blue"
-                android:textSize="18sp" />
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutMale"
@@ -457,8 +422,8 @@
             android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/green_gradient_rounded_rectangle"
             android:fontFamily="@font/avantgarde_bold"
             android:padding="8dp"
@@ -468,92 +433,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutMale" />
-
-        <TextView
-            android:id="@+id/tvFirstNameError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/firstname_required"
-            android:textColor="@color/txt_dark_yellow"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutName"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutName" />
-
-        <TextView
-            android:id="@+id/tvLastNameError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/lasttname_required"
-            android:textColor="@color/txt_dark_yellow"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutLastName"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutLastName" />
-
-        <TextView
-            android:id="@+id/tvEmailError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/email_required"
-            android:textColor="@color/txt_dark_yellow"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        <TextView
-            android:id="@+id/tvMobileError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/avantgarde_regular"
-            android:text="@string/mobile_required"
-            android:textColor="@color/txt_dark_yellow"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutCountryCode"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutMobile" />
-
-        <TextView
-            android:id="@+id/textView88"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/fill_dob"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutDob"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutDob"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutDob" />
-
-        <TextView
-            android:id="@+id/textView89"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/fill_nationality"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayoutNationality"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutNationality"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutNationality" />
-
+            app:layout_constraintTop_toBottomOf="@id/constraintLayoutMale" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    </androidx.core.widget.NestedScrollView>-->
-
-
 </layout>

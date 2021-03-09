@@ -12,6 +12,8 @@
         <item name="colorPrimaryDark">@color/app_blue</item>
         <item name="colorAccent">@color/app_blue</item>
         <item name="windowActionBar">false</item>
+        <item name="actionMenuTextColor">@color/txt_clr_blue</item>
+        <item name="android:actionMenuTextColor">@color/txt_clr_blue</item>
         <item name="windowNoTitle">true</item>
     </style>
 
@@ -102,5 +104,14 @@
     <style name="GreenRadioButton" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/txt_clr_blue</item>
         <item name="colorControlActivated">@color/txt_clr_green</item>
+    </style>
+
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/bright_blue</item>
+        <item name="android:textColorHighlight">@color/bright_blue</item>
+        <item name="colorControlNormal">@color/light_grey</item>
+        <item name="fontFamily">@font/avenir_bold</item>
+        <item name="font">@font/avenir_bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

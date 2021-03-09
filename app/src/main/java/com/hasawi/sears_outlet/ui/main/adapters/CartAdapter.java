@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.pojo.ShoppingCartItem;
-import com.hasawi.sears_outlet.databinding.LayoutCartRecyclerItemBinding;
+import com.hasawi.sears_outlet.databinding.LayoutCartAdapterItemBinding;
 import com.hasawi.sears_outlet.ui.main.view.DashboardActivity;
 import com.hasawi.sears_outlet.utils.dialogs.GeneralDialog;
 
@@ -41,12 +41,14 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutCartRecyclerItemBinding cartRecyclerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.layout_cart_recycler_item, parent, false);
-        return new ViewHolder(cartRecyclerItemBinding);
+        LayoutCartAdapterItemBinding cartAdapterItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.layout_cart_adapter_item, parent, false);
+        return new ViewHolder(cartAdapterItemBinding);
     }
 
     public abstract void cartItemsUpdated(ShoppingCartItem cartItem, int quantity, boolean isQuantityIncreased);
+
+    public abstract void onCartItemClicked(ShoppingCartItem cartItem);
 
     public void addAll(List<ShoppingCartItem> itemList) {
         cartedItemsList = new ArrayList<>();
@@ -69,60 +71,58 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
         return cartedItemsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutCartRecyclerItemBinding cartRecyclerItemBinding;
-
-        public ViewHolder(@NonNull LayoutCartRecyclerItemBinding cartRecyclerItemBinding) {
-            super(cartRecyclerItemBinding.getRoot());
-            this.cartRecyclerItemBinding = cartRecyclerItemBinding;
-        }
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
             ShoppingCartItem shoppingCartItem = cartedItemsList.get(position);
             cartCount = shoppingCartItem.getQuantity();
-            holder.cartRecyclerItemBinding.tvProductName.setText(shoppingCartItem.getProduct().getDescriptions().get(0).getProductName());
+            holder.cartAdapterItemBinding.tvProductName.setText(shoppingCartItem.getProduct().getDescriptions().get(0).getProductName());
             if (shoppingCartItem.getQuantity() != null)
-                holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
-            if (shoppingCartItem.getProduct().getManufature() != null)
-                holder.cartRecyclerItemBinding.tvBrand.setText(shoppingCartItem.getProduct().getManufature().getManufactureDescriptions().get(0).getName());
+                holder.cartAdapterItemBinding.tvItemCount.setText(cartCount + "");
+//            if (shoppingCartItem.getProduct().getManufature() != null)
+//                holder.cartAdapterItemBinding.tvBrand.setText(shoppingCartItem.getProduct().getManufature().getManufactureDescriptions().get(0).getName());
 
             if (shoppingCartItem.getProduct().getDiscountPercentage() != 0) {
-                holder.cartRecyclerItemBinding.tvOfferPercent.setText("FLAT " + shoppingCartItem.getProduct().getDiscountPercentage() + "% OFF");
-                holder.cartRecyclerItemBinding.tvOriginalPrice.setText("KWD " + shoppingCartItem.getProduct().getDiscountPrice());
+                holder.cartAdapterItemBinding.tvOffer.setText("FLAT " + shoppingCartItem.getProduct().getDiscountPercentage() + "% OFF");
+//                holder.cartRecyclerItemBinding.tvOriginalPrice.setText("KWD " + shoppingCartItem.getProduct().getDiscountPrice());
             } else {
-                holder.cartRecyclerItemBinding.tvOfferPercent.setVisibility(View.GONE);
-                holder.cartRecyclerItemBinding.tvOriginalPrice.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
+                holder.cartAdapterItemBinding.tvOffer.setVisibility(View.GONE);
+//                holder.cartRecyclerItemBinding.tvOriginalPrice.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
             }
 
-            holder.cartRecyclerItemBinding.tvAmountToPay.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
+            holder.cartAdapterItemBinding.tvAmount.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
             Glide.with(dashboardActivity)
                     .load(shoppingCartItem.getProduct().getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
                     .centerCrop()
-                    .into(holder.cartRecyclerItemBinding.imageProduct);
+                    .into(holder.cartAdapterItemBinding.imageViewProduct);
 
-            holder.cartRecyclerItemBinding.imageBtnDelete.setOnClickListener(new View.OnClickListener() {
+            holder.cartAdapterItemBinding.cvBackground.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemDeleteClicked(shoppingCartItem);
+                    onCartItemClicked(shoppingCartItem);
                 }
             });
 
-            if (shoppingCartItem.isOutOfStock()) {
-                holder.cartRecyclerItemBinding.tvOutOfStock.setVisibility(View.VISIBLE);
-                holder.cartRecyclerItemBinding.txtAmountToPay.setVisibility(View.GONE);
-                holder.cartRecyclerItemBinding.tvAmountToPay.setVisibility(View.GONE);
-            } else {
-                holder.cartRecyclerItemBinding.tvOutOfStock.setVisibility(View.GONE);
-                holder.cartRecyclerItemBinding.txtAmountToPay.setVisibility(View.VISIBLE);
-                holder.cartRecyclerItemBinding.tvAmountToPay.setVisibility(View.VISIBLE);
-            }
-            holder.cartRecyclerItemBinding.imageAdd.setOnClickListener(new View.OnClickListener() {
+//            holder.cartAdapterItemBinding.imageBtnDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onItemDeleteClicked(shoppingCartItem);
+//                }
+//            });
+
+//            if (shoppingCartItem.isOutOfStock()) {
+//                holder.cartRecyclerItemBinding.tvOutOfStock.setVisibility(View.VISIBLE);
+//                holder.cartRecyclerItemBinding.txtAmountToPay.setVisibility(View.GONE);
+//                holder.cartRecyclerItemBinding.tvAmountToPay.setVisibility(View.GONE);
+//            } else {
+//                holder.cartRecyclerItemBinding.tvOutOfStock.setVisibility(View.GONE);
+//                holder.cartRecyclerItemBinding.txtAmountToPay.setVisibility(View.VISIBLE);
+//                holder.cartRecyclerItemBinding.tvAmountToPay.setVisibility(View.VISIBLE);
+//            }
+            holder.cartAdapterItemBinding.imageButtonPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cartCount = Integer.parseInt(holder.cartRecyclerItemBinding.tvCartCount.getText().toString());
+                    cartCount = Integer.parseInt(holder.cartAdapterItemBinding.tvItemCount.getText().toString());
                     if (shoppingCartItem.getProductConfigurable().getQuantity() >= 1 && cartCount < shoppingCartItem.getProductConfigurable().getQuantity()) {
                         if (cartCount >= 0)
                             cartCount++;
@@ -131,28 +131,37 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
                         generalDialog.show(dashboardActivity.getSupportFragmentManager(), "GENERAL_DIALOG");
                     }
 
-                    holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
+                    holder.cartAdapterItemBinding.tvItemCount.setText(cartCount + "");
                     cartItemsUpdated(shoppingCartItem, cartCount, true);
                 }
             });
-            holder.cartRecyclerItemBinding.imageSubtract.setOnClickListener(new View.OnClickListener() {
+            holder.cartAdapterItemBinding.imageButtonMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cartCount = Integer.parseInt(holder.cartRecyclerItemBinding.tvCartCount.getText().toString());
+                    cartCount = Integer.parseInt(holder.cartAdapterItemBinding.tvItemCount.getText().toString());
                     if (cartCount > 1) {
                         cartCount--;
-                        holder.cartRecyclerItemBinding.tvCartCount.setText(cartCount + "");
+                        holder.cartAdapterItemBinding.tvItemCount.setText(cartCount + "");
                         cartItemsUpdated(shoppingCartItem, cartCount, false);
                     }
                 }
             });
             if (shoppingCartItem.getProductConfigurable() != null) {
-                holder.cartRecyclerItemBinding.tvSize.setText(shoppingCartItem.getProductConfigurable().getSize());
-                holder.cartRecyclerItemBinding.tvColor.setText(shoppingCartItem.getProductConfigurable().getColor());
+                holder.cartAdapterItemBinding.tvProductSize.setText(shoppingCartItem.getProductConfigurable().getSize());
+                holder.cartAdapterItemBinding.tVProductColor.setText(shoppingCartItem.getProductConfigurable().getColor());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        LayoutCartAdapterItemBinding cartAdapterItemBinding;
+
+        public ViewHolder(@NonNull LayoutCartAdapterItemBinding cartAdapterItemBinding) {
+            super(cartAdapterItemBinding.getRoot());
+            this.cartAdapterItemBinding = cartAdapterItemBinding;
         }
     }
 }

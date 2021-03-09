@@ -2,6 +2,7 @@ package com.hasawi.sears_outlet.data.api;
 
 import com.hasawi.sears_outlet.data.api.model.pojo.SearchProductListResponse;
 import com.hasawi.sears_outlet.data.api.response.AddressResponse;
+import com.hasawi.sears_outlet.data.api.response.BrandsResponse;
 import com.hasawi.sears_outlet.data.api.response.CartResponse;
 import com.hasawi.sears_outlet.data.api.response.CategoryResponse;
 import com.hasawi.sears_outlet.data.api.response.ChangePasswordResponse;
@@ -11,6 +12,7 @@ import com.hasawi.sears_outlet.data.api.response.DynamicContentResponse;
 import com.hasawi.sears_outlet.data.api.response.DynamicDataResponse;
 import com.hasawi.sears_outlet.data.api.response.DynamicUiResponse;
 import com.hasawi.sears_outlet.data.api.response.ForgotPasswordResponse;
+import com.hasawi.sears_outlet.data.api.response.GenericSizeResponse;
 import com.hasawi.sears_outlet.data.api.response.GetAllAddressResponse;
 import com.hasawi.sears_outlet.data.api.response.LanguageResponse;
 import com.hasawi.sears_outlet.data.api.response.LoginResponse;
@@ -18,6 +20,7 @@ import com.hasawi.sears_outlet.data.api.response.MainCategoryResponse;
 import com.hasawi.sears_outlet.data.api.response.OrderHistoryResponse;
 import com.hasawi.sears_outlet.data.api.response.OrderResponse;
 import com.hasawi.sears_outlet.data.api.response.PaymentResponse;
+import com.hasawi.sears_outlet.data.api.response.PreferenceResponse;
 import com.hasawi.sears_outlet.data.api.response.ProductDetailsResponse;
 import com.hasawi.sears_outlet.data.api.response.ProductResponse;
 import com.hasawi.sears_outlet.data.api.response.SearchedProductDetailsResponse;
@@ -52,9 +55,8 @@ public interface ApiInterface {
     @POST("customers")
     Call<SignupResponse> signup(@Body RequestBody requestBody);
 
-    @FormUrlEncoded
-    @POST("")
-    Call<ForgotPasswordResponse> forgotPassword(@FieldMap HashMap<String, String> data);
+    @POST("customers/forgotPassword")
+    Call<ForgotPasswordResponse> forgotPassword(@Query("emailId") String emailId);
 
     @PUT("customers/{customerId}/changePassword?")
     Call<ChangePasswordResponse> changePassword(@Path("customerId") String customerId, @Query("oldPassword") String oldPassword, @Query("newPassword") String newPassword, @Header("Authorization") String sessionToken);
@@ -74,6 +76,19 @@ public interface ApiInterface {
 
     @GET("shop/landing/android/new")
     Call<DynamicUiResponse> getDynamicUiDataHomePage();
+
+    @GET("shop/landing/genericSize")
+    Call<GenericSizeResponse> getGenericSizes();
+
+    @Headers("Content-Type: application/json")
+    @POST("shop/landing/preferences/customers/{udid}")
+    Call<PreferenceResponse> savePreference(@Body RequestBody requestBody, @Path("udid") String udid);
+
+    @GET("shop/landing/preferences/customers/{udid}")
+    Call<PreferenceResponse> getPreference(@Path("udid") String udid);
+
+    @GET("shop/landing/brands")
+    Call<BrandsResponse> getBrands();
 
     @FormUrlEncoded
     @POST("")

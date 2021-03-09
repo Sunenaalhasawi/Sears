@@ -40,6 +40,7 @@ public class CartDialog extends DialogFragment {
         cartDialogNewDesignBinding.btnViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dashboardActivity.handleActionMenuBar(false, true, "");
                 dashboardActivity.replaceFragment(R.id.fragment_replacer, new MyCartFragment(), null, true, false);
                 dismiss();
             }

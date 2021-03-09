@@ -11,14 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.gson.Gson;
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.Resource;
+import com.hasawi.sears_outlet.data.api.model.pojo.Product;
 import com.hasawi.sears_outlet.data.api.model.pojo.ShoppingCartItem;
 import com.hasawi.sears_outlet.data.api.response.CartResponse;
 import com.hasawi.sears_outlet.databinding.FragmentCartBinding;
 import com.hasawi.sears_outlet.ui.base.BaseFragment;
 import com.hasawi.sears_outlet.ui.main.adapters.CartAdapter;
+import com.hasawi.sears_outlet.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears_outlet.ui.main.view.DashboardActivity;
+import com.hasawi.sears_outlet.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears_outlet.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears_outlet.ui.main.viewmodel.CartViewModel;
 import com.hasawi.sears_outlet.utils.PreferenceHandler;
@@ -77,9 +81,27 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 isQuantityIncreased = isIncreased;
             }
 
+            @Override
+            public void onCartItemClicked(ShoppingCartItem cartItem) {
+                try {
+                    Product product = cartItem.getProduct();
+                    Gson gson = new Gson();
+                    String objectString = gson.toJson(product);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("selected_product_object", objectString);
+                    dashboardActivity.showToolBar();
+                    dashboardActivity.handleActionMenuBar(true, false, product.getDescriptions().get(0).getProductName());
+                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         };
         fragmentCartBinding.recyclerviewCart.setAdapter(cartAdapter);
-        fragmentCartBinding.tvContinueOrder.setOnClickListener(this);
+        fragmentCartBinding.tvProceedTocheckout.setOnClickListener(this);
+        fragmentCartBinding.imageButtonBack.setOnClickListener(this);
         try {
             PreferenceHandler preferenceHandler = new PreferenceHandler(getActivity(), PreferenceHandler.TOKEN_LOGIN);
             userID = preferenceHandler.getData(PreferenceHandler.LOGIN_USER_ID, "");
@@ -103,22 +125,42 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 dashboardActivity.finish();
             }
         });
+
+        fragmentCartBinding.recyclerviewCart.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+//                try {
+//                    ShoppingCartItem shoppingCartItem = cartItemsList.get(position);
+//                    Product product = shoppingCartItem.getProduct();
+//                    Gson gson = new Gson();
+//                    String objectString = gson.toJson(product);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("selected_product_object", objectString);
+//                    dashboardActivity.showToolBar();
+//                    dashboardActivity.handleActionMenuBar(true, false, product.getDescriptions().get(0).getProductName());
+//                    dashboardActivity.replaceFragment(R.id.fragment_replacer, new SelectedProductDetailsFragment(), bundle, true, false);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+            }
+        }));
     }
 
     private void setUiValues() {
-        fragmentCartBinding.tvItemCount.setText("Bag " + cartCount);
-        fragmentCartBinding.tvTotalPrice.setText("KWD " + totalPrice);
+        fragmentCartBinding.tvBagCount.setText(cartCount + "");
         fragmentCartBinding.tvTotalAmount.setText("KWD " + totalPrice);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvContinueOrder:
+            case R.id.tvProceedTocheckout:
                 if (outOfStockItemList.size() > 0) {
                     GeneralDialog generalDialog = new GeneralDialog("Error", "Please remove out of stock items from the bag to proceed?");
                     generalDialog.show(getParentFragmentManager(), "GENERAL_DIALOG");
                 } else {
+                    dashboardActivity.showToolBar();
                     dashboardActivity.handleActionMenuBar(true, false, "Checkout");
                     dashboardActivity.replaceFragment(R.id.fragment_replacer, new CheckoutFragment(), null, true, false);
                 }
@@ -129,6 +171,9 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     getParentFragmentManager().popBackStackImmediate();
                 }
                 dashboardActivity.handleActionMenuBar(false, true, "");
+                break;
+            case R.id.imageButtonBack:
+                dashboardActivity.onBackPressed();
                 break;
             default:
                 break;
@@ -244,6 +289,12 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                     break;
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dashboardActivity.hideToolBar();
     }
 
     public void showProgressbar(boolean shouldShowProgressbar) {

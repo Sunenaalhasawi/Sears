@@ -23,11 +23,7 @@
 
         </activity>
         <activity android:name=".ui.main.view.splash.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.view.signin.SigninActivity"
@@ -37,6 +33,11 @@
             android:name=".ui.main.view.DashboardActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/SearsAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

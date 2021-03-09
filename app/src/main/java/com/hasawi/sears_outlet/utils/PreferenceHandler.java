@@ -34,6 +34,7 @@ public class PreferenceHandler {
     public static final String LOGIN_NATIONALITY = "nationality";
     public static final String LOGIN_EMAIL = "email";
     public static final String LOGIN_CATEGORY_ID = "category_id";
+    public static final String SELECTED_SIZE = "selected_size";
     public static final String LOGIN_CATEGORY_NAME = "category_name";
     public static final String LOGIN_PASSWORD = "login_password";
     public static final String LOGIN_CONFIRM_PASSWORD = "login_confirm_password";

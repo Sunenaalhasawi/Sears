@@ -41,6 +41,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     JSONArray filterArray = null, brandArray = null, colorArray = null, sizeArray = null;
     private String selectedCategoryId = "";
     Bundle filterAnalyticsBundle = new Bundle();
+    int filterAppliedCount = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -69,6 +70,7 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
         fragmentFilterBinding.btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                filterAppliedCount++;
                 filterArray = new JSONArray();
                 for (int i = 0; i < selectedFilters.size(); i++) {
                     filterArray.put(selectedFilters.get(i).getId());
@@ -105,21 +107,21 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
                 }
                 dashboardActivity.getmFirebaseAnalytics().logEvent("FILTER_BY", filterAnalyticsBundle);
                 dashboardActivity.getFacebookEventsLogger().logEvent("FILTER_BY", filterAnalyticsBundle);
-                returnFilterValues(filterArray, brandArray);
+                returnFilterValues(filterArray, brandArray, colorArray, sizeArray);
             }
         });
 
-        fragmentFilterBinding.btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                for (int i = 0; i < selectedFilters.size(); i++) {
-//                    selectedFilters.get(i).setSelected(false);
-//                }
-//                filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
-//                loadFilterData(null);
-                resetilterData();
-            }
-        });
+//        fragmentFilterBinding.btnReset.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                for (int i = 0; i < selectedFilters.size(); i++) {
+////                    selectedFilters.get(i).setSelected(false);
+////                }
+////                filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
+////                loadFilterData(null);
+//                resetilterData();
+//            }
+//        });
         fragmentFilterBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,10 +176,17 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        dashboardActivity.handleAppBarForFilters(true);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         dashboardActivity.handleActionMenuBar(false, true, "");
         dashboardActivity.handleActionBarIcons(true);
+        dashboardActivity.handleAppBarForFilters(false);
     }
 
     public void resetilterData() {
@@ -197,17 +206,27 @@ public class FilterFragment extends BaseFragment implements RecyclerviewSingleCh
 //
 //            fragmentFilterBinding.progressBar.setVisibility(View.GONE);
 //        });
-        filterOptionAdapter.clear();
-        // using for-each loop for iteration over Map.entrySet()
-        for (Map.Entry<String, List<FilterAttributeValues>> entry : filterAttributeMap.entrySet()) {
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                entry.getValue().get(i).setChecked(false);
-            }
-        }
-        filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
+//
+//        if (filterAppliedCount == 0) {
+//            filterOptionAdapter.clear();
+//            // using for-each loop for iteration over Map.entrySet()
+//            for (Map.Entry<String, List<FilterAttributeValues>> entry : filterAttributeMap.entrySet()) {
+//                for (int i = 0; i < entry.getValue().size(); i++) {
+//                    entry.getValue().get(i).setChecked(false);
+//                }
+//            }
+//            filterOptionAdapter.addAll(filterAttributeMap, filterKeysList);
+//        } else {
+        filterArray = new JSONArray();
+        brandArray = new JSONArray();
+        colorArray = new JSONArray();
+        sizeArray = new JSONArray();
+        returnFilterValues(filterArray, brandArray, colorArray, sizeArray);
+//        }
+
     }
 
-    private void returnFilterValues(JSONArray filterArray, JSONArray brandArray) {
+    private void returnFilterValues(JSONArray filterArray, JSONArray brandArray, JSONArray colorArray, JSONArray sizeArray) {
         ProductListingFragment productListingFragment = (ProductListingFragment) getTargetFragment();
         productListingFragment.setFilterData(filterArray, brandArray, colorArray, sizeArray);
 

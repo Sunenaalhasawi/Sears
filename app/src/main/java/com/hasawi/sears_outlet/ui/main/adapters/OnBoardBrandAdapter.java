@@ -11,19 +11,22 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hasawi.sears_outlet.R;
+import com.hasawi.sears_outlet.data.api.model.pojo.Manufacture;
 import com.hasawi.sears_outlet.databinding.LayoutOnboradBrandAdapterItemBinding;
 
 import java.util.ArrayList;
 
-public class OnBoardBrandAdapter extends RecyclerView.Adapter<OnBoardBrandAdapter.ViewHolder> {
+public abstract class OnBoardBrandAdapter extends RecyclerView.Adapter<OnBoardBrandAdapter.ViewHolder> {
     Context context;
-    private ArrayList<String> brandList;
+    private ArrayList<Manufacture> brandList;
+    private ArrayList<Manufacture> selectedBrandList = new ArrayList<>();
 
-    public OnBoardBrandAdapter(Context context, ArrayList<String> brandList) {
+    public OnBoardBrandAdapter(Context context, ArrayList<Manufacture> brandList) {
         this.context = context;
         this.brandList = brandList;
     }
 
+    public abstract void onBrandSelected(ArrayList<Manufacture> brandList);
 
     @NonNull
     @Override
@@ -35,19 +38,33 @@ public class OnBoardBrandAdapter extends RecyclerView.Adapter<OnBoardBrandAdapte
 
     @Override
     public void onBindViewHolder(@NonNull OnBoardBrandAdapter.ViewHolder holder, int position) {
-
-        holder.layoutOnboradBrandAdapterItemBinding.tvBrandName.setText(brandList.get(position));
+        if (brandList.get(position).isChecked()) {
+            holder.layoutOnboradBrandAdapterItemBinding.checkBox.setChecked(true);
+            holder.layoutOnboradBrandAdapterItemBinding.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.layoutOnboradBrandAdapterItemBinding.checkBox.setChecked(false);
+            holder.layoutOnboradBrandAdapterItemBinding.checkBox.setVisibility(View.GONE);
+        }
+        holder.layoutOnboradBrandAdapterItemBinding.tvBrandName.setText(brandList.get(position).getManufactureDescriptions().get(0).getName());
         holder.layoutOnboradBrandAdapterItemBinding.cvBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (holder.layoutOnboradBrandAdapterItemBinding.checkBox.getVisibility() == View.VISIBLE) {
                     holder.layoutOnboradBrandAdapterItemBinding.checkBox.setVisibility(View.GONE);
+                    brandList.get(position).setChecked(false);
                     holder.layoutOnboradBrandAdapterItemBinding.tvBrandName.setTextColor(context.getResources().getColor(R.color.txt_grey));
+                    if (selectedBrandList.contains(brandList.get(position)))
+                        selectedBrandList.remove(brandList.get(position));
                 } else {
+                    if (!selectedBrandList.contains(brandList.get(position)))
+                        selectedBrandList.add(brandList.get(position));
+                    brandList.get(position).setChecked(true);
                     holder.layoutOnboradBrandAdapterItemBinding.checkBox.setVisibility(View.VISIBLE);
                     holder.layoutOnboradBrandAdapterItemBinding.checkBox.setChecked(true);
                     holder.layoutOnboradBrandAdapterItemBinding.tvBrandName.setTextColor(context.getResources().getColor(R.color.bright_blue));
                 }
+                onBrandSelected(selectedBrandList);
             }
         });
 
@@ -60,6 +77,19 @@ public class OnBoardBrandAdapter extends RecyclerView.Adapter<OnBoardBrandAdapte
                 }
             }
         });
+
+
+//        holder.layoutOnboradBrandAdapterItemBinding.checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (((AppCompatCheckBox) view).isChecked()) {
+//
+//                } else {
+//
+//                }
+//                onBrandSelected(selectedBrandList);
+//            }
+//        });
 
     }
 

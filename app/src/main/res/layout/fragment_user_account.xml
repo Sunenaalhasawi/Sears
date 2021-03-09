@@ -17,7 +17,7 @@
             android:id="@+id/constraintLayout13"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bottom_2_corner_rounded_rectangle_blue_16dp"
+            android:background="@color/filter_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -28,13 +28,12 @@
                 android:layout_height="80dp"
                 android:layout_marginTop="24dp"
                 android:background="@color/white"
-                android:src="@drawable/boy"
+                android:src="@drawable/my_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/btn_loginSignup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -45,7 +44,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="32dp"
                 android:paddingBottom="8dp"
-                android:text="@string/login_signup"
+                android:text="@string/my_account"
                 android:textColor="@color/txt_clr_blue"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -146,6 +145,66 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutPreference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/white_rounded_rectangle"
+                    android:elevation="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:id="@+id/txt_preference"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/avantgarde_bold"
+                        android:text="@string/my_preference"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewPreference"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/edit_brnads"
+                        android:textColor="@color/cart_grey"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/txt_preference"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_preference" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_forward_blue" />
+
+                    <ImageView
+                        android:id="@+id/imageViewPreference"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/my_preference" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayoutOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,6 +258,67 @@
 
                     <ImageView
                         android:id="@+id/imageView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/orders" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutReturns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/white_rounded_rectangle"
+                    android:elevation="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayoutProfile"
+                    tools:layout_editor_absoluteY="16dp">
+
+
+                    <TextView
+                        android:id="@+id/textViewReturns"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/avantgarde_bold"
+                        android:text="@string/my_returns"
+                        android:textColor="@color/txt_clr_blue"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewReturns"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/avantgarde_regular"
+                        android:text="@string/manage_your_returns"
+                        android:textColor="@color/cart_grey"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/textViewReturns"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewReturns" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_forward_blue" />
+
+                    <ImageView
+                        android:id="@+id/imageViewReturns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -406,7 +526,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/avantgarde_regular"
-                        android:text="@string/your_loved_styles"
+                        android:text="@string/manage_your_addresses"
                         android:textColor="@color/cart_grey"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -433,12 +553,11 @@
                         app:srcCompat="@drawable/agenda" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
-                    android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -446,6 +565,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageViewInstagram"
                         android:src="@drawable/facebook" />
 
                     <ImageView
@@ -453,6 +575,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/imageViewYoutube"
                         android:src="@drawable/instagram" />
 
                     <ImageView
@@ -460,6 +585,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/youtube" />
 
                     <ImageView
@@ -467,6 +595,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imageViewYoutube"
                         android:src="@drawable/snapchat" />
 
                     <ImageView
@@ -474,8 +605,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imageViewSnapChat"
                         android:src="@drawable/tiktok" />
-                </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="24dp"
+                        android:layout_toRightOf="@id/imageViewTiktok"
+                        android:src="@drawable/support" />
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/white_rounded_rectangle_16dp"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/imageViewProduct"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/grid_banner_2" />
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/avengarde_thick_bold"
+            android:text="Puma Men's Half  Sleeve T Shirt"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonPlus"
+            app:layout_constraintStart_toEndOf="@+id/imageViewProduct"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView130"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/color_colon"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+
+        <TextView
+            android:id="@+id/tVProductColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="Blue"
+            android:textColor="@color/cart_grey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView130"
+            app:layout_constraintStart_toEndOf="@+id/textView130" />
+
+        <TextView
+            android:id="@+id/textView132"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/size"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView130"
+            app:layout_constraintStart_toEndOf="@+id/tVProductColor" />
+
+        <TextView
+            android:id="@+id/tvProductSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="Medium"
+            android:textColor="@color/cart_grey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView132"
+            app:layout_constraintStart_toEndOf="@+id/textView132" />
+
+        <TextView
+            android:id="@+id/tvOffer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/discount"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/avantgarde_regular"
+            android:gravity="center_vertical"
+            android:text="Flat 30% off"
+            android:textColor="@color/cart_grey"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@+id/textView130" />
+
+        <TextView
+            android:id="@+id/textView135"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="@string/amount_to_pay"
+            android:textColor="@color/cart_grey"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonMinus"
+            app:layout_constraintStart_toStartOf="@+id/tvProductName"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonMinus" />
+
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/avantgarde_bold"
+            android:text="KWD 200"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView135"
+            app:layout_constraintStart_toEndOf="@+id/textView135" />
+
+        <ImageButton
+            android:id="@+id/imageButtonPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:padding="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvItemCount"
+            app:layout_constraintEnd_toEndOf="@+id/tvItemCount"
+            app:layout_constraintStart_toStartOf="@+id/tvItemCount"
+            app:srcCompat="@drawable/ic_plus" />
+
+        <ImageButton
+            android:id="@+id/imageButtonMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/white"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvItemCount"
+            app:layout_constraintStart_toStartOf="@+id/tvItemCount"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemCount"
+            app:srcCompat="@drawable/ic_minus" />
+
+        <TextView
+            android:id="@+id/tvItemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/blue_outlined_rounded_rectangle"
+            android:fontFamily="@font/avantgarde_regular"
+            android:paddingLeft="12dp"
+            android:paddingTop="4dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="4dp"
+            android:text="2"
+            android:textColor="@color/txt_clr_blue"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

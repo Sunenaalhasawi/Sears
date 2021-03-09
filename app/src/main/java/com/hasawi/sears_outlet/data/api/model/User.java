@@ -2,6 +2,7 @@ package com.hasawi.sears_outlet.data.api.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.hasawi.sears_outlet.data.api.model.pojo.Preference;
 
 public class User {
 
@@ -45,6 +46,14 @@ public class User {
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
+
+    @SerializedName("lock")
+    @Expose
+    private Boolean lock;
+
+    @SerializedName("preference")
+    @Expose
+    private Preference preference;
 
 
     public String getCustomerId() {
@@ -141,5 +150,25 @@ public class User {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Boolean getLock() {
+        return lock;
+    }
+
+    public void setLock(Boolean lock) {
+        this.lock = lock;
+    }
+
+    public Preference getPreference() {
+        return preference;
+    }
+
+    public void setPreference(Preference preference) {
+        this.preference = preference;
     }
 }
