@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +36,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.NavigationMenuItem;
@@ -50,7 +48,6 @@ import com.hasawi.sears_outlet.databinding.LayoutToastWishlistNotificationBindin
 import com.hasawi.sears_outlet.ui.base.BaseActivity;
 import com.hasawi.sears_outlet.ui.base.BaseFragment;
 import com.hasawi.sears_outlet.ui.main.adapters.HomeTabsPagerAdapter;
-import com.hasawi.sears_outlet.ui.main.adapters.NavigationDrawerAdapter;
 import com.hasawi.sears_outlet.ui.main.adapters.SearchProductAdapter;
 import com.hasawi.sears_outlet.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears_outlet.ui.main.view.checkout.CheckoutFragment;
@@ -61,9 +58,6 @@ import com.hasawi.sears_outlet.ui.main.view.dashboard.BrandFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.home.CategoryFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.home.NotificationFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.AboutUsFragment;
-import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.ContactUsFragment;
-import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.FAQFragment;
-import com.hasawi.sears_outlet.ui.main.view.dashboard.navigation_drawer_menu.PrivatePolicyFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.product.FilterFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.UserAccountFragment;
@@ -73,9 +67,7 @@ import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.order_history.TrackOrderFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_account.profile.UserProfileFragment;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.user_settings.UserSettingsFragment;
-import com.hasawi.sears_outlet.ui.main.view.signin.SigninActivity;
 import com.hasawi.sears_outlet.ui.main.viewmodel.DashboardViewModel;
-import com.hasawi.sears_outlet.utils.AppConstants;
 import com.hasawi.sears_outlet.utils.PreferenceHandler;
 
 import java.util.ArrayList;
@@ -128,11 +120,11 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setTitle("");
         getMainCategories();
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        setUpNavigationView();
         activityDashboardBinding.appBarMain.bottomNavigationView.setOnNavigationItemSelectedListener(this);
         activityDashboardBinding.appBarMain.bottomNavigationView.setItemIconTintList(null);
 
@@ -147,19 +139,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             parameters.putString("user_id", userId);
             mFirebaseAnalytics.setDefaultEventParameters(parameters);
         }
-        if (isUserLoggedin)
-            activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText(username);
-        else
-            activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText("Guest");
-        activityDashboardBinding.navigationDrawerHeaderInclude.imageViewUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Todo upload customer image
-                replaceFragment(R.id.fragment_replacer, new UserProfileFragment(), null, true, false);
-                handleActionMenuBar(true, true, "My Profile");
-            }
-        });
-
+        setUpNavigationView();
         retrieveFirebaseDynamicLinks();
         if (!zendeskMessagingEnabled)
             Messaging.initialize(
@@ -208,51 +188,51 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 });
     }
 
-    private void loadMenuFragments(int position) {
-        NavigationMenuItem menuItem = menuItemArrayList.get(position);
-        switch (menuItem.get_ID()) {
-            case AppConstants.ID_MENU_HOME:
-                handleActionMenuBar(false, true, "");
-                int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
-                for (int i = 0; i < fragmentCount; i++) {
-                    getSupportFragmentManager().popBackStackImmediate();
-                }
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_CONTACT_US:
-                replaceFragment(R.id.fragment_replacer, new ContactUsFragment(), null, true, false);
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_ABOUT_US:
-                replaceFragment(R.id.fragment_replacer, new AboutUsFragment(), null, true, false);
-                hideToolBar();
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_PRIVACY_POLICY:
-                replaceFragment(R.id.fragment_replacer, new PrivatePolicyFragment(), null, true, false);
-                hideToolBar();
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_FAQ:
-                replaceFragment(R.id.fragment_replacer, new FAQFragment(), null, true, false);
-                hideToolBar();
-                closeDrawer();
-                break;
-            case AppConstants.ID_MENU_SIGNOUT:
-                if (isAlreadyLoggedinWithFacebbok())
-                    disconnectFromFacebook();
-                clearPreferences();
-                closeDrawer();
-                Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
-                startActivity(intent);
-                this.finish();
-                break;
-            default:
-                break;
-
-
-        }
-    }
+//    private void loadMenuFragments(int position) {
+//        NavigationMenuItem menuItem = menuItemArrayList.get(position);
+//        switch (menuItem.get_ID()) {
+//            case AppConstants.ID_MENU_HOME:
+//                handleActionMenuBar(false, true, "");
+//                int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+//                for (int i = 0; i < fragmentCount; i++) {
+//                    getSupportFragmentManager().popBackStackImmediate();
+//                }
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_CONTACT_US:
+//                replaceFragment(R.id.fragment_replacer, new ContactUsFragment(), null, true, false);
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_ABOUT_US:
+//                replaceFragment(R.id.fragment_replacer, new AboutUsFragment(), null, true, false);
+//                hideToolBar();
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_PRIVACY_POLICY:
+//                replaceFragment(R.id.fragment_replacer, new PrivatePolicyFragment(), null, true, false);
+//                hideToolBar();
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_FAQ:
+//                replaceFragment(R.id.fragment_replacer, new FAQFragment(), null, true, false);
+//                hideToolBar();
+//                closeDrawer();
+//                break;
+//            case AppConstants.ID_MENU_SIGNOUT:
+//                if (isAlreadyLoggedinWithFacebbok())
+//                    disconnectFromFacebook();
+//                clearPreferences();
+//                closeDrawer();
+//                Intent intent = new Intent(DashboardActivity.this, SigninActivity.class);
+//                startActivity(intent);
+//                this.finish();
+//                break;
+//            default:
+//                break;
+//
+//
+//        }
+//    }
 
     public void hideToolBar() {
         activityDashboardBinding.appBarMain.toolbar.setVisibility(View.GONE);
@@ -284,58 +264,10 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         activityDashboardBinding.drawerLayout.closeDrawers();
     }
 
-    /***
-     * Load navigation menu header information
-     * like background image, profile image
-     * name, website, notifications action view (dot)
-     */
-    private void loadNavHeader() {
-//        activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText("");
-
-        // loading header background image
-//        Glide.with(this).load(urlNavHeaderBg)
-//                .crossFade()
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(imgNavHeaderBg);
-//
-//        // Loading profile image
-//        Glide.with(this).load(urlProfileImg)
-//                .crossFade()
-//                .thumbnail(0.5f)
-//                .bitmapTransform(new CircleTransform(this))
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(imgProfile);
-    }
 
     private void setUpNavigationView() {
         actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
-
-        menuItemArrayList = dashboardViewModel.getMenuItemsList(this);
-        activityDashboardBinding.listviewMenu.setAdapter(new NavigationDrawerAdapter(
-                this,
-                R.layout.layout_navigation_drawer_item,
-                menuItemArrayList) {
-            @Override
-            public void onNotificationStatusChanged(boolean isNotificationEnabled) {
-                PreferenceHandler preferenceHandler = new PreferenceHandler(DashboardActivity.this, PreferenceHandler.TOKEN_LOGIN);
-                if (isNotificationEnabled) {
-                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, true);
-                    FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
-                } else {
-                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, false);
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConstants.APP_NAME);
-                }
-
-            }
-        });
-        activityDashboardBinding.listviewMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                loadMenuFragments(position);
-            }
-        });
-        loadNavHeader();
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, activityDashboardBinding.drawerLayout, activityDashboardBinding.appBarMain.toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
@@ -360,13 +292,83 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
             }
         });
-
-        //Setting the actionbarToggle to drawer layout
-        activityDashboardBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        handleActionMenuBar(false, true, "");
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
     }
+//
+//    private void setUpNavigationView() {
+//        if (isUserLoggedin)
+//            activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText(username);
+//        else
+//            activityDashboardBinding.navigationDrawerHeaderInclude.tvUserName.setText("Guest");
+//        activityDashboardBinding.navigationDrawerHeaderInclude.imageViewUser.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Todo upload customer image
+//                replaceFragment(R.id.fragment_replacer, new UserProfileFragment(), null, true, false);
+//                handleActionMenuBar(true, true, "My Profile");
+//            }
+//        });
+//        actionBar = getSupportActionBar();
+//        actionBar.setHomeButtonEnabled(false);
+//
+//        menuItemArrayList = dashboardViewModel.getMenuItemsList(this);
+//        activityDashboardBinding.listviewMenu.setAdapter(new NavigationDrawerAdapter(
+//                this,
+//                R.layout.layout_navigation_drawer_item,
+//                menuItemArrayList) {
+//            @Override
+//            public void onNotificationStatusChanged(boolean isNotificationEnabled) {
+//                PreferenceHandler preferenceHandler = new PreferenceHandler(DashboardActivity.this, PreferenceHandler.TOKEN_LOGIN);
+//                if (isNotificationEnabled) {
+//                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, true);
+//                    FirebaseMessaging.getInstance().subscribeToTopic(AppConstants.APP_NAME);
+//                } else {
+//                    preferenceHandler.saveData(PreferenceHandler.NOTIFICATION_STATUS, false);
+//                    FirebaseMessaging.getInstance().unsubscribeFromTopic(AppConstants.APP_NAME);
+//                }
+//
+//            }
+//        });
+//        activityDashboardBinding.listviewMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                loadMenuFragments(position);
+//            }
+//        });
+//        loadNavHeader();
+//        actionBarDrawerToggle = new ActionBarDrawerToggle(this, activityDashboardBinding.drawerLayout, activityDashboardBinding.appBarMain.toolbar, R.string.openDrawer, R.string.closeDrawer) {
+//
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+//                super.onDrawerClosed(drawerView);
+//            }
+//
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+//                super.onDrawerOpened(drawerView);
+//            }
+//        };
+//        actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (actionBarDrawerToggle.isDrawerIndicatorEnabled()) {
+//                    activityDashboardBinding.drawerLayout.openDrawer(GravityCompat.START);
+//                } else {
+//                    onBackPressed();
+//                }
+//            }
+//        });
+//
+//        //Setting the actionbarToggle to drawer layout
+//        activityDashboardBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
+//        handleActionMenuBar(false, true, "");
+//        //calling sync state is necessary or else your hamburger icon wont show up
+//        actionBarDrawerToggle.syncState();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -497,6 +499,7 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         for (int i = 0; i < fragmentCount; i++) {
             getSupportFragmentManager().popBackStack();
         }
+        showToolBar();
         switch (item.getItemId()) {
 
             case R.id.navigation_home:
@@ -504,13 +507,15 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 handleActionMenuBar(false, true, "");
                 return true;
             case R.id.navigation_brand:
-                if (currentFragment instanceof BrandFragment) {
+                BrandFragment brandFragment;
+//                if (currentFragment instanceof BrandFragment) {
+//                    brandFragment = (BrandFragment) currentFragment;
+//                } else {
+                brandFragment = new BrandFragment();
+//                }
+                replaceFragment(R.id.fragment_replacer, brandFragment, null, true, false);
+                handleActionMenuBar(true, true, "Brands");
 
-                } else {
-                    BrandFragment brandFragment = new BrandFragment();
-                    replaceFragment(R.id.fragment_replacer, brandFragment, null, true, false);
-                    handleActionMenuBar(true, true, "Brands");
-                }
                 return true;
             case R.id.navigation_categories:
                 handleActionMenuBar(false, true, "");
@@ -528,22 +533,24 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
                 }
                 return true;
             case R.id.navigation_cart:
-                if (currentFragment instanceof MyCartFragment) {
-
-                } else {
-                    MyCartFragment myCartFragment = new MyCartFragment();
-                    replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
-                    handleActionMenuBar(false, true, "");
-                }
+                MyCartFragment myCartFragment;
+//                if (currentFragment instanceof MyCartFragment) {
+//                    myCartFragment = (MyCartFragment) currentFragment;
+//                } else {
+                myCartFragment = new MyCartFragment();
+//                }
+                handleActionMenuBar(false, true, "");
+                replaceFragment(R.id.fragment_replacer, myCartFragment, null, true, false);
                 return true;
             case R.id.navigation_profile:
-                if (currentFragment instanceof UserSettingsFragment) {
-
-                } else {
-                    UserSettingsFragment userSettingsFragment = new UserSettingsFragment();
-                    replaceFragment(R.id.fragment_replacer, userSettingsFragment, null, true, false);
-                    handleActionMenuBar(true, true, "User Settings");
-                }
+                UserSettingsFragment userSettingsFragment;
+//                if (currentFragment instanceof UserSettingsFragment) {
+//                    userSettingsFragment = (UserSettingsFragment) currentFragment;
+//                } else {
+                userSettingsFragment = new UserSettingsFragment();
+//                }
+                replaceFragment(R.id.fragment_replacer, userSettingsFragment, null, true, false);
+                handleActionMenuBar(true, true, "User Settings");
                 return true;
             default:
                 return true;
@@ -563,30 +570,56 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
 
     public void handleActionMenuBar(boolean showBackbutton, boolean showBottomNavigationMenu, String title) {
 //         Showing back arrow icon. true means show and false means do not show
-        getSupportActionBar().setDisplayHomeAsUpEnabled(showBackbutton);
-        //Showing title
-        getSupportActionBar().setDisplayShowTitleEnabled(showBackbutton);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         // Showing or hiding ,menu icon
-        actionBarDrawerToggle.setDrawerIndicatorEnabled(!showBackbutton);
-        if (showBackbutton)
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        if (showBackbutton) {
+            //Showing title
+            getSupportActionBar().setDisplayShowTitleEnabled(showBackbutton);
+            setTitle(title);
             activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.GONE);
-        else
+            activityDashboardBinding.appBarMain.toolbar.setNavigationIcon(R.drawable.ic_back_bronze);
+        } else {
+            setTitle("");
             activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.VISIBLE);
+            activityDashboardBinding.appBarMain.toolbar.setNavigationIcon(null);
+        }
+
+
         if (showBottomNavigationMenu)
             activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.VISIBLE);
         else
             activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.GONE);
-        if (showBackbutton) {
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_bronze);
-        } else
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
-        if (showBackbutton)
-            setTitle(title);
-        else
-            setTitle("");
         actionBarDrawerToggle.syncState();
 
     }
+
+//    public void handleActionMenuBar(boolean showBackbutton, boolean showBottomNavigationMenu, String title) {
+////         Showing back arrow icon. true means show and false means do not show
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(showBackbutton);
+//        //Showing title
+//        getSupportActionBar().setDisplayShowTitleEnabled(showBackbutton);
+//        // Showing or hiding ,menu icon
+//        actionBarDrawerToggle.setDrawerIndicatorEnabled(!showBackbutton);
+//        if (showBackbutton)
+//            activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.GONE);
+//        else
+//            activityDashboardBinding.appBarMain.imageSearsLogo.setVisibility(View.VISIBLE);
+//        if (showBottomNavigationMenu)
+//            activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.VISIBLE);
+//        else
+//            activityDashboardBinding.appBarMain.bottomNavigationView.setVisibility(View.GONE);
+//        if (showBackbutton) {
+//            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_bronze);
+//        } else
+//            getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+//        if (showBackbutton)
+//            setTitle(title);
+//        else
+//            setTitle("");
+//        actionBarDrawerToggle.syncState();
+//
+//    }
 
     @Override
     public void onBackPressed() {
@@ -611,6 +644,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             setTitle(getTitle());
             activityDashboardBinding.appBarMain.toolbar.setVisibility(View.VISIBLE);
             BaseFragment currentFragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_replacer);
+            if (currentFragment == null)
+                setTitle("");
             handleActionBarIcons(true);
             if (currentFragment instanceof WishListFragment) {
                 handleActionMenuBar(false, true, "");
@@ -989,8 +1024,6 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
             bottomBarBadgeDrawable.setVisible(true);
         }
         setAppBarBadge(cartCount);
-
-
     }
 
     public void showToolBar() {
@@ -1022,16 +1055,8 @@ public class DashboardActivity extends BaseActivity implements BottomNavigationV
         });
     }
 
-    public String getCurrentlyShowingProductId() {
-        return currentlyShowingProductId;
-    }
-
     public void setCurrentlyShowingProductId(String currentlyShowingProductId) {
         this.currentlyShowingProductId = currentlyShowingProductId;
-    }
-
-    public String getCurrentlyShowingProductName() {
-        return currentlyShowingProductName;
     }
 
     public void setCurrentlyShowingProductName(String currentlyShowingProductName) {

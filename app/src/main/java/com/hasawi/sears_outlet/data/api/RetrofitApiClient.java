@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitApiClient {
     public static final String BASE_URL = "https://preprod.acekuwait.com/api/v0/";
-    //    public static final String BASE_URL = "https://searskuwait.com/api/v0/";
+//        public static final String BASE_URL = "https://searskuwait.com/api/v0/";
     private static RetrofitApiClient instance = null;
     private ApiInterface apiInterface;
 

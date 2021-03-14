@@ -183,7 +183,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
         try {
             selectedSize = currentSizeList.get(0);
             currentColorsList = (ArrayList<String>) getColorList(selectedSize);
-            java.util.Collections.sort(currentColorsList, icc);
+//            java.util.Collections.sort(currentColorsList, icc);
             setColorAdapter(currentColorsList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -419,6 +419,7 @@ public class SelectedProductDetailsFragment extends BaseFragment implements Recy
                 dashboardActivity.getmFirebaseAnalytics().logEvent("SIZE_SELECTED", bundle);
                 dashboardActivity.getFacebookEventsLogger().logEvent("SIZE_SELECTED", bundle);
                 currentColorsList = (ArrayList<String>) getColorList(selectedSize);
+                ProductColorAdapter.setsSelected(0);
                 setColorAdapter(currentColorsList);
                 selectedColor = currentColorsList.get(0);
             }

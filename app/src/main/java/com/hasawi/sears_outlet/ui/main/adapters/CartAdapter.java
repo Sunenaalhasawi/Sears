@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.hasawi.sears_outlet.R;
 import com.hasawi.sears_outlet.data.api.model.pojo.ShoppingCartItem;
-import com.hasawi.sears_outlet.databinding.LayoutCartAdapterItemBinding;
+import com.hasawi.sears_outlet.databinding.LayoutSwipeCartItemBinding;
 import com.hasawi.sears_outlet.ui.main.view.DashboardActivity;
 import com.hasawi.sears_outlet.utils.dialogs.GeneralDialog;
 
@@ -41,9 +41,9 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutCartAdapterItemBinding cartAdapterItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.layout_cart_adapter_item, parent, false);
-        return new ViewHolder(cartAdapterItemBinding);
+        LayoutSwipeCartItemBinding swipeCartItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.layout_swipe_cart_item, parent, false);
+        return new ViewHolder(swipeCartItemBinding);
     }
 
     public abstract void cartItemsUpdated(ShoppingCartItem cartItem, int quantity, boolean isQuantityIncreased);
@@ -92,7 +92,7 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
 
             holder.cartAdapterItemBinding.tvAmount.setText("KWD " + shoppingCartItem.getProduct().getOriginalPrice());
             Glide.with(dashboardActivity)
-                    .load(shoppingCartItem.getProduct().getProductConfigurables().get(0).getProductImages().get(0).getImageUrl())
+                    .load(shoppingCartItem.getProductConfigurable().getProductImages().get(0).getImageUrl())
                     .centerCrop()
                     .into(holder.cartAdapterItemBinding.imageViewProduct);
 
@@ -156,12 +156,26 @@ public abstract class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewH
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutCartAdapterItemBinding cartAdapterItemBinding;
+    public void removeItem(int position) {
+        cartedItemsList.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
 
-        public ViewHolder(@NonNull LayoutCartAdapterItemBinding cartAdapterItemBinding) {
-            super(cartAdapterItemBinding.getRoot());
-            this.cartAdapterItemBinding = cartAdapterItemBinding;
+    public void restoreItem(ShoppingCartItem item, int position) {
+        cartedItemsList.add(position, item);
+        // notify item added by position
+        notifyItemInserted(position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        LayoutSwipeCartItemBinding cartAdapterItemBinding;
+
+        public ViewHolder(@NonNull LayoutSwipeCartItemBinding swipeCartItemBinding) {
+            super(swipeCartItemBinding.getRoot());
+            this.cartAdapterItemBinding = swipeCartItemBinding;
         }
     }
 }

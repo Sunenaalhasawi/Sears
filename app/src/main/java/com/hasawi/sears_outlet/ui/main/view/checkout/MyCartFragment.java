@@ -1,13 +1,18 @@
 package com.hasawi.sears_outlet.ui.main.view.checkout;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.appevents.AppEventsConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -20,6 +25,7 @@ import com.hasawi.sears_outlet.data.api.response.CartResponse;
 import com.hasawi.sears_outlet.databinding.FragmentCartBinding;
 import com.hasawi.sears_outlet.ui.base.BaseFragment;
 import com.hasawi.sears_outlet.ui.main.adapters.CartAdapter;
+import com.hasawi.sears_outlet.ui.main.adapters.RecyclerItemTouchHelper;
 import com.hasawi.sears_outlet.ui.main.listeners.RecyclerItemClickListener;
 import com.hasawi.sears_outlet.ui.main.view.DashboardActivity;
 import com.hasawi.sears_outlet.ui.main.view.dashboard.product.SelectedProductDetailsFragment;
@@ -36,7 +42,7 @@ import java.util.Map;
 
 import static com.facebook.appevents.AppEventsConstants.EVENT_PARAM_CURRENCY;
 
-public class MyCartFragment extends BaseFragment implements View.OnClickListener {
+public class MyCartFragment extends BaseFragment implements View.OnClickListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     FragmentCartBinding fragmentCartBinding;
     CartAdapter cartAdapter;
     CartViewModel cartViewModel;
@@ -67,7 +73,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         else
             dashboardActivity.handleActionMenuBar(true, true, "My Bag");
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
-        fragmentCartBinding.recyclerviewCart.setLayoutManager(new LinearLayoutManager(getActivity()));
         cartAdapter = new CartAdapter(dashboardActivity) {
             @Override
             public void onItemDeleteClicked(ShoppingCartItem cartItem) {
@@ -99,7 +104,6 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
             }
 
         };
-        fragmentCartBinding.recyclerviewCart.setAdapter(cartAdapter);
         fragmentCartBinding.tvProceedTocheckout.setOnClickListener(this);
         fragmentCartBinding.imageButtonBack.setOnClickListener(this);
         try {
@@ -145,6 +149,89 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
 //                }
             }
         }));
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        fragmentCartBinding.recyclerviewCart.setLayoutManager(mLayoutManager);
+        fragmentCartBinding.recyclerviewCart.setItemAnimator(new DefaultItemAnimator());
+        fragmentCartBinding.recyclerviewCart.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        fragmentCartBinding.recyclerviewCart.setAdapter(cartAdapter);
+
+        // adding item touch helper
+        // only ItemTouchHelper.LEFT added to detect Right to Left swipe
+        // if you want both Right -> Left and Left -> Right
+        // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(fragmentCartBinding.recyclerviewCart);
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback1 = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                cartAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+                // Row is swiped from recycler view
+                // remove it from adapter
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        // attaching the touch helper to recycler view
+        new ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(fragmentCartBinding.recyclerviewCart);
+
+//        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+//                final int position = viewHolder.getAdapterPosition();
+//                if (direction == ItemTouchHelper.LEFT) {
+//                    cartAdapter.removeItem(position);
+//                }
+//            }
+//
+//            @Override
+//            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//                try {
+//
+//                    Bitmap icon;
+//                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+//                        View itemView = viewHolder.itemView;
+//                        float height = (float) itemView.getBottom() - (float) itemView.getTop();
+//                        float width = height / 5;
+//                        viewHolder.itemView.setTranslationX(dX / 5);
+//                        Paint paint=new Paint();
+//                        paint.setColor(getResources().getColor(R.color.red));
+//                        RectF background = new RectF((float) itemView.getRight() + dX / 5, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+//                        c.drawRect(background, paint);
+//                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
+//                        RectF icon_dest = new RectF((float) (itemView.getRight() + dX /7), (float) itemView.getTop()+width, (float) itemView.getRight()+dX/20, (float) itemView.getBottom()-width);
+//                        c.drawBitmap(icon, null, icon_dest, paint);
+//                    } else {
+//                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        };
+//
+//        //        // attaching the touch helper to recycler view
+//        new ItemTouchHelper(simpleCallback).attachToRecyclerView(fragmentCartBinding.recyclerviewCart);
+
     }
 
     private void setUiValues() {
@@ -166,11 +253,13 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
                 }
                 break;
             case R.id.btnShopNow:
+                dashboardActivity.showToolBar();
                 int fragmentCount = getParentFragmentManager().getBackStackEntryCount();
                 for (int i = 0; i < fragmentCount; i++) {
                     getParentFragmentManager().popBackStackImmediate();
                 }
                 dashboardActivity.handleActionMenuBar(false, true, "");
+
                 break;
             case R.id.imageButtonBack:
                 dashboardActivity.onBackPressed();
@@ -295,6 +384,7 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         dashboardActivity.hideToolBar();
+        dashboardActivity.handleActionMenuBar(false, true, "");
     }
 
     public void showProgressbar(boolean shouldShowProgressbar) {
@@ -346,5 +436,34 @@ public class MyCartFragment extends BaseFragment implements View.OnClickListener
         analyticsBundle.putLong("item_count", cartCount);
         analyticsBundle.putParcelableArrayList(FirebaseAnalytics.Param.ITEMS, itemParcelableList);
         dashboardActivity.getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_CART, analyticsBundle);
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof CartAdapter.ViewHolder) {
+            // get the removed item name to display it in snack bar
+            String name = cartItemsList.get(viewHolder.getAdapterPosition()).getProduct().getDescriptions().get(0).getProductName();
+
+            // backup of removed item for undo purpose
+            final ShoppingCartItem deletedItem = cartItemsList.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+            fragmentCartBinding.progressBar.setVisibility(View.VISIBLE);
+            removeItemFromCartApi(deletedItem);
+            // remove the item from recycler view
+            cartAdapter.removeItem(viewHolder.getAdapterPosition());
+
+            // showing snack bar with Undo option
+//            Snackbar snackbar = Snackbar
+//                    .make(fragmentCartBinding.cvFragment, name + " Removed from cart!", Snackbar.LENGTH_LONG);
+//            snackbar.setAction("UNDO", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    // undo is selected, restore the deleted item
+//                    cartAdapter.restoreItem(deletedItem, deletedIndex);
+//                }
+//            });
+//            snackbar.setActionTextColor(getResources().getColor(R.color.light_blue));
+//            snackbar.show();
+        }
     }
 }

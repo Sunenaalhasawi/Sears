@@ -147,11 +147,11 @@
                         android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSizeNext"
-                        app:layout_constraintEnd_toStartOf="@+id/imageButtonSizeNext"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/txtSelectSize"
-                        app:layout_constraintTop_toTopOf="@+id/imageButtonSizeNext" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView58" />
 
                     <TextView
                         android:id="@+id/tv_product_name"
@@ -265,7 +265,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/tvSizeChart"
                         app:layout_constraintStart_toEndOf="@+id/txtColorVariant"
-                        app:layout_constraintTop_toBottomOf="@+id/tvSizeChart"
+                        app:layout_constraintTop_toBottomOf="@+id/listview_product_size"
                         app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
@@ -359,6 +359,7 @@
                         android:text="@string/size_chart"
                         android:textColor="@color/white"
                         android:textSize="10sp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/tvOriginalPrice"
                         app:layout_constraintTop_toBottomOf="@+id/textView58" />
 
